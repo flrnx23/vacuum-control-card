@@ -1,0 +1,69 @@
+type: custom:vacuum-control-card
+entity: vacuum.my_robot
+name: Saugroboter
+view: combined
+appearance: adaptive
+
+# `adaptive` folgt dem Home-Assistant-Theme. Für stärkere Verläufe und
+# Farbakzente kann stattdessen `appearance: accent` verwendet werden.
+
+# Für eine kleine Dashboard-Karte `view: robot` verwenden und diesen Block
+# aktivieren. Name und Status bleiben immer sichtbar; die Reihenfolge ist frei.
+# density: compact
+# overview:
+#   items:
+#     - battery
+#     - progress
+#     - area
+#     - duration
+
+# Alle folgenden Entitäten sind optional.
+entities:
+  status: sensor.my_robot_status
+  battery: sensor.my_robot_battery
+  charging: binary_sensor.my_robot_charging
+  cleaning: binary_sensor.my_robot_cleaning
+  progress: sensor.my_robot_progress
+  area: sensor.my_robot_cleaned_area
+  duration: sensor.my_robot_cleaning_time
+  map: image.my_robot_map
+  vacuum_mode: select.my_robot_cleaning_mode
+  mop_mode: select.my_robot_mop_mode
+  mop_intensity: select.my_robot_mop_intensity
+  volume: number.my_robot_volume
+  mop_attached: binary_sensor.my_robot_mop_attached
+  water_shortage: binary_sensor.my_robot_water_shortage
+  vacuum_error: sensor.my_robot_error
+
+programs:
+  items:
+    - entity: button.my_robot_clean_everywhere
+      name: Alles reinigen
+      kind: combo
+    - entity: button.my_robot_clean_room_1
+      name: Raum 1 reinigen
+      kind: vacuum
+
+# Den Dockbereich weglassen, wenn die Integration keine Stationsentitäten hat.
+dock:
+  display: collapsed
+  entities:
+    error: sensor.my_robot_dock_error
+    mop_drying: binary_sensor.my_robot_mop_drying
+    drying_remaining: sensor.my_robot_drying_remaining
+    clean_water_tank:
+      entity: binary_sensor.my_robot_clean_water_tank
+      on_is: unknown
+    dirty_water_tank:
+      entity: binary_sensor.my_robot_dirty_water_tank
+      on_is: unknown
+
+maintenance:
+  display: collapsed
+  items:
+    - entity: sensor.my_robot_filter_remaining
+      name: Filter
+      kind: filter
+    - entity: sensor.my_robot_main_brush_remaining
+      name: Hauptbürste
+      kind: main_brush

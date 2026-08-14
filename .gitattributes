@@ -1,0 +1,12 @@
+# Keep source and documentation stable across Windows, macOS and Linux.
+* text=auto eol=lf
+
+# Explicitly keep binary assets out of line-ending normalization.
+*.gif binary
+*.ico binary
+*.jpeg binary
+*.jpg binary
+*.png binary
+*.webp binary
+*.woff binary
+*.woff2 binary

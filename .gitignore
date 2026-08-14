@@ -1,0 +1,26 @@
+node_modules/
+.npm-cache*/
+.env
+.env.*
+!.env.example
+.idea/
+.vscode/
+
+# Local development workspace. The public repository is distribution-only.
+DEVELOPMENT.md
+REQUIREMENTS.md
+THIRD_PARTY_NOTICES.md
+index.html
+package.json
+package-lock.json
+src/
+test/
+tsconfig.json
+vite.config.ts
+vitest.config.ts
+
+dist/*
+!dist/vacuum-control-card.js
+coverage/
+*.log
+.DS_Store

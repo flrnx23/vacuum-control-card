@@ -1,0 +1,126 @@
+# Herstellerbezogenes Referenzbeispiel. Die Entity-IDs sind Platzhalter und
+# müssen an die in der eigenen Home-Assistant-Installation vorhandenen
+# Entitäten angepasst werden.
+type: custom:vacuum-control-card
+entity: vacuum.roborock
+name: Roborock
+view: combined
+density: auto
+
+entities:
+  status: sensor.roborock_status
+  battery: sensor.roborock_batterie
+  charging: binary_sensor.roborock_ladestatus
+  cleaning: binary_sensor.roborock_reinigen
+  progress: sensor.roborock_reinigungsfortschritt
+  area: sensor.roborock_reinigungsbereich
+  duration: sensor.roborock_reinigungszeit
+  last_start: sensor.roborock_letzter_reinigungsbeginn
+  last_end: sensor.roborock_letztes_reinigungsende
+  map: image.roborock_karte
+  vacuum_mode: select.roborock_reinigungsmodus
+  mop_mode: select.roborock_mop_modus
+  mop_intensity: select.roborock_wisch_intensitat
+  volume: number.roborock_lautstarke
+  mop_attached: binary_sensor.roborock_mopp_angebracht
+  water_tank_attached: binary_sensor.roborock_wasserkasten_angebracht
+  water_shortage: binary_sensor.roborock_wasserknappheit
+  vacuum_error: sensor.roborock_staubsauger_fehler
+
+controls:
+  start_pause: auto
+  stop: auto
+  return_home: auto
+  locate: false
+  confirm_stop_while_active: true
+  confirm_return_while_active: true
+
+# Jedes Programm muss vor dem Start noch einmal bestätigt werden.
+programs:
+  guard: confirm
+  acknowledgement_timeout: 15s
+  items:
+    - entity: button.roborock_programm_1
+      name: Alles saugen
+      kind: vacuum
+      icon: mdi:vacuum
+      description: Alle Räume saugen
+    - entity: button.roborock_programm_2
+      name: Raum 1 saugen und wischen
+      kind: combo
+      icon: mdi:robot-vacuum
+      requires:
+        - condition: mop_attached
+          expected: true
+          severity: warn
+        - condition: water_shortage
+          expected: false
+          severity: block
+    - entity: button.roborock_programm_3
+      name: Raum 2 saugen und wischen
+      kind: combo
+      icon: mdi:robot-vacuum
+      requires:
+        - condition: mop_attached
+          expected: true
+          severity: warn
+        - condition: water_shortage
+          expected: false
+          severity: block
+
+dock:
+  display: collapsed
+  show_activity_in_header: true
+  show_warnings_in_header: true
+  entities:
+    error: sensor.roborock_dock_fehler
+    mop_drying: binary_sensor.roborock_mopp_trocknung
+    drying_remaining: sensor.roborock_verbleibende_zeit_zum_trocknen_des_mopps
+    clean_water_tank:
+      entity: binary_sensor.roborock_dock_frischwassertank
+      on_is: unknown
+    dirty_water_tank:
+      entity: binary_sensor.roborock_dock_schmutzwassertank
+      on_is: unknown
+    cleaning_solution:
+      entity: binary_sensor.roborock_dock_reinigungsflussigkeit
+      on_is: unknown
+    emptying_mode: select.roborock_dock_entleerungsmodus
+    child_lock: switch.roborock_kindersicherung
+
+maintenance:
+  display: collapsed
+  defaults:
+    warning_below: 20
+    critical_below: 5
+  items:
+    - entity: sensor.roborock_verbleibende_filterzeit
+      kind: filter
+      name: Filter
+    - entity: sensor.roborock_verbleibende_sensorzeit
+      kind: sensors
+      name: Sensoren
+    - entity: sensor.roborock_verbleibende_zeit_der_hauptburste
+      kind: main_brush
+      name: Hauptbürste
+    - entity: sensor.roborock_verbleibende_zeit_der_seitenburste
+      kind: side_brush
+      name: Seitenbürste
+    - entity: sensor.roborock_dock_burstenwartung_verbleibend
+      kind: dock_brush
+      name: Dockbürste
+    - entity: sensor.roborock_dock_schmutzfanger_verbleibend
+      kind: dock_filter
+      name: Schmutzfänger
+
+error_handling:
+  clear_states:
+    - "0"
+    - none
+    - ok
+    - no_error
+
+animations:
+  enabled: true
+  intensity: subtle
+  respect_reduced_motion: true
