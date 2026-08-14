@@ -1,0 +1,41 @@
+name: Validate
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  project:
+    name: TypeScript, tests and build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.12.0"
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Verify project
+        run: npm run verify
+      - name: Ensure production bundle is current
+        run: git diff --exit-code -- dist/vacuum-control-card.js
+
+  hacs:
+    name: HACS repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Validate with HACS
+        uses: hacs/action@main
+        with:
+          category: plugin

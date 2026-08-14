@@ -1,0 +1,40 @@
+{
+  "name": "home-assistant-vacuum-control-card",
+  "version": "0.1.0",
+  "description": "A safe, elegant and configurable Home Assistant card for vacuum and mop robots.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/flrnx23/vacuum-control-card.git"
+  },
+  "homepage": "https://github.com/flrnx23/vacuum-control-card#readme",
+  "bugs": {
+    "url": "https://github.com/flrnx23/vacuum-control-card/issues"
+  },
+  "type": "module",
+  "private": true,
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "check": "tsc --noEmit",
+    "dev": "vite",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "verify": "npm run check && npm run test && npm run build"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "dependencies": {
+    "lit": "^3.3.3"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1",
+    "happy-dom": "^20.11.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.1.5",
+    "vitest": "^4.0.0"
+  }
+}

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vacuum Control Card – Development Preview</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --primary-color: #496ef0;
+        --primary-text-color: #18202e;
+        --secondary-text-color: #687386;
+        --card-background-color: #fff;
+        --success-color: #2d9b69;
+        --warning-color: #da9329;
+        --error-color: #d64b5c;
+        --ha-card-border-radius: 22px;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        padding: 34px 18px 80px;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background:
+          radial-gradient(circle at 12% 10%, rgb(73 110 240 / 18%), transparent 32rem),
+          #eef1f7;
+      }
+      .preview-shell { max-width: 760px; margin: auto; }
+      .preview-tools {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+      .preview-tools button {
+        border: 0;
+        border-radius: 999px;
+        padding: 8px 13px;
+        color: #263044;
+        background: rgb(255 255 255 / 76%);
+        box-shadow: 0 3px 14px rgb(40 55 90 / 8%);
+        cursor: pointer;
+      }
+      .card-stage {
+        width: 100%;
+        margin-inline: auto;
+        transition: max-width 180ms ease;
+      }
+      .card-stage[data-density="compact"] { max-width: 280px; }
+      .card-stage[data-density="comfortable"] { max-width: 720px; }
+      .card-stage[data-appearance="accent"] vacuum-control-card {
+        filter: drop-shadow(0 22px 50px rgb(34 47 78 / 14%));
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --primary-text-color: #edf2ff;
+          --secondary-text-color: #aab4ca;
+          --card-background-color: #171b25;
+        }
+        body { background: radial-gradient(circle at 12% 10%, rgb(73 110 240 / 20%), transparent 32rem), #0e1118; }
+        .preview-tools button { color: #edf2ff; background: rgb(34 40 55 / 88%); }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="preview-shell">
+      <nav class="preview-tools" aria-label="Preview states">
+        <button data-state="idle">Bereit</button>
+        <button data-state="vacuum">Saugen</button>
+        <button data-state="mop">Wischen</button>
+        <button data-state="combo">Kombiniert</button>
+        <button data-state="returning">Rückfahrt</button>
+        <button data-state="drying">Dock trocknet</button>
+        <button data-state="error">Fehler</button>
+        <button data-layout="minimal">Kompakt (2 Zeilen)</button>
+        <button data-layout="programs">Kompakt + Programme</button>
+        <button data-layout="comfortable">Komfortabel</button>
+        <button data-appearance="adaptive">HA-nativ modern</button>
+        <button data-appearance="accent">Akzentuiert</button>
+      </nav>
+      <div class="card-stage" data-density="compact" data-appearance="adaptive">
+        <vacuum-control-card></vacuum-control-card>
+      </div>
+    </main>
+    <script type="module" src="/src/demo.ts"></script>
+  </body>
+</html>
