@@ -1,6 +1,10 @@
 # Vacuum Control Card
 
+[**Deutsch**](./README.md) | [English](./README_EN.md)
+
 Eine übersichtliche Home-Assistant-Karte für Saug- und Wischroboter. Sie zeigt den aktuellen Zustand, wichtige Reinigungswerte, eigene Reinigungsprogramme und – falls vorhanden – die Station.
+
+![Vacuum Control Card in der komfortablen Ansicht](docs/images/vacuum-control-card-comfortable.png)
 
 Die Karte ist nicht an einen bestimmten Hersteller gebunden. Als Basis wird lediglich eine `vacuum`-Entität in Home Assistant benötigt. Zusätzliche Funktionen hängen davon ab, welche Entitäten die jeweilige Integration bereitstellt.
 
@@ -19,6 +23,12 @@ Die Karte ist nicht an einen bestimmten Hersteller gebunden. Als Basis wird ledi
 - zwei moderne Designvarianten passend zum eigenen Home-Assistant-Theme
 - visueller Karteneditor in Home Assistant
 - deutsche und englische Oberfläche
+
+## Vorschau
+
+| Kompakt | Kompakt mit Programmen |
+| --- | --- |
+| ![Kompakte Vacuum Control Card](docs/images/vacuum-control-card-compact.png) | ![Kompakte Vacuum Control Card mit Reinigungsprogrammen](docs/images/vacuum-control-card-compact-programs.png) |
 
 ## Unterstützte Geräte
 
@@ -93,6 +103,12 @@ appearance: adaptive  # alternativ: accent
 Für Übersichten mit vielen kleinen Karten steht die Dichte **Kompakt** zur Verfügung. Name und aktueller Status bleiben dabei immer sichtbar. Als platzsparender Standard wird zusätzlich die Batterie gezeigt. Im visuellen Editor lässt sich einzeln auswählen, ob Batterie, Fortschritt, gereinigte Fläche und Reinigungsdauer erscheinen sollen. Dort können auch die übrigen Kartenbereiche ein- oder ausgeblendet werden.
 
 In einem Sections-Dashboard startet die kompakte Karte bei einer Mindestgröße von 6 × 2 Feldern. Werden mehr Informationen oder Bereiche eingeblendet, erhöht die Karte ihre Mindesthöhe automatisch, damit Texte und Bedienelemente lesbar bleiben. Größer ziehen lässt sie sich in Home Assistant weiterhin jederzeit.
+
+## Sprache
+
+Die Karte und ihr visueller Editor übernehmen automatisch die in Home Assistant eingestellte Profilsprache. Bei Deutsch erscheint die Oberfläche auf Deutsch, bei allen anderen Sprachen auf Englisch. Eine eigene Spracheinstellung innerhalb der Karte ist nicht erforderlich.
+
+Entitätsnamen, Zustände und Auswahlwerte werden von Home Assistant beziehungsweise der jeweiligen Geräteintegration geliefert und können deshalb deren Sprache verwenden.
 
 ## Beispiele
 
