@@ -10,11 +10,12 @@ The card is not tied to a specific manufacturer. It only requires a `vacuum` ent
 
 ## Features
 
-- status, battery, progress, cleaned area and duration
+- a reduced default with status, battery and the most important actions
+- a slim current or previous cleaning row with an animated robot
 - start, pause, stop and return-to-dock controls
 - custom cleaning programs with confirmation before every start
 - a true compact layout for small dashboard tiles
-- selectable overview values and visible card sections
+- selectable overview values, notices and visible card sections
 - combined, robot-only and dock-only views
 - optional map, cleaning modes, mop intensity and volume
 - dock status, tank warnings and mop drying
@@ -51,7 +52,7 @@ While the card is not yet included in the default HACS catalog:
 
 ## Manual installation
 
-1. Download `dist/vacuum-control-card.js` from this repository or `vacuum-control-card.js` from the latest GitHub release.
+1. Download `dist/vacuum-control-card.js` from this repository.
 2. Copy the file to `/config/www/vacuum-control-card.js`.
 3. In Home Assistant, open **Settings → Dashboards → Resources**.
 4. Add `/local/vacuum-control-card.js` as a **JavaScript module**.
@@ -80,11 +81,11 @@ Programs can be selected, named and assigned a cleaning type in the visual card 
 
 ## Views
 
-- **Combined:** robot and collapsible dock in one card
-- **Robot only:** robot information only; important dock warnings remain visible
-- **Dock only:** a separate dock card
+- **Combined:** a simple robot area and a single collapsible dock status row
+- **Robot only:** a card reduced to robot controls and information
+- **Dock only:** a richer dock card with dock, maintenance and diagnostic sections
 
-The view can be selected directly in the visual editor.
+The view can be selected directly in the visual editor. It then shows only settings relevant to the selected view and enabled sections.
 
 ## Appearance
 

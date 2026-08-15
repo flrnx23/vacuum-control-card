@@ -2,6 +2,16 @@
 
 Alle wichtigen Änderungen an der Vacuum Control Card werden in dieser Datei festgehalten.
 
+## 0.2.0 – 2026-08-15
+
+- Der Standard zeigt nur noch die wichtigsten Roboterfunktionen und verzichtet auf technische Detailbereiche.
+- Aktuelle und letzte Reinigung erscheinen als schlanke Informationszeile statt als großer Statusblock.
+- Ein animierter Roboter visualisiert eine laufende Reinigung und respektiert reduzierte Bewegung.
+- Die Hauptaktionen bilden eine ruhige, zusammenhängende und responsive Steuerleiste.
+- Hinweise können vollständig ausgeblendet werden; kritische Roboterfehler bleiben im Hauptstatus erkennbar.
+- Die kombinierte Station verwendet nur noch eine aufklappbare Statuszeile, während die reine Stationsansicht umfangreicher bleibt.
+- Der visuelle Editor zeigt nur Einstellungen und Entitäten, die zur gewählten Ansicht und den aktivierten Bereichen passen.
+
 ## 0.1.1 – 2026-08-15
 
 - Einstellungen im visuellen Karteneditor werden für bessere Lesbarkeit einzeln pro Zeile dargestellt.

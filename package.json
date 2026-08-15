@@ -1,6 +1,6 @@
 {
   "name": "home-assistant-vacuum-control-card",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "A safe, elegant and configurable Home Assistant card for vacuum and mop robots.",
   "license": "MIT",
   "repository": {

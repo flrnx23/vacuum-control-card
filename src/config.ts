@@ -13,35 +13,26 @@ import type {
 export const DEFAULT_ACKNOWLEDGEMENT_TIMEOUT_MS = 15_000;
 
 const DEFAULT_CLEAR_STATES = ["0", "none", "ok", "no_error"] as const;
-const DEFAULT_SECTION_ORDER = [
+const DEFAULT_COMBINED_SECTION_ORDER = [
   "activity",
   "controls",
   "programs",
   "alerts",
   "dock",
-  "details",
-  "maintenance",
-  "map",
-  "diagnostics",
 ] as const;
-const COMPACT_DEFAULT_SECTION_ORDER = [
+const DEFAULT_ROBOT_SECTION_ORDER = [
   "activity",
   "controls",
   "programs",
   "alerts",
 ] as const;
-const COMPACT_DOCK_SECTION_ORDER = [
+const DEFAULT_DOCK_SECTION_ORDER = [
   "alerts",
   "dock",
   "maintenance",
   "diagnostics",
 ] as const;
-const DEFAULT_OVERVIEW_ITEMS = [
-  "battery",
-  "progress",
-  "area",
-  "duration",
-] as const satisfies readonly OverviewItem[];
+const DEFAULT_OVERVIEW_ITEMS = ["battery", "progress"] as const satisfies readonly OverviewItem[];
 const COMPACT_DEFAULT_OVERVIEW_ITEMS = ["battery"] as const satisfies readonly OverviewItem[];
 
 const VACUUM_VIEWS = ["combined", "robot", "dock"] as const;
@@ -745,16 +736,19 @@ export function normalizeConfig(value: unknown): NormalizedVacuumCardConfig {
   const defaultOverviewItems = density === "compact"
     ? COMPACT_DEFAULT_OVERVIEW_ITEMS
     : DEFAULT_OVERVIEW_ITEMS;
-  const defaultSectionOrder = density === "compact"
-    ? config.view === "dock"
-      ? COMPACT_DOCK_SECTION_ORDER
-      : COMPACT_DEFAULT_SECTION_ORDER
-    : DEFAULT_SECTION_ORDER;
+  const view = config.view ?? "combined";
+  const defaultSectionOrder = view === "dock"
+    ? DEFAULT_DOCK_SECTION_ORDER
+    : view === "robot"
+      ? DEFAULT_ROBOT_SECTION_ORDER
+      : density === "compact"
+        ? DEFAULT_ROBOT_SECTION_ORDER
+        : DEFAULT_COMBINED_SECTION_ORDER;
 
   const normalized: NormalizedVacuumCardConfig = {
     type: "custom:vacuum-control-card",
     entity: config.entity,
-    view: config.view ?? "combined",
+    view,
     density,
     appearance: config.appearance ?? "adaptive",
     overview: {

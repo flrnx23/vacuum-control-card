@@ -43,7 +43,7 @@ function additionalControlRows(config: NormalizedVacuumCardConfig): number {
     config.controls.locate,
   ].filter((setting) => setting !== false).length;
 
-  const controlsPerRow = config.density === "compact" ? 4 : 2;
+  const controlsPerRow = 4;
   // The baseline already includes the first responsive row.
   return Math.max(0, Math.ceil(visibleControls / controlsPerRow) - 1);
 }

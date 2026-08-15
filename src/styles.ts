@@ -299,6 +299,120 @@ export const cardStyles = css`
     gap: 10px;
   }
 
+  .activity-card {
+    min-block-size: 68px;
+    display: grid;
+    grid-template-columns: auto minmax(92px, 0.8fr) minmax(0, 1.35fr);
+    align-items: center;
+    gap: 10px;
+    padding: 9px 11px;
+    border-radius: 13px;
+    background: color-mix(in srgb, var(--primary-text-color, #1f2937) 4%, transparent);
+  }
+
+  .activity-card[data-session-active="true"] {
+    background: color-mix(in srgb, var(--vc-accent) 7%, transparent);
+  }
+
+  .activity-visual {
+    position: relative;
+    inline-size: 44px;
+    block-size: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    color: var(--secondary-text-color, #687386);
+    background: var(--vc-surface);
+    border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+  }
+
+  .activity-visual ha-icon {
+    position: relative;
+    z-index: 2;
+    inline-size: 23px;
+    block-size: 23px;
+    --mdc-icon-size: 23px;
+  }
+
+  .activity-card[data-session-active="true"] .activity-visual {
+    color: var(--vc-accent);
+  }
+
+  .activity-visual[data-active="true"][data-activity="cleaning"] ha-icon {
+    animation: vc-clean-drive var(--vc-speed) ease-in-out infinite;
+  }
+
+  .activity-visual[data-active="true"] .activity-trail {
+    position: absolute;
+    inset-inline: 5px;
+    inset-block-end: 4px;
+    block-size: 5px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--vc-accent) 28%, transparent);
+    animation: vc-trail var(--vc-speed) ease-in-out infinite;
+  }
+
+  .activity-visual[data-kind="mop"] .activity-trail,
+  .activity-visual[data-kind="combo"] .activity-trail {
+    background: color-mix(in srgb, var(--vc-water) 45%, transparent);
+  }
+
+  .activity-copy {
+    min-width: 0;
+    display: grid;
+    gap: 6px;
+  }
+
+  .activity-copy h3 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .activity-progress-value {
+    flex: 0 0 auto;
+    color: var(--vc-accent);
+    font-size: 0.78rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .activity-secondary {
+    min-block-size: 4px;
+    color: var(--secondary-text-color, #687386);
+    font-size: 0.76rem;
+  }
+
+  .activity-metrics {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(68px, 1fr));
+    gap: 4px;
+  }
+
+  .activity-card .metric,
+  .activity-card .metric-button {
+    min-block-size: 44px;
+    padding: 4px 6px;
+    background: transparent;
+  }
+
+  .activity-card .metric-label-row {
+    min-block-size: 0;
+  }
+
+  .activity-card .metric-label {
+    font-size: 0.67rem;
+  }
+
+  .activity-card .metric-value {
+    margin-block-start: 2px;
+    font-size: 0.82rem;
+  }
+
   .last-cleaning {
     padding: 11px 12px;
     border-radius: 13px;
@@ -320,6 +434,50 @@ export const cardStyles = css`
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
     gap: 8px;
+  }
+
+  .shell:not([data-density="compact"]) [data-section="controls"] {
+    gap: 0;
+  }
+
+  .shell:not([data-density="compact"]) [data-section="controls"] .section-heading {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  .shell:not([data-density="compact"]) .controls {
+    grid-template-columns: repeat(auto-fit, minmax(64px, 1fr));
+    gap: 4px;
+    padding: 4px;
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--primary-text-color, #1f2937) 5%, transparent);
+  }
+
+  .shell:not([data-density="compact"]) .controls button {
+    min-block-size: 46px;
+    padding: 7px 9px;
+    border-radius: 10px;
+    background: transparent;
+  }
+
+  .shell:not([data-density="compact"]) .control-text {
+    font-size: 0.76rem;
+    line-height: 1.15;
+  }
+
+  .shell:not([data-density="compact"]) .controls .primary {
+    color: var(--vc-accent);
+    background: color-mix(in srgb, var(--vc-accent) 10%, transparent);
+  }
+
+  .shell:not([data-density="compact"]) .controls .danger:not(:disabled) {
+    background: color-mix(in srgb, var(--vc-error) 8%, transparent);
   }
 
   .controls button {
@@ -513,6 +671,40 @@ export const cardStyles = css`
     padding: 11px 12px;
     border-radius: 13px;
     background: color-mix(in srgb, var(--primary-text-color, #1f2937) 5%, transparent);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .dock-strip::-webkit-details-marker {
+    display: none;
+  }
+
+  .dock-details[open] .dock-chevron {
+    transform: rotate(90deg);
+  }
+
+  .dock-trailing {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .dock-chevron {
+    inline-size: 18px;
+    block-size: 18px;
+    --mdc-icon-size: 18px;
+    transition: transform 140ms ease;
+  }
+
+  .dock-section:not([data-view="dock"]) .section-heading {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
   }
 
   .dock-symbol[data-active="true"] {
@@ -708,14 +900,24 @@ export const cardStyles = css`
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .shell:not([data-density="compact"]) .controls {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    .activity-card {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .activity-metrics {
+      grid-column: 1 / -1;
     }
   }
 
   @container (max-width: 320px) {
     .shell:not([data-density="compact"]) .program-grid {
       grid-template-columns: 1fr;
+    }
+  }
+
+  @container (max-width: 280px) {
+    .shell:not([data-density="compact"]) .controls {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
@@ -898,6 +1100,17 @@ export const cardStyles = css`
 
   .shell[data-density="compact"] progress {
     block-size: 5px;
+  }
+
+  .compact-progress {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 7px;
+    color: var(--vc-accent);
+    font-size: 0.75rem;
+    font-weight: 650;
+    font-variant-numeric: tabular-nums;
   }
 
   .shell[data-density="compact"] .controls {
@@ -1103,6 +1316,10 @@ export const cardStyles = css`
     );
   }
 
+  .shell[data-appearance="adaptive"] .activity-card .metric {
+    background: transparent;
+  }
+
   .shell[data-appearance="adaptive"] .battery[data-charging="true"] {
     color: var(--state-vacuum-active-color, var(--vc-success));
   }
@@ -1148,6 +1365,16 @@ export const cardStyles = css`
 
   @keyframes vc-return {
     50% { transform: translateX(7px); }
+  }
+
+  @keyframes vc-clean-drive {
+    0%, 100% { transform: translateX(-3px) rotate(-4deg); }
+    50% { transform: translateX(5px) rotate(4deg); }
+  }
+
+  @keyframes vc-trail {
+    0%, 100% { transform: scaleX(0.55); opacity: 0.35; }
+    50% { transform: scaleX(1); opacity: 0.9; }
   }
 
   @media (prefers-reduced-motion: reduce) {

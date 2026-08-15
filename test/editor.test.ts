@@ -187,7 +187,7 @@ describe("VacuumCardEditor", () => {
   });
 
   it("accepts image and camera entities in the map picker", async () => {
-    const editor = await renderEditor(config());
+    const editor = await renderEditor(config({ sections: { order: ["map"] } }));
     const mapPicker = pickerWithLabel(editor, "Karte");
     expect(mapPicker.includeDomains).toEqual(expect.arrayContaining(["image", "camera"]));
 
@@ -334,27 +334,24 @@ describe("VacuumCardEditor", () => {
     expect(checkbox(compact, "section-diagnostics").checked).toBe(false);
 
     const comfortable = await renderEditor(config({ density: "comfortable" }));
-    for (const item of ["battery", "progress", "area", "duration"]) {
-      expect(checkbox(comfortable, `overview-${item}`).checked).toBe(true);
-    }
-    for (const section of [
-      "activity",
-      "controls",
-      "programs",
-      "dock",
-      "details",
-      "maintenance",
-      "map",
-      "diagnostics",
-    ]) {
+    expect(checkbox(comfortable, "overview-battery").checked).toBe(true);
+    expect(checkbox(comfortable, "overview-progress").checked).toBe(true);
+    expect(checkbox(comfortable, "overview-area").checked).toBe(false);
+    expect(checkbox(comfortable, "overview-duration").checked).toBe(false);
+    for (const section of ["activity", "controls", "programs", "alerts", "dock"]) {
       expect(checkbox(comfortable, `section-${section}`).checked).toBe(true);
+    }
+    for (const section of ["details", "maintenance", "map", "diagnostics"]) {
+      expect(checkbox(comfortable, `section-${section}`).checked).toBe(false);
     }
 
     const compactDock = await renderEditor(config({ density: "compact", view: "dock" }));
     expect(checkbox(compactDock, "section-dock").checked).toBe(true);
     expect(checkbox(compactDock, "section-maintenance").checked).toBe(true);
     expect(checkbox(compactDock, "section-diagnostics").checked).toBe(true);
-    expect(checkbox(compactDock, "section-controls").checked).toBe(false);
+    expect(compactDock.shadowRoot?.querySelector("#section-controls")).toBeNull();
+    expect(compactDock.shadowRoot?.querySelector("#quick-info-heading")).toBeNull();
+    expect(compactDock.shadowRoot?.querySelector("#programs-heading")).toBeNull();
   });
 
   it("respects explicitly empty quick information and section selections", async () => {
@@ -371,6 +368,7 @@ describe("VacuumCardEditor", () => {
       "activity",
       "controls",
       "programs",
+      "alerts",
       "dock",
       "details",
       "maintenance",
@@ -379,10 +377,51 @@ describe("VacuumCardEditor", () => {
     ]) {
       expect(checkbox(editor, `section-${section}`).checked).toBe(false);
     }
-    expect(editor.shadowRoot?.querySelector("#alerts-safety-note")?.textContent).toContain(
-      "immer sichtbar",
+    expect(editor.shadowRoot?.querySelector("#alerts-optional-note")?.textContent).toContain(
+      "optional",
     );
-    expect(editor.shadowRoot?.querySelector("#section-alerts")).toBeNull();
+    expect(checkbox(editor, "section-alerts").checked).toBe(false);
+  });
+
+  it("allows notices to be hidden and removes their advanced entity fields", async () => {
+    const editor = await renderEditor(config());
+    expect(checkbox(editor, "section-alerts").checked).toBe(true);
+    expect(pickerWithLabel(editor, "Staubsaugerfehler")).toBeDefined();
+
+    const changed = nextConfigChanged(editor);
+    await setCheckbox(editor, "section-alerts", false);
+    expect((await changed).detail.config.sections?.order).not.toContain("alerts");
+    expect([...editor.shadowRoot!.querySelectorAll<EntityPicker>("ha-entity-picker")]
+      .some((picker) => picker.label === "Staubsaugerfehler")).toBe(false);
+  });
+
+  it("shows only settings relevant to the selected view", async () => {
+    const editor = await renderEditor(config({
+      view: "robot",
+      sections: { order: ["activity", "controls", "details", "map"] },
+    }));
+    expect(editor.shadowRoot?.querySelector("#dock-heading")).toBeNull();
+    expect(editor.shadowRoot?.querySelector("#programs-heading")).toBeNull();
+    expect(pickerWithLabel(editor, "Karte")).toBeDefined();
+
+    const view = editor.shadowRoot?.querySelector<HTMLSelectElement>("#card-view");
+    if (!view) throw new Error("View select not rendered");
+    const changed = nextConfigChanged(editor);
+    view.value = "dock";
+    view.dispatchEvent(new Event("change", { bubbles: true, composed: true }));
+    await editor.updateComplete;
+
+    expect((await changed).detail.config.sections?.order).toEqual([
+      "alerts",
+      "dock",
+      "maintenance",
+      "diagnostics",
+    ]);
+    expect(editor.shadowRoot?.querySelector("#quick-info-heading")).toBeNull();
+    expect(editor.shadowRoot?.querySelector("#programs-heading")).toBeNull();
+    expect(editor.shadowRoot?.querySelector("#dock-heading")).not.toBeNull();
+    expect(editor.shadowRoot?.querySelector("#section-controls")).toBeNull();
+    expect(editor.shadowRoot?.querySelector("#section-map")).toBeNull();
   });
 
   it("round-trips overview and sections without losing future keys or safety guards", async () => {
@@ -423,7 +462,7 @@ describe("VacuumCardEditor", () => {
     const afterSections = (await sectionsChanged).detail.config as VacuumCardConfig &
       Record<string, unknown>;
     expect(afterSections.sections).toEqual({
-      order: ["activity", "programs", "alerts", "details", "future-panel"],
+      order: ["activity", "programs", "details", "future-panel"],
       future_sections_option: { columns: 2 },
     });
     expect(afterSections.overview).toEqual(afterOverview.overview);

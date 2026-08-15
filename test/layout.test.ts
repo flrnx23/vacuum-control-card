@@ -201,15 +201,15 @@ describe("computeLayoutProfile", () => {
     });
 
     expect(computeLayoutProfile(base)).toEqual({
-      rows: 7,
+      rows: 6,
       columns: 12,
-      min_rows: 7,
+      min_rows: 6,
       min_columns: 9,
     });
     expect(computeLayoutProfile(withPrograms)).toEqual({
-      rows: 9,
+      rows: 8,
       columns: 12,
-      min_rows: 9,
+      min_rows: 8,
       min_columns: 9,
     });
     expect(computeLayoutProfile(detailed).min_columns).toBe(12);

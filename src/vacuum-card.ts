@@ -385,7 +385,9 @@ export class VacuumCard extends LitElement {
 
   private _renderCompactStatusBadge(model: VacuumViewModel) {
     if (!this.hass || !this._config || this._config.density !== "compact") return nothing;
-    const alerts = this._visibleAlerts(model);
+    const alerts = this._config.sections.order.includes("alerts")
+      ? this._visibleAlerts(model)
+      : [];
     const first = alerts[0];
     if (first) {
       const label = this._alertLabel(first.key, first.label);
@@ -480,7 +482,7 @@ export class VacuumCard extends LitElement {
       (item === "duration" && Boolean(model.duration)),
     );
     const overviewMetrics = this._config.overview.items.map((item) =>
-      this._renderOverviewMetric(item, model, model.sessionActive));
+      this._renderOverviewMetric(item, model, false));
     const activityText =
       model.activity === "cleaning"
         ? taskLabel(this.hass, model.taskKind)
@@ -499,11 +501,14 @@ export class VacuumCard extends LitElement {
           aria-label=${sectionLabel}
         >
           ${showProgress
-            ? html`<progress
-                max="100"
-                .value=${model.progress!}
-                aria-label=${localize(this.hass, "metric.progress")}
-              ></progress>`
+            ? html`<div class="compact-progress">
+                <progress
+                  max="100"
+                  .value=${model.progress!}
+                  aria-label=${localize(this.hass, "metric.progress")}
+                ></progress>
+                <span>${Math.round(model.progress!)} %</span>
+              </div>`
             : nothing}
           <div class="metrics">
             ${overviewMetrics}
@@ -512,53 +517,48 @@ export class VacuumCard extends LitElement {
       `;
     }
 
-    if (!model.sessionActive) {
-      if (!hasOverviewMetrics) return nothing;
-      return html`
-        <section
-          class="section last-cleaning"
-          data-section="activity"
-          data-session-active="false"
-          aria-labelledby="vc-last-cleaning-title"
-        >
-          <div class="section-heading">
-            <h3 id="vc-last-cleaning-title">${sectionLabel}</h3>
-          </div>
-          <div class="metrics">${overviewMetrics}</div>
-        </section>
-      `;
-    }
+    if (!model.sessionActive && !hasOverviewMetrics) return nothing;
 
     const animationActive =
       this._config.animations.enabled &&
       this._config.animations.intensity !== "none" &&
-      ["cleaning", "returning", "charging"].includes(model.activity);
+      model.activity === "cleaning";
+    const visualIcon = model.sessionActive ? "mdi:robot-vacuum" : "mdi:history";
 
     return html`
-      <section class="section" data-section="activity" aria-labelledby="vc-activity-title">
-        <div class="hero">
-          <div
-            class="robot-visual"
-            data-active=${String(animationActive)}
-            data-kind=${model.taskKind}
-            data-activity=${model.activity}
-            aria-hidden="true"
-          >
-            <div class="robot-body">◎</div>
-          </div>
-          <div class="hero-copy">
-            <h3 class="hero-state" id="vc-activity-title">${activityText}</h3>
+      <section
+        class="activity-card"
+        data-section="activity"
+        data-session-active=${String(model.sessionActive)}
+        aria-labelledby="vc-activity-title"
+      >
+        <div
+          class="activity-visual"
+          data-active=${String(animationActive)}
+          data-kind=${model.taskKind}
+          data-activity=${model.activity}
+          aria-hidden="true"
+        >
+          <ha-icon icon=${visualIcon}></ha-icon>
+          <span class="activity-trail"></span>
+        </div>
+        <div class="activity-copy">
+          <h3 id="vc-activity-title">
+            <span>${sectionLabel}</span>
             ${showProgress
-              ? html`<progress
-                  max="100"
-                  .value=${model.progress!}
-                  aria-label=${localize(this.hass, "metric.progress")}
-                ></progress>`
+              ? html`<span class="activity-progress-value">${Math.round(model.progress!)} %</span>`
               : nothing}
-            <div class="metrics">
-              ${overviewMetrics}
-            </div>
-          </div>
+          </h3>
+          ${showProgress
+            ? html`<progress
+                max="100"
+                .value=${model.progress!}
+                aria-label=${localize(this.hass, "metric.progress")}
+              ></progress>`
+            : html`<span class="activity-secondary"></span>`}
+        </div>
+        <div class="activity-metrics">
+          ${overviewMetrics}
         </div>
       </section>
     `;
@@ -1139,20 +1139,27 @@ export class VacuumCard extends LitElement {
             : "✓";
 
     return html`
-      <section class="section" data-section="dock" aria-labelledby="vc-dock-title">
+      <section
+        class="section dock-section"
+        data-section="dock"
+        data-view=${this._config.view}
+        aria-labelledby="vc-dock-title"
+      >
         <div class="section-heading"><h3 id="vc-dock-title">${localize(this.hass, "section.dock")}</h3></div>
-        <div class="dock-strip">
-          <span class="dock-symbol" data-active=${String(dockAnimationActive)} aria-hidden="true">⌂</span>
-          <span>
-            <strong>${dockLabel}</strong>
-            ${showHeaderActivity && drying && dryingRemaining
-              ? html`<span class="program-description">${entityState(this.hass, dryingRemaining)}</span>`
-              : nothing}
-          </span>
-          <span aria-hidden="true">${dockStatusSymbol}</span>
-        </div>
-        <details ?open=${open}>
-          <summary>${localize(this.hass, "dock.details")}</summary>
+        <details class="dock-details" ?open=${open}>
+          <summary class="dock-strip">
+            <span class="dock-symbol" data-active=${String(dockAnimationActive)} aria-hidden="true">⌂</span>
+            <span>
+              <strong>${dockLabel}</strong>
+              ${showHeaderActivity && drying && dryingRemaining
+                ? html`<span class="program-description">${entityState(this.hass, dryingRemaining)}</span>`
+                : nothing}
+            </span>
+            <span class="dock-trailing" aria-hidden="true">
+              <span>${dockStatusSymbol}</span>
+              <ha-icon class="dock-chevron" icon="mdi:chevron-right"></ha-icon>
+            </span>
+          </summary>
           <div class="details-content">
             ${this._renderBinaryDockEntity(entities.clean_water_tank)}
             ${this._renderBinaryDockEntity(entities.dirty_water_tank)}

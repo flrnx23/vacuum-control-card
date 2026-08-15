@@ -93,6 +93,9 @@ function config(extra: Partial<VacuumCardConfig> = {}): VacuumCardConfig {
 
 function writableConfig(): VacuumCardConfig {
   return config({
+    sections: {
+      order: ["controls", "programs", "dock", "details", "diagnostics"],
+    },
     entities: {
       vacuum_mode: VACUUM_MODE,
       volume: VOLUME,
@@ -213,15 +216,17 @@ describe("presentation polish", () => {
 
     expect(card.shadowRoot?.querySelector(".status-line")?.textContent).toContain("Voll geladen");
     const activity = card.shadowRoot?.querySelector('[data-section="activity"]');
-    expect(activity?.classList.contains("last-cleaning")).toBe(true);
+    expect(activity?.classList.contains("activity-card")).toBe(true);
+    expect(activity?.getAttribute("data-session-active")).toBe("false");
     expect(activity?.textContent).toContain("Letzte Reinigung");
     expect(activity?.textContent).toContain("27.7");
     expect(activity?.textContent).toContain("29");
     expect(activity?.textContent).not.toContain("Fortschritt");
-    expect(activity?.querySelector(".hero")).toBeNull();
+    expect(activity?.querySelector('.activity-visual ha-icon')?.getAttribute("icon"))
+      .toBe("mdi:history");
   });
 
-  it("keeps current progress in the activity hero while cleaning", async () => {
+  it("keeps current progress in the slim animated activity row while cleaning", async () => {
     const { card } = await renderCard(config({
       entities: { progress: PROGRESS, area: AREA },
       overview: { items: ["progress", "area"] },
@@ -236,9 +241,29 @@ describe("presentation polish", () => {
     });
 
     const activity = card.shadowRoot?.querySelector('[data-section="activity"]');
-    expect(activity?.querySelector(".hero")).not.toBeNull();
-    expect(activity?.textContent).toContain("Fortschritt");
+    expect(activity?.classList.contains("activity-card")).toBe(true);
+    expect(activity?.querySelector(".activity-visual")?.getAttribute("data-active")).toBe("true");
+    expect(activity?.querySelector('.activity-visual ha-icon')?.getAttribute("icon"))
+      .toBe("mdi:robot-vacuum");
     expect(activity?.textContent).toContain("42 %");
+  });
+
+  it("stops the activity animation when animations are disabled", async () => {
+    const { card } = await renderCard(config({
+      overview: { items: ["progress"] },
+      entities: { progress: PROGRESS },
+      programs: { guard: "confirm", items: [] },
+      animations: { enabled: false, intensity: "subtle", respect_reduced_motion: true },
+    }), {
+      [VACUUM]: entity(VACUUM, "cleaning", {
+        friendly_name: "Mein Saugroboter",
+        supported_features: 4 | 8 | 16 | 8192,
+      }),
+      [PROGRESS]: entity(PROGRESS, "18"),
+    });
+
+    expect(card.shadowRoot?.querySelector(".activity-visual")?.getAttribute("data-active"))
+      .toBe("false");
   });
 
   it("opens more-info from the complete metric instead of a tiny ellipsis", async () => {
@@ -295,6 +320,7 @@ describe("presentation polish", () => {
         display: "collapsed",
         items: [{ entity: DIAGNOSTIC_SWITCH }],
       },
+      sections: { order: ["dock", "details", "diagnostics"] },
     }), {
       [VACUUM_MODE]: entity(VACUUM_MODE, "balanced", { options: ["balanced"] }),
       [DOCK_DRYING]: entity(DOCK_DRYING, "off"),
@@ -302,7 +328,7 @@ describe("presentation polish", () => {
     });
 
     expect(card.shadowRoot?.querySelector('[data-section="dock"] summary')?.textContent)
-      .toContain("Stationsdetails");
+      .toContain("Station bereit");
     expect(card.shadowRoot?.querySelector('[data-section="details"] summary')?.textContent)
       .toContain("Robotereinstellungen");
     expect(card.shadowRoot?.querySelector('[data-section="diagnostics"] summary')?.textContent)
@@ -330,7 +356,11 @@ describe("presentation polish", () => {
   });
 
   it("does not create the map image until map details are opened and resets on config change", async () => {
-    const mapConfig = config({ view: "robot", entities: { map: MAP } });
+    const mapConfig = config({
+      view: "robot",
+      entities: { map: MAP },
+      sections: { order: ["map"] },
+    });
     const { card } = await renderCard(mapConfig, {
       [MAP]: entity(MAP, "2026-08-10T18:00:00Z", {
         friendly_name: "Karte 1",
@@ -394,6 +424,7 @@ describe("presentation polish", () => {
         display: "expanded",
         items: [{ entity: DIAGNOSTIC_SWITCH, name: "Diagnoseschalter" }],
       },
+      sections: { order: ["diagnostics"] },
     }), {
       [DIAGNOSTIC_SWITCH]: entity(DIAGNOSTIC_SWITCH, "on"),
     });
@@ -481,11 +512,11 @@ describe("compact presentation", () => {
     expect(overview?.textContent).toContain("31");
     expect(overview?.textContent).not.toContain("22");
     expect(Array.from(overview?.querySelectorAll(".metric-label") ?? []).map((item) => item.textContent))
-      .toEqual(["Fläche", "Fortschritt"]);
+      .toEqual(["Fläche"]);
     expect(card.getGridOptions().min_rows).toBeGreaterThan(2);
   });
 
-  it("keeps status and critical alerts visible when optional sections are omitted", async () => {
+  it("keeps a critical error in the main status while optional notices stay hidden", async () => {
     const { card } = await renderCard(config({
       density: "compact",
       overview: { items: [] },
@@ -497,8 +528,7 @@ describe("compact presentation", () => {
     });
 
     expect(card.shadowRoot?.querySelector(".status-line")?.textContent).toContain("Fehler");
-    expect(card.shadowRoot?.querySelector(".compact-status-badge")?.getAttribute("data-severity"))
-      .toBe("critical");
+    expect(card.shadowRoot?.querySelector(".compact-status-badge")).toBeNull();
     expect(card.shadowRoot?.querySelector('[data-section="alerts"]')).toBeNull();
   });
 
@@ -1102,7 +1132,7 @@ describe("dock presentation", () => {
     const strip = card.shadowRoot?.querySelector('[data-section="dock"] .dock-strip');
     expect(strip?.textContent).toContain("nicht verfügbar");
     expect(strip?.textContent).not.toContain("bereit");
-    expect(strip?.lastElementChild?.textContent).toBe("?");
+    expect(strip?.lastElementChild?.textContent?.trim()).toBe("?");
   });
 });
 

@@ -29,7 +29,7 @@ describe("normalizeConfig", () => {
       density: "auto",
       appearance: "adaptive",
       overview: {
-        items: ["battery", "progress", "area", "duration"],
+        items: ["battery", "progress"],
       },
       entities: {},
       controls: {
@@ -75,10 +75,6 @@ describe("normalizeConfig", () => {
           "programs",
           "alerts",
           "dock",
-          "details",
-          "maintenance",
-          "map",
-          "diagnostics",
         ],
       },
       state_map: {},
@@ -174,6 +170,16 @@ describe("normalizeConfig", () => {
     ]);
   });
 
+  it("uses simple robot defaults and richer dock-only defaults", () => {
+    const robot = normalizeConfig({ ...minimalConfig(), view: "robot" });
+    const dock = normalizeConfig({ ...minimalConfig(), view: "dock" });
+
+    expect(robot.sections.order).toEqual(["activity", "controls", "programs", "alerts"]);
+    expect(dock.sections.order).toEqual(["alerts", "dock", "maintenance", "diagnostics"]);
+    expect(robot.sections.order).not.toContain("details");
+    expect(robot.sections.order).not.toContain("map");
+  });
+
   it("does not mutate or retain nested input arrays and objects", () => {
     const input: VacuumCardConfig = {
       ...minimalConfig(),
@@ -263,12 +269,7 @@ describe("normalizeConfig", () => {
     first.maintenance.defaults.warning_below = 99;
 
     expect(second.sections.order).not.toContain("custom");
-    expect(second.overview.items).toEqual([
-      "battery",
-      "progress",
-      "area",
-      "duration",
-    ]);
+    expect(second.overview.items).toEqual(["battery", "progress"]);
     expect(second.error_handling.clear_states).not.toContain("clear");
     expect(second.programs.items).toEqual([]);
     expect(second.maintenance.defaults.warning_below).toBe(20);

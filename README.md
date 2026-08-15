@@ -10,11 +10,12 @@ Die Karte ist nicht an einen bestimmten Hersteller gebunden. Als Basis wird ledi
 
 ## Funktionen
 
-- Status, Batterie, Fortschritt, gereinigte Fläche und Dauer
+- reduzierter Standard mit Status, Batterie und den wichtigsten Aktionen
+- schlanke Anzeige der aktuellen oder letzten Reinigung mit animiertem Roboter
 - Start, Pause, Stopp und Rückkehr zur Station
 - eigene Reinigungsprogramme mit sicherer Bestätigung vor jedem Start
 - echte kompakte Darstellung für kleine Dashboard-Kacheln
-- frei wählbare Übersichtswerte und sichtbare Kartenbereiche
+- frei wählbare Übersichtswerte, Hinweise und sichtbare Kartenbereiche
 - kombinierte Ansicht, reine Roboteransicht oder eigene Stationsansicht
 - optionale Karte, Reinigungsmodi, Wischstärke und Lautstärke
 - Stationszustände, Tankhinweise und Mopp-Trocknung
@@ -51,7 +52,7 @@ Solange die Karte noch nicht im Standardkatalog von HACS enthalten ist:
 
 ## Manuelle Installation
 
-1. `dist/vacuum-control-card.js` aus diesem Repository oder `vacuum-control-card.js` aus dem neuesten GitHub-Release herunterladen.
+1. `dist/vacuum-control-card.js` aus diesem Repository herunterladen.
 2. Die Datei nach `/config/www/vacuum-control-card.js` kopieren.
 3. In Home Assistant **Einstellungen → Dashboards → Ressourcen** öffnen.
 4. `/local/vacuum-control-card.js` als **JavaScript-Modul** hinzufügen.
@@ -80,11 +81,11 @@ Programme werden bequem im visuellen Karteneditor ausgewählt, benannt und einer
 
 ## Ansichten
 
-- **Kombiniert:** Roboter und einklappbare Station in einer Karte
-- **Nur Roboter:** nur der Roboter; wichtige Stationswarnungen bleiben sichtbar
-- **Nur Station:** eigenständige Stationskarte
+- **Kombiniert:** einfacher Roboterbereich und eine einzelne aufklappbare Stationszeile
+- **Nur Roboter:** auf die Robotersteuerung reduzierte Karte
+- **Nur Station:** umfangreichere Stationskarte mit Stations-, Wartungs- und Diagnosebereichen
 
-Die Ansicht kann direkt im visuellen Editor gewählt werden.
+Die Ansicht kann direkt im visuellen Editor gewählt werden. Der Editor blendet danach nur noch Einstellungen ein, die für diese Ansicht und die aktivierten Bereiche relevant sind.
 
 ## Erscheinungsbild
 

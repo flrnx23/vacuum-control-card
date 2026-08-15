@@ -57,7 +57,7 @@ var e = globalThis, t = e.ShadowRoot && (e.ShadyCSS === void 0 || e.ShadyCSS.nat
 	let t = "";
 	for (let n of e.cssRules) t += n.cssText;
 	return a(t);
-})(e) : e, { is: l, defineProperty: u, getOwnPropertyDescriptor: d, getOwnPropertyNames: f, getOwnPropertySymbols: p, getPrototypeOf: ee } = Object, m = globalThis, te = m.trustedTypes, h = te ? te.emptyScript : "", ne = m.reactiveElementPolyfillSupport, g = (e, t) => e, re = {
+})(e) : e, { is: l, defineProperty: u, getOwnPropertyDescriptor: d, getOwnPropertyNames: f, getOwnPropertySymbols: ee, getPrototypeOf: te } = Object, p = globalThis, m = p.trustedTypes, h = m ? m.emptyScript : "", ne = p.reactiveElementPolyfillSupport, re = (e, t) => e, ie = {
 	toAttribute(e, t) {
 		switch (t) {
 			case Boolean:
@@ -86,23 +86,23 @@ var e = globalThis, t = e.ShadowRoot && (e.ShadyCSS === void 0 || e.ShadyCSS.nat
 		}
 		return n;
 	}
-}, ie = (e, t) => !l(e, t), ae = {
+}, ae = (e, t) => !l(e, t), oe = {
 	attribute: !0,
 	type: String,
-	converter: re,
+	converter: ie,
 	reflect: !1,
 	useDefault: !1,
-	hasChanged: ie
+	hasChanged: ae
 };
-Symbol.metadata ??= Symbol("metadata"), m.litPropertyMetadata ??= /* @__PURE__ */ new WeakMap();
-var _ = class extends HTMLElement {
+Symbol.metadata ??= Symbol("metadata"), p.litPropertyMetadata ??= /* @__PURE__ */ new WeakMap();
+var g = class extends HTMLElement {
 	static addInitializer(e) {
 		this._$Ei(), (this.l ??= []).push(e);
 	}
 	static get observedAttributes() {
 		return this.finalize(), this._$Eh && [...this._$Eh.keys()];
 	}
-	static createProperty(e, t = ae) {
+	static createProperty(e, t = oe) {
 		if (t.state && (t.attribute = !1), this._$Ei(), this.prototype.hasOwnProperty(e) && ((t = Object.create(t)).wrapped = !0), this.elementProperties.set(e, t), !t.noAccessor) {
 			let n = Symbol(), r = this.getPropertyDescriptor(e, n, t);
 			r !== void 0 && u(this.prototype, e, r);
@@ -128,17 +128,17 @@ var _ = class extends HTMLElement {
 		};
 	}
 	static getPropertyOptions(e) {
-		return this.elementProperties.get(e) ?? ae;
+		return this.elementProperties.get(e) ?? oe;
 	}
 	static _$Ei() {
-		if (this.hasOwnProperty(g("elementProperties"))) return;
-		let e = ee(this);
+		if (this.hasOwnProperty(re("elementProperties"))) return;
+		let e = te(this);
 		e.finalize(), e.l !== void 0 && (this.l = [...e.l]), this.elementProperties = new Map(e.elementProperties);
 	}
 	static finalize() {
-		if (this.hasOwnProperty(g("finalized"))) return;
-		if (this.finalized = !0, this._$Ei(), this.hasOwnProperty(g("properties"))) {
-			let e = this.properties, t = [...f(e), ...p(e)];
+		if (this.hasOwnProperty(re("finalized"))) return;
+		if (this.finalized = !0, this._$Ei(), this.hasOwnProperty(re("properties"))) {
+			let e = this.properties, t = [...f(e), ...ee(e)];
 			for (let n of t) this.createProperty(n, e[n]);
 		}
 		let e = this[Symbol.metadata];
@@ -199,14 +199,14 @@ var _ = class extends HTMLElement {
 	_$ET(e, t) {
 		let n = this.constructor.elementProperties.get(e), r = this.constructor._$Eu(e, n);
 		if (r !== void 0 && !0 === n.reflect) {
-			let i = (n.converter?.toAttribute === void 0 ? re : n.converter).toAttribute(t, n.type);
+			let i = (n.converter?.toAttribute === void 0 ? ie : n.converter).toAttribute(t, n.type);
 			this._$Em = e, i == null ? this.removeAttribute(r) : this.setAttribute(r, i), this._$Em = null;
 		}
 	}
 	_$AK(e, t) {
 		let n = this.constructor, r = n._$Eh.get(e);
 		if (r !== void 0 && this._$Em !== r) {
-			let e = n.getPropertyOptions(r), i = typeof e.converter == "function" ? { fromAttribute: e.converter } : e.converter?.fromAttribute === void 0 ? re : e.converter;
+			let e = n.getPropertyOptions(r), i = typeof e.converter == "function" ? { fromAttribute: e.converter } : e.converter?.fromAttribute === void 0 ? ie : e.converter;
 			this._$Em = r;
 			let a = i.fromAttribute(t, e.type);
 			this[r] = a ?? this._$Ej?.get(r) ?? a, this._$Em = null;
@@ -215,7 +215,7 @@ var _ = class extends HTMLElement {
 	requestUpdate(e, t, n, r = !1, i) {
 		if (e !== void 0) {
 			let a = this.constructor;
-			if (!1 === r && (i = this[e]), n ??= a.getPropertyOptions(e), !((n.hasChanged ?? ie)(i, t) || n.useDefault && n.reflect && i === this._$Ej?.get(e) && !this.hasAttribute(a._$Eu(e, n)))) return;
+			if (!1 === r && (i = this[e]), n ??= a.getPropertyOptions(e), !((n.hasChanged ?? ae)(i, t) || n.useDefault && n.reflect && i === this._$Ej?.get(e) && !this.hasAttribute(a._$Eu(e, n)))) return;
 			this.C(e, t, n);
 		}
 		!1 === this.isUpdatePending && (this._$ES = this._$EP());
@@ -279,89 +279,89 @@ var _ = class extends HTMLElement {
 	updated(e) {}
 	firstUpdated(e) {}
 };
-_.elementStyles = [], _.shadowRootOptions = { mode: "open" }, _[g("elementProperties")] = /* @__PURE__ */ new Map(), _[g("finalized")] = /* @__PURE__ */ new Map(), ne?.({ ReactiveElement: _ }), (m.reactiveElementVersions ??= []).push("2.1.2");
+g.elementStyles = [], g.shadowRootOptions = { mode: "open" }, g[re("elementProperties")] = /* @__PURE__ */ new Map(), g[re("finalized")] = /* @__PURE__ */ new Map(), ne?.({ ReactiveElement: g }), (p.reactiveElementVersions ??= []).push("2.1.2");
 //#endregion
 //#region node_modules/lit-html/lit-html.js
-var oe = globalThis, se = (e) => e, ce = oe.trustedTypes, le = ce ? ce.createPolicy("lit-html", { createHTML: (e) => e }) : void 0, ue = "$lit$", v = `lit$${Math.random().toFixed(9).slice(2)}$`, de = "?" + v, fe = `<${de}>`, y = document, pe = () => y.createComment(""), me = (e) => e === null || typeof e != "object" && typeof e != "function", he = Array.isArray, ge = (e) => he(e) || typeof e?.[Symbol.iterator] == "function", _e = "[ 	\n\f\r]", ve = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, ye = /-->/g, be = />/g, b = RegExp(`>|${_e}(?:([^\\s"'>=/]+)(${_e}*=${_e}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`, "g"), xe = /'/g, Se = /"/g, Ce = /^(?:script|style|textarea|title)$/i, x = ((e) => (t, ...n) => ({
+var se = globalThis, ce = (e) => e, le = se.trustedTypes, ue = le ? le.createPolicy("lit-html", { createHTML: (e) => e }) : void 0, de = "$lit$", _ = `lit$${Math.random().toFixed(9).slice(2)}$`, fe = "?" + _, pe = `<${fe}>`, v = document, y = () => v.createComment(""), b = (e) => e === null || typeof e != "object" && typeof e != "function", me = Array.isArray, he = (e) => me(e) || typeof e?.[Symbol.iterator] == "function", ge = "[ 	\n\f\r]", x = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, _e = /-->/g, ve = />/g, S = RegExp(`>|${ge}(?:([^\\s"'>=/]+)(${ge}*=${ge}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`, "g"), ye = /'/g, be = /"/g, xe = /^(?:script|style|textarea|title)$/i, C = ((e) => (t, ...n) => ({
 	_$litType$: e,
 	strings: t,
 	values: n
-}))(1), S = Symbol.for("lit-noChange"), C = Symbol.for("lit-nothing"), we = /* @__PURE__ */ new WeakMap(), w = y.createTreeWalker(y, 129);
-function Te(e, t) {
-	if (!he(e) || !e.hasOwnProperty("raw")) throw Error("invalid template strings array");
-	return le === void 0 ? t : le.createHTML(t);
+}))(1), w = Symbol.for("lit-noChange"), T = Symbol.for("lit-nothing"), Se = /* @__PURE__ */ new WeakMap(), E = v.createTreeWalker(v, 129);
+function Ce(e, t) {
+	if (!me(e) || !e.hasOwnProperty("raw")) throw Error("invalid template strings array");
+	return ue === void 0 ? t : ue.createHTML(t);
 }
-var Ee = (e, t) => {
-	let n = e.length - 1, r = [], i, a = t === 2 ? "<svg>" : t === 3 ? "<math>" : "", o = ve;
+var we = (e, t) => {
+	let n = e.length - 1, r = [], i, a = t === 2 ? "<svg>" : t === 3 ? "<math>" : "", o = x;
 	for (let t = 0; t < n; t++) {
 		let n = e[t], s, c, l = -1, u = 0;
-		for (; u < n.length && (o.lastIndex = u, c = o.exec(n), c !== null);) u = o.lastIndex, o === ve ? c[1] === "!--" ? o = ye : c[1] === void 0 ? c[2] === void 0 ? c[3] !== void 0 && (o = b) : (Ce.test(c[2]) && (i = RegExp("</" + c[2], "g")), o = b) : o = be : o === b ? c[0] === ">" ? (o = i ?? ve, l = -1) : c[1] === void 0 ? l = -2 : (l = o.lastIndex - c[2].length, s = c[1], o = c[3] === void 0 ? b : c[3] === "\"" ? Se : xe) : o === Se || o === xe ? o = b : o === ye || o === be ? o = ve : (o = b, i = void 0);
-		let d = o === b && e[t + 1].startsWith("/>") ? " " : "";
-		a += o === ve ? n + fe : l >= 0 ? (r.push(s), n.slice(0, l) + ue + n.slice(l) + v + d) : n + v + (l === -2 ? t : d);
+		for (; u < n.length && (o.lastIndex = u, c = o.exec(n), c !== null);) u = o.lastIndex, o === x ? c[1] === "!--" ? o = _e : c[1] === void 0 ? c[2] === void 0 ? c[3] !== void 0 && (o = S) : (xe.test(c[2]) && (i = RegExp("</" + c[2], "g")), o = S) : o = ve : o === S ? c[0] === ">" ? (o = i ?? x, l = -1) : c[1] === void 0 ? l = -2 : (l = o.lastIndex - c[2].length, s = c[1], o = c[3] === void 0 ? S : c[3] === "\"" ? be : ye) : o === be || o === ye ? o = S : o === _e || o === ve ? o = x : (o = S, i = void 0);
+		let d = o === S && e[t + 1].startsWith("/>") ? " " : "";
+		a += o === x ? n + pe : l >= 0 ? (r.push(s), n.slice(0, l) + de + n.slice(l) + _ + d) : n + _ + (l === -2 ? t : d);
 	}
-	return [Te(e, a + (e[n] || "<?>") + (t === 2 ? "</svg>" : t === 3 ? "</math>" : "")), r];
-}, De = class e {
+	return [Ce(e, a + (e[n] || "<?>") + (t === 2 ? "</svg>" : t === 3 ? "</math>" : "")), r];
+}, Te = class e {
 	constructor({ strings: t, _$litType$: n }, r) {
 		let i;
 		this.parts = [];
-		let a = 0, o = 0, s = t.length - 1, c = this.parts, [l, u] = Ee(t, n);
-		if (this.el = e.createElement(l, r), w.currentNode = this.el.content, n === 2 || n === 3) {
+		let a = 0, o = 0, s = t.length - 1, c = this.parts, [l, u] = we(t, n);
+		if (this.el = e.createElement(l, r), E.currentNode = this.el.content, n === 2 || n === 3) {
 			let e = this.el.content.firstChild;
 			e.replaceWith(...e.childNodes);
 		}
-		for (; (i = w.nextNode()) !== null && c.length < s;) {
+		for (; (i = E.nextNode()) !== null && c.length < s;) {
 			if (i.nodeType === 1) {
-				if (i.hasAttributes()) for (let e of i.getAttributeNames()) if (e.endsWith(ue)) {
-					let t = u[o++], n = i.getAttribute(e).split(v), r = /([.?@])?(.*)/.exec(t);
+				if (i.hasAttributes()) for (let e of i.getAttributeNames()) if (e.endsWith(de)) {
+					let t = u[o++], n = i.getAttribute(e).split(_), r = /([.?@])?(.*)/.exec(t);
 					c.push({
 						type: 1,
 						index: a,
 						name: r[2],
 						strings: n,
-						ctor: r[1] === "." ? Ae : r[1] === "?" ? je : r[1] === "@" ? Me : E
+						ctor: r[1] === "." ? ke : r[1] === "?" ? Ae : r[1] === "@" ? je : Oe
 					}), i.removeAttribute(e);
-				} else e.startsWith(v) && (c.push({
+				} else e.startsWith(_) && (c.push({
 					type: 6,
 					index: a
 				}), i.removeAttribute(e));
-				if (Ce.test(i.tagName)) {
-					let e = i.textContent.split(v), t = e.length - 1;
+				if (xe.test(i.tagName)) {
+					let e = i.textContent.split(_), t = e.length - 1;
 					if (t > 0) {
-						i.textContent = ce ? ce.emptyScript : "";
-						for (let n = 0; n < t; n++) i.append(e[n], pe()), w.nextNode(), c.push({
+						i.textContent = le ? le.emptyScript : "";
+						for (let n = 0; n < t; n++) i.append(e[n], y()), E.nextNode(), c.push({
 							type: 2,
 							index: ++a
 						});
-						i.append(e[t], pe());
+						i.append(e[t], y());
 					}
 				}
 			} else if (i.nodeType === 8) {
-				if (i.data === de) c.push({
+				if (i.data === fe) c.push({
 					type: 2,
 					index: a
 				});
 				else {
 					let e = -1;
-					for (; (e = i.data.indexOf(v, e + 1)) !== -1;) c.push({
+					for (; (e = i.data.indexOf(_, e + 1)) !== -1;) c.push({
 						type: 7,
 						index: a
-					}), e += v.length - 1;
+					}), e += _.length - 1;
 				}
 			}
 			a++;
 		}
 	}
 	static createElement(e, t) {
-		let n = y.createElement("template");
+		let n = v.createElement("template");
 		return n.innerHTML = e, n;
 	}
 };
-function T(e, t, n = e, r) {
-	if (t === S) return t;
-	let i = r === void 0 ? n._$Cl : n._$Co?.[r], a = me(t) ? void 0 : t._$litDirective$;
-	return i?.constructor !== a && (i?._$AO?.(!1), a === void 0 ? i = void 0 : (i = new a(e), i._$AT(e, n, r)), r === void 0 ? n._$Cl = i : (n._$Co ??= [])[r] = i), i !== void 0 && (t = T(e, i._$AS(e, t.values), i, r)), t;
+function D(e, t, n = e, r) {
+	if (t === w) return t;
+	let i = r === void 0 ? n._$Cl : n._$Co?.[r], a = b(t) ? void 0 : t._$litDirective$;
+	return i?.constructor !== a && (i?._$AO?.(!1), a === void 0 ? i = void 0 : (i = new a(e), i._$AT(e, n, r)), r === void 0 ? n._$Cl = i : (n._$Co ??= [])[r] = i), i !== void 0 && (t = D(e, i._$AS(e, t.values), i, r)), t;
 }
-var Oe = class {
+var Ee = class {
 	constructor(e, t) {
 		this._$AV = [], this._$AN = void 0, this._$AD = e, this._$AM = t;
 	}
@@ -372,28 +372,28 @@ var Oe = class {
 		return this._$AM._$AU;
 	}
 	u(e) {
-		let { el: { content: t }, parts: n } = this._$AD, r = (e?.creationScope ?? y).importNode(t, !0);
-		w.currentNode = r;
-		let i = w.nextNode(), a = 0, o = 0, s = n[0];
+		let { el: { content: t }, parts: n } = this._$AD, r = (e?.creationScope ?? v).importNode(t, !0);
+		E.currentNode = r;
+		let i = E.nextNode(), a = 0, o = 0, s = n[0];
 		for (; s !== void 0;) {
 			if (a === s.index) {
 				let t;
-				s.type === 2 ? t = new ke(i, i.nextSibling, this, e) : s.type === 1 ? t = new s.ctor(i, s.name, s.strings, this, e) : s.type === 6 && (t = new Ne(i, this, e)), this._$AV.push(t), s = n[++o];
+				s.type === 2 ? t = new De(i, i.nextSibling, this, e) : s.type === 1 ? t = new s.ctor(i, s.name, s.strings, this, e) : s.type === 6 && (t = new Me(i, this, e)), this._$AV.push(t), s = n[++o];
 			}
-			a !== s?.index && (i = w.nextNode(), a++);
+			a !== s?.index && (i = E.nextNode(), a++);
 		}
-		return w.currentNode = y, r;
+		return E.currentNode = v, r;
 	}
 	p(e) {
 		let t = 0;
 		for (let n of this._$AV) n !== void 0 && (n.strings === void 0 ? n._$AI(e[t]) : (n._$AI(e, n, t), t += n.strings.length - 2)), t++;
 	}
-}, ke = class e {
+}, De = class e {
 	get _$AU() {
 		return this._$AM?._$AU ?? this._$Cv;
 	}
 	constructor(e, t, n, r) {
-		this.type = 2, this._$AH = C, this._$AN = void 0, this._$AA = e, this._$AB = t, this._$AM = n, this.options = r, this._$Cv = r?.isConnected ?? !0;
+		this.type = 2, this._$AH = T, this._$AN = void 0, this._$AA = e, this._$AB = t, this._$AM = n, this.options = r, this._$Cv = r?.isConnected ?? !0;
 	}
 	get parentNode() {
 		let e = this._$AA.parentNode, t = this._$AM;
@@ -406,7 +406,7 @@ var Oe = class {
 		return this._$AB;
 	}
 	_$AI(e, t = this) {
-		e = T(this, e, t), me(e) ? e === C || e == null || e === "" ? (this._$AH !== C && this._$AR(), this._$AH = C) : e !== this._$AH && e !== S && this._(e) : e._$litType$ === void 0 ? e.nodeType === void 0 ? ge(e) ? this.k(e) : this._(e) : this.T(e) : this.$(e);
+		e = D(this, e, t), b(e) ? e === T || e == null || e === "" ? (this._$AH !== T && this._$AR(), this._$AH = T) : e !== this._$AH && e !== w && this._(e) : e._$litType$ === void 0 ? e.nodeType === void 0 ? he(e) ? this.k(e) : this._(e) : this.T(e) : this.$(e);
 	}
 	O(e) {
 		return this._$AA.parentNode.insertBefore(e, this._$AB);
@@ -415,36 +415,36 @@ var Oe = class {
 		this._$AH !== e && (this._$AR(), this._$AH = this.O(e));
 	}
 	_(e) {
-		this._$AH !== C && me(this._$AH) ? this._$AA.nextSibling.data = e : this.T(y.createTextNode(e)), this._$AH = e;
+		this._$AH !== T && b(this._$AH) ? this._$AA.nextSibling.data = e : this.T(v.createTextNode(e)), this._$AH = e;
 	}
 	$(e) {
-		let { values: t, _$litType$: n } = e, r = typeof n == "number" ? this._$AC(e) : (n.el === void 0 && (n.el = De.createElement(Te(n.h, n.h[0]), this.options)), n);
+		let { values: t, _$litType$: n } = e, r = typeof n == "number" ? this._$AC(e) : (n.el === void 0 && (n.el = Te.createElement(Ce(n.h, n.h[0]), this.options)), n);
 		if (this._$AH?._$AD === r) this._$AH.p(t);
 		else {
-			let e = new Oe(r, this), n = e.u(this.options);
+			let e = new Ee(r, this), n = e.u(this.options);
 			e.p(t), this.T(n), this._$AH = e;
 		}
 	}
 	_$AC(e) {
-		let t = we.get(e.strings);
-		return t === void 0 && we.set(e.strings, t = new De(e)), t;
+		let t = Se.get(e.strings);
+		return t === void 0 && Se.set(e.strings, t = new Te(e)), t;
 	}
 	k(t) {
-		he(this._$AH) || (this._$AH = [], this._$AR());
+		me(this._$AH) || (this._$AH = [], this._$AR());
 		let n = this._$AH, r, i = 0;
-		for (let a of t) i === n.length ? n.push(r = new e(this.O(pe()), this.O(pe()), this, this.options)) : r = n[i], r._$AI(a), i++;
+		for (let a of t) i === n.length ? n.push(r = new e(this.O(y()), this.O(y()), this, this.options)) : r = n[i], r._$AI(a), i++;
 		i < n.length && (this._$AR(r && r._$AB.nextSibling, i), n.length = i);
 	}
 	_$AR(e = this._$AA.nextSibling, t) {
 		for (this._$AP?.(!1, !0, t); e !== this._$AB;) {
-			let t = se(e).nextSibling;
-			se(e).remove(), e = t;
+			let t = ce(e).nextSibling;
+			ce(e).remove(), e = t;
 		}
 	}
 	setConnected(e) {
 		this._$AM === void 0 && (this._$Cv = e, this._$AP?.(e));
 	}
-}, E = class {
+}, Oe = class {
 	get tagName() {
 		return this.element.tagName;
 	}
@@ -452,47 +452,47 @@ var Oe = class {
 		return this._$AM._$AU;
 	}
 	constructor(e, t, n, r, i) {
-		this.type = 1, this._$AH = C, this._$AN = void 0, this.element = e, this.name = t, this._$AM = r, this.options = i, n.length > 2 || n[0] !== "" || n[1] !== "" ? (this._$AH = Array(n.length - 1).fill(/* @__PURE__ */ new String()), this.strings = n) : this._$AH = C;
+		this.type = 1, this._$AH = T, this._$AN = void 0, this.element = e, this.name = t, this._$AM = r, this.options = i, n.length > 2 || n[0] !== "" || n[1] !== "" ? (this._$AH = Array(n.length - 1).fill(/* @__PURE__ */ new String()), this.strings = n) : this._$AH = T;
 	}
 	_$AI(e, t = this, n, r) {
 		let i = this.strings, a = !1;
-		if (i === void 0) e = T(this, e, t, 0), a = !me(e) || e !== this._$AH && e !== S, a && (this._$AH = e);
+		if (i === void 0) e = D(this, e, t, 0), a = !b(e) || e !== this._$AH && e !== w, a && (this._$AH = e);
 		else {
 			let r = e, o, s;
-			for (e = i[0], o = 0; o < i.length - 1; o++) s = T(this, r[n + o], t, o), s === S && (s = this._$AH[o]), a ||= !me(s) || s !== this._$AH[o], s === C ? e = C : e !== C && (e += (s ?? "") + i[o + 1]), this._$AH[o] = s;
+			for (e = i[0], o = 0; o < i.length - 1; o++) s = D(this, r[n + o], t, o), s === w && (s = this._$AH[o]), a ||= !b(s) || s !== this._$AH[o], s === T ? e = T : e !== T && (e += (s ?? "") + i[o + 1]), this._$AH[o] = s;
 		}
 		a && !r && this.j(e);
 	}
 	j(e) {
-		e === C ? this.element.removeAttribute(this.name) : this.element.setAttribute(this.name, e ?? "");
+		e === T ? this.element.removeAttribute(this.name) : this.element.setAttribute(this.name, e ?? "");
 	}
-}, Ae = class extends E {
+}, ke = class extends Oe {
 	constructor() {
 		super(...arguments), this.type = 3;
 	}
 	j(e) {
-		this.element[this.name] = e === C ? void 0 : e;
+		this.element[this.name] = e === T ? void 0 : e;
 	}
-}, je = class extends E {
+}, Ae = class extends Oe {
 	constructor() {
 		super(...arguments), this.type = 4;
 	}
 	j(e) {
-		this.element.toggleAttribute(this.name, !!e && e !== C);
+		this.element.toggleAttribute(this.name, !!e && e !== T);
 	}
-}, Me = class extends E {
+}, je = class extends Oe {
 	constructor(e, t, n, r, i) {
 		super(e, t, n, r, i), this.type = 5;
 	}
 	_$AI(e, t = this) {
-		if ((e = T(this, e, t, 0) ?? C) === S) return;
-		let n = this._$AH, r = e === C && n !== C || e.capture !== n.capture || e.once !== n.once || e.passive !== n.passive, i = e !== C && (n === C || r);
+		if ((e = D(this, e, t, 0) ?? T) === w) return;
+		let n = this._$AH, r = e === T && n !== T || e.capture !== n.capture || e.once !== n.once || e.passive !== n.passive, i = e !== T && (n === T || r);
 		r && this.element.removeEventListener(this.name, this, n), i && this.element.addEventListener(this.name, this, e), this._$AH = e;
 	}
 	handleEvent(e) {
 		typeof this._$AH == "function" ? this._$AH.call(this.options?.host ?? this.element, e) : this._$AH.handleEvent(e);
 	}
-}, Ne = class {
+}, Me = class {
 	constructor(e, t, n) {
 		this.element = e, this.type = 6, this._$AN = void 0, this._$AM = t, this.options = n;
 	}
@@ -500,33 +500,33 @@ var Oe = class {
 		return this._$AM._$AU;
 	}
 	_$AI(e) {
-		T(this, e);
+		D(this, e);
 	}
-}, Pe = {
-	M: ue,
-	P: v,
-	A: de,
+}, Ne = {
+	M: de,
+	P: _,
+	A: fe,
 	C: 1,
-	L: Ee,
-	R: Oe,
-	D: ge,
-	V: T,
-	I: ke,
-	H: E,
-	N: je,
-	U: Me,
-	B: Ae,
-	F: Ne
-}, Fe = oe.litHtmlPolyfillSupport;
-Fe?.(De, ke), (oe.litHtmlVersions ??= []).push("3.3.3");
-var Ie = (e, t, n) => {
+	L: we,
+	R: Ee,
+	D: he,
+	V: D,
+	I: De,
+	H: Oe,
+	N: Ae,
+	U: je,
+	B: ke,
+	F: Me
+}, Pe = se.litHtmlPolyfillSupport;
+Pe?.(Te, De), (se.litHtmlVersions ??= []).push("3.3.3");
+var Fe = (e, t, n) => {
 	let r = n?.renderBefore ?? t, i = r._$litPart$;
 	if (i === void 0) {
 		let e = n?.renderBefore ?? null;
-		r._$litPart$ = i = new ke(t.insertBefore(pe(), e), e, void 0, n ?? {});
+		r._$litPart$ = i = new De(t.insertBefore(y(), e), e, void 0, n ?? {});
 	}
 	return i._$AI(e), i;
-}, Le = globalThis, D = class extends _ {
+}, Ie = globalThis, O = class extends g {
 	constructor() {
 		super(...arguments), this.renderOptions = { host: this }, this._$Do = void 0;
 	}
@@ -536,7 +536,7 @@ var Ie = (e, t, n) => {
 	}
 	update(e) {
 		let t = this.render();
-		this.hasUpdated || (this.renderOptions.isConnected = this.isConnected), super.update(e), this._$Do = Ie(t, this.renderRoot, this.renderOptions);
+		this.hasUpdated || (this.renderOptions.isConnected = this.isConnected), super.update(e), this._$Do = Fe(t, this.renderRoot, this.renderOptions);
 	}
 	connectedCallback() {
 		super.connectedCallback(), this._$Do?.setConnected(!0);
@@ -545,72 +545,79 @@ var Ie = (e, t, n) => {
 		super.disconnectedCallback(), this._$Do?.setConnected(!1);
 	}
 	render() {
-		return S;
+		return w;
 	}
 };
-D._$litElement$ = !0, D.finalized = !0, Le.litElementHydrateSupport?.({ LitElement: D });
-var Re = Le.litElementPolyfillSupport;
-Re?.({ LitElement: D }), (Le.litElementVersions ??= []).push("4.2.2");
+O._$litElement$ = !0, O.finalized = !0, Ie.litElementHydrateSupport?.({ LitElement: O });
+var Le = Ie.litElementPolyfillSupport;
+Le?.({ LitElement: O }), (Ie.litElementVersions ??= []).push("4.2.2");
 //#endregion
 //#region src/editor.ts
-var ze = [
+var Re = [
 	"combined",
 	"robot",
 	"dock"
-], Be = [
+], ze = [
 	"auto",
 	"compact",
 	"comfortable",
 	"detailed"
-], Ve = ["adaptive", "accent"], He = [
+], Be = ["adaptive", "accent"], Ve = [
 	"expanded",
 	"collapsed",
 	"hidden"
-], Ue = [
+], He = [
 	"unknown",
 	"ok",
 	"warning",
 	"active",
 	"installed",
 	"missing"
-], We = [
+], Ue = [
 	"vacuum",
 	"mop",
 	"combo",
 	"unknown"
-], Ge = [
+], We = [
 	"battery",
 	"progress",
 	"area",
 	"duration"
+], Ge = [
+	"activity",
+	"controls",
+	"programs",
+	"alerts",
+	"dock",
+	"details",
+	"maintenance",
+	"map",
+	"diagnostics"
 ], Ke = [
 	"activity",
 	"controls",
 	"programs",
-	"dock",
-	"details",
-	"maintenance",
-	"map",
-	"diagnostics"
+	"alerts",
+	"dock"
 ], qe = [
 	"activity",
 	"controls",
 	"programs",
+	"alerts"
+], Je = [
+	"alerts",
+	"dock",
+	"maintenance",
+	"diagnostics"
+], Ye = [
+	"activity",
+	"controls",
+	"programs",
 	"alerts",
 	"dock",
 	"details",
 	"maintenance",
 	"map",
-	"diagnostics"
-], Je = [
-	"activity",
-	"controls",
-	"programs",
-	"alerts"
-], Ye = [
-	"alerts",
-	"dock",
-	"maintenance",
 	"diagnostics"
 ], Xe = [
 	{
@@ -685,7 +692,7 @@ var ze = [
 		key: "vacuum_error",
 		domains: ["sensor"]
 	}
-], O = {
+], Ze = {
 	de: {
 		title: "Vacuum Control Card",
 		basic: "Basis",
@@ -723,10 +730,11 @@ var ze = [
 		quickInfoHint: "Wähle die kompakten Werte unter dem Status. Name und Status bleiben immer sichtbar.",
 		visibleSections: "Sichtbare Bereiche",
 		visibleSectionsHint: "Wähle, welche Bereiche die Karte anzeigen soll.",
-		alertsSafety: "Warnungen bleiben aus Sicherheitsgründen immer sichtbar und können hier nicht ausgeblendet werden.",
+		alertsOptional: "Hinweise sind optional. Kritische Roboterfehler bleiben weiterhin im Hauptstatus erkennbar.",
 		sectionActivity: "Aktivität",
 		sectionControls: "Steuerung",
 		sectionPrograms: "Programme",
+		sectionAlerts: "Hinweise",
 		sectionDock: "Station",
 		sectionDetails: "Robotereinstellungen",
 		sectionMaintenance: "Wartung",
@@ -813,10 +821,11 @@ var ze = [
 		quickInfoHint: "Choose the compact values shown below the status. Name and status always remain visible.",
 		visibleSections: "Visible sections",
 		visibleSectionsHint: "Choose which sections the card should display.",
-		alertsSafety: "Warnings always remain visible for safety and cannot be hidden here.",
+		alertsOptional: "Notices are optional. Critical robot errors remain visible in the main status.",
 		sectionActivity: "Activity",
 		sectionControls: "Controls",
 		sectionPrograms: "Programs",
+		sectionAlerts: "Notices",
 		sectionDock: "Dock",
 		sectionDetails: "Robot settings",
 		sectionMaintenance: "Maintenance",
@@ -876,7 +885,7 @@ function k(e) {
 	}
 	return e;
 }
-function Ze(e) {
+function Qe(e) {
 	let t = k(e);
 	if (!t.programs) return t;
 	let n = (t.programs.items ?? []).map((e) => ({
@@ -900,13 +909,13 @@ function A(e) {
 	let t = e.currentTarget;
 	return typeof t?.value == "string" ? t.value : "";
 }
-var Qe = class extends D {
+var $e = class extends O {
 	constructor(...e) {
 		super(...e), this._newProgramEntity = "", this._programMessage = "", this._addProgram = () => {
 			let e = this._config, t = this._newProgramEntity;
 			if (!e || !t) return;
 			if ((e.programs?.items ?? []).some((e) => e.entity === t)) {
-				this._programMessage = O[this._language].duplicateProgram;
+				this._programMessage = Ze[this._language].duplicateProgram;
 				return;
 			}
 			let n = {
@@ -1118,22 +1127,23 @@ var Qe = class extends D {
   `;
 	}
 	setConfig(e) {
-		this._config = Ze(e), this._newProgramEntity = "", this._programMessage = "";
+		this._config = Qe(e), this._newProgramEntity = "", this._programMessage = "";
 	}
 	render() {
 		let e = this._config;
-		if (!e) return x``;
-		let t = O[this._language], n = e.programs?.items ?? [], r = new Set(this._effectiveOverviewItems(e)), i = new Set(this._effectiveSectionOrder(e)), a = {
+		if (!e) return C``;
+		let t = Ze[this._language], n = e.programs?.items ?? [], r = new Set(this._effectiveOverviewItems(e)), i = new Set(this._effectiveSectionOrder(e)), a = e.view ?? "combined", o = this._sectionsForView(a), s = this._entityFieldsForContext(a, i), c = a !== "dock", l = a !== "robot" && i.has("dock"), u = a !== "dock" && i.has("programs"), d = {
 			activity: t.sectionActivity,
 			controls: t.sectionControls,
 			programs: t.sectionPrograms,
+			alerts: t.sectionAlerts,
 			dock: t.sectionDock,
 			details: t.sectionDetails,
 			maintenance: t.sectionMaintenance,
 			map: t.sectionMap,
 			diagnostics: t.sectionDiagnostics
 		};
-		return x`
+		return C`
       <div class="editor">
         <h2>${t.title}</h2>
         <section class="section" aria-labelledby="basic-heading">
@@ -1144,7 +1154,7 @@ var Qe = class extends D {
           <div class="grid">
             <div class="field full">
               ${this._entityPicker(e.entity ?? "", ["vacuum"], t.robot, (e) => this._updateTopLevel("entity", e))}
-              ${e.entity ? C : x`<span class="warning">${t.missingRobot}</span>`}
+              ${e.entity ? T : C`<span class="warning">${t.missingRobot}</span>`}
             </div>
             <div class="field full">
               <label for="card-name">${t.name}</label>
@@ -1155,7 +1165,7 @@ var Qe = class extends D {
               <label for="card-view">${t.view}</label>
               <select id="card-view" .value=${e.view ?? "combined"}
                 @change=${(e) => this._updateTopLevel("view", A(e))}>
-                ${this._unknownOption(e.view, ze)}
+                ${this._unknownOption(e.view, Re)}
                 <option value="combined">${t.viewCombined}</option>
                 <option value="robot">${t.viewRobot}</option>
                 <option value="dock">${t.viewDock}</option>
@@ -1165,7 +1175,7 @@ var Qe = class extends D {
               <label for="card-density">${t.density}</label>
               <select id="card-density" .value=${e.density ?? "auto"}
                 @change=${(e) => this._updateTopLevel("density", A(e))}>
-                ${this._unknownOption(e.density, Be)}
+                ${this._unknownOption(e.density, ze)}
                 <option value="auto">${t.densityAuto}</option>
                 <option value="compact">${t.densityCompact}</option>
                 <option value="comfortable">${t.densityComfortable}</option>
@@ -1176,7 +1186,7 @@ var Qe = class extends D {
               <label for="card-appearance">${t.appearance}</label>
               <select id="card-appearance"
                 @change=${(e) => this._updateTopLevel("appearance", A(e))}>
-                ${this._unknownOption(e.appearance, Ve)}
+                ${this._unknownOption(e.appearance, Be)}
                 <option value="adaptive" .selected=${e.appearance === void 0 || e.appearance === "adaptive"}>
                   ${t.appearanceAdaptive}
                 </option>
@@ -1188,14 +1198,14 @@ var Qe = class extends D {
           </div>
         </section>
 
-        <section class="section" aria-labelledby="quick-info-heading">
+        ${c ? C`<section class="section" aria-labelledby="quick-info-heading">
           <div class="section-heading">
             <h3 id="quick-info-heading">${t.quickInfo}</h3>
             <p class="hint" id="quick-info-hint">${t.quickInfoHint}</p>
           </div>
           <fieldset aria-labelledby="quick-info-heading" aria-describedby="quick-info-hint">
             <div class="choice-grid">
-              ${Ge.map((e) => x`
+              ${We.map((e) => C`
                 <label class="checkbox-option" for="overview-${e}">
                   <input
                     id="overview-${e}"
@@ -1208,7 +1218,7 @@ var Qe = class extends D {
               `)}
             </div>
           </fieldset>
-        </section>
+        </section>` : T}
 
         <section class="section" aria-labelledby="visible-sections-heading">
           <div class="section-heading">
@@ -1217,10 +1227,10 @@ var Qe = class extends D {
           </div>
           <fieldset
             aria-labelledby="visible-sections-heading"
-            aria-describedby="visible-sections-hint alerts-safety-note"
+            aria-describedby="visible-sections-hint alerts-optional-note"
           >
             <div class="choice-grid">
-              ${Ke.map((e) => x`
+              ${o.map((e) => C`
                 <label class="checkbox-option" for="section-${e}">
                   <input
                     id="section-${e}"
@@ -1228,29 +1238,29 @@ var Qe = class extends D {
                     .checked=${i.has(e)}
                     @change=${(t) => this._updateSection(e, t.currentTarget.checked)}
                   />
-                  <span>${a[e]}</span>
+                  <span>${d[e]}</span>
                 </label>
               `)}
             </div>
           </fieldset>
-          <p class="safety-note" id="alerts-safety-note">${t.alertsSafety}</p>
+          <p class="safety-note" id="alerts-optional-note">${t.alertsOptional}</p>
         </section>
 
-        <section class="section" aria-labelledby="entities-heading">
+        ${s.length > 0 ? C`<section class="section" aria-labelledby="entities-heading">
           <div class="section-heading">
             <h3 id="entities-heading">${t.entities}</h3>
             <p class="hint">${t.entitiesHint}</p>
           </div>
           <div class="grid">
-            ${Xe.map((n) => x`
+            ${s.map((n) => C`
               <div class="field">
                 ${this._entityPicker(e.entities?.[n.key] ?? "", n.domains, t[n.key], (e) => this._updateSemanticEntity(n.key, e))}
               </div>
             `)}
           </div>
-        </section>
+        </section>` : T}
 
-        <section class="section" aria-labelledby="dock-heading">
+        ${l ? C`<section class="section" aria-labelledby="dock-heading">
           <div class="section-heading">
             <h3 id="dock-heading">${t.dock}</h3>
             <p class="hint">${t.dockHint}</p>
@@ -1260,7 +1270,7 @@ var Qe = class extends D {
               <label for="dock-display">${t.dockDisplay}</label>
               <select id="dock-display" .value=${e.dock?.display ?? "collapsed"}
                 @change=${(e) => this._updateDockDisplay(A(e))}>
-                ${this._unknownOption(e.dock?.display, He)}
+                ${this._unknownOption(e.dock?.display, Ve)}
                 <option value="expanded">${t.displayExpanded}</option>
                 <option value="collapsed">${t.displayCollapsed}</option>
                 <option value="hidden">${t.displayHidden}</option>
@@ -1285,15 +1295,15 @@ var Qe = class extends D {
             ${this._renderBinaryDockField("dirty_water_tank", e.dock?.entities?.dirty_water_tank, t.dirtyWaterTank)}
             ${this._renderBinaryDockField("cleaning_solution", e.dock?.entities?.cleaning_solution, t.cleaningSolution)}
           </div>
-        </section>
+        </section>` : T}
 
-        <section class="section" aria-labelledby="programs-heading">
+        ${u ? C`<section class="section" aria-labelledby="programs-heading">
           <div class="section-heading">
             <h3 id="programs-heading">${t.programs}</h3>
             <p class="hint">${t.programsHint}</p>
           </div>
           <div class="safe">${t.confirmation}</div>
-          ${n.length === 0 ? x`<p class="empty">${t.noPrograms}</p>` : x`<div class="program-list">
+          ${n.length === 0 ? C`<p class="empty">${t.noPrograms}</p>` : C`<div class="program-list">
                 ${n.map((e, t) => this._renderProgram(e, t))}
               </div>`}
           <div class="add-row">
@@ -1306,8 +1316,8 @@ var Qe = class extends D {
               ${t.add}
             </button>
           </div>
-          ${this._programMessage ? x`<p class="warning" role="status">${this._programMessage}</p>` : C}
-        </section>
+          ${this._programMessage ? C`<p class="warning" role="status">${this._programMessage}</p>` : T}
+        </section>` : T}
       </div>
     `;
 	}
@@ -1315,7 +1325,7 @@ var Qe = class extends D {
 		return (this.hass?.locale?.language ?? this.hass?.language ?? globalThis.navigator?.language ?? "en").toLowerCase().startsWith("de") ? "de" : "en";
 	}
 	_entityPicker(e, t, n, r) {
-		return x`<ha-entity-picker
+		return C`<ha-entity-picker
       .hass=${this.hass}
       .value=${e}
       .label=${n}
@@ -1325,13 +1335,13 @@ var Qe = class extends D {
     ></ha-entity-picker>`;
 	}
 	_unknownOption(e, t) {
-		return !e || t.includes(e) ? C : x`<option value=${e} .selected=${!0}>
-      ${O[this._language].unknownValue}: ${e}
+		return !e || t.includes(e) ? T : C`<option value=${e} .selected=${!0}>
+      ${Ze[this._language].unknownValue}: ${e}
     </option>`;
 	}
 	_renderProgram(e, t) {
-		let n = O[this._language], r = e.name || (e.entity ? this.hass?.states[e.entity]?.attributes.friendly_name : void 0) || e.entity || `${n.program} ${t + 1}`, i = e.kind;
-		return x`<article class="program">
+		let n = Ze[this._language], r = e.name || (e.entity ? this.hass?.states[e.entity]?.attributes.friendly_name : void 0) || e.entity || `${n.program} ${t + 1}`, i = e.kind;
+		return C`<article class="program">
       <div class="program-head">
         <span class="program-title" title=${r}>${r}</span>
         <button class="secondary" type="button" aria-label="${n.remove}: ${r}"
@@ -1339,7 +1349,7 @@ var Qe = class extends D {
       </div>
       <div class="grid">
         <div class="field full">
-          ${e.action && !e.entity ? x`<span class="source-note">Home Assistant action</span>` : this._entityPicker(e.entity ?? "", ["button"], n.chooseButton, (e) => this._updateProgramEntity(t, e))}
+          ${e.action && !e.entity ? C`<span class="source-note">Home Assistant action</span>` : this._entityPicker(e.entity ?? "", ["button"], n.chooseButton, (e) => this._updateProgramEntity(t, e))}
         </div>
         <div class="field">
           <label for="program-name-${t}">${n.programName}</label>
@@ -1350,7 +1360,7 @@ var Qe = class extends D {
           <label for="program-kind-${t}">${n.kind}</label>
           <select id="program-kind-${t}" .value=${i ?? "unknown"}
             @change=${(e) => this._updateProgram(t, { kind: A(e) })}>
-            ${this._unknownOption(i, We)}
+            ${this._unknownOption(i, Ue)}
             <option value="vacuum">${n.kindVacuum}</option>
             <option value="mop">${n.kindMop}</option>
             <option value="combo">${n.kindCombo}</option>
@@ -1361,13 +1371,13 @@ var Qe = class extends D {
     </article>`;
 	}
 	_renderBinaryDockField(e, t, n) {
-		let r = O[this._language], i = typeof t == "string" ? t : t?.entity ?? "", a = typeof t == "object" ? t.on_is : void 0, o = a ?? "unknown";
-		return x`<div class="field">
+		let r = Ze[this._language], i = typeof t == "string" ? t : t?.entity ?? "", a = typeof t == "object" ? t.on_is : void 0, o = a ?? "unknown";
+		return C`<div class="field">
       ${this._entityPicker(i, ["binary_sensor"], n, (t) => this._updateBinaryDockEntity(e, t))}
       <label for="dock-${e}-on-is">${r.onMeaning}</label>
       <select id="dock-${e}-on-is" .value=${o} ?disabled=${!i}
         @change=${(t) => this._updateBinaryDockMeaning(e, A(t))}>
-        ${this._unknownOption(a, Ue)}
+        ${this._unknownOption(a, He)}
         <option value="unknown">${r.onUnknown}</option>
         <option value="ok">${r.onOk}</option>
         <option value="warning">${r.onWarning}</option>
@@ -1378,17 +1388,60 @@ var Qe = class extends D {
     </div>`;
 	}
 	_effectiveOverviewItems(e) {
-		return e.overview?.items === void 0 ? e.density === "compact" ? ["battery"] : Ge : e.overview.items;
+		return e.overview?.items === void 0 ? e.density === "compact" ? ["battery"] : ["battery", "progress"] : e.overview.items;
+	}
+	_defaultSectionOrder(e, t) {
+		return e === "dock" ? Je : e === "robot" || t === "compact" ? qe : Ke;
 	}
 	_effectiveSectionOrder(e) {
-		return e.sections?.order === void 0 ? e.density === "compact" ? e.view === "dock" ? Ye : Je : qe : e.sections.order;
+		return e.sections?.order === void 0 ? this._defaultSectionOrder(e.view ?? "combined", e.density) : e.sections.order;
+	}
+	_sectionsForView(e) {
+		return e === "dock" ? [
+			"alerts",
+			"dock",
+			"maintenance",
+			"diagnostics"
+		] : e === "robot" ? [
+			"activity",
+			"controls",
+			"programs",
+			"alerts",
+			"details",
+			"maintenance",
+			"map",
+			"diagnostics"
+		] : Ge;
+	}
+	_entityFieldsForContext(e, t) {
+		if (e === "dock") return [];
+		let n = /* @__PURE__ */ new Set([
+			"status",
+			"battery",
+			"charging",
+			"cleaning"
+		]);
+		if (t.has("activity")) for (let e of [
+			"progress",
+			"area",
+			"duration"
+		]) n.add(e);
+		if (t.has("details")) for (let e of [
+			"last_start",
+			"last_end",
+			"vacuum_mode",
+			"mop_mode",
+			"mop_intensity",
+			"volume"
+		]) n.add(e);
+		return t.has("map") && n.add("map"), t.has("alerts") && (n.add("water_shortage"), n.add("vacuum_error")), t.has("programs") && (n.add("mop_attached"), n.add("water_tank_attached")), Xe.filter((e) => n.has(e.key));
 	}
 	_updateOverviewItem(e, t) {
 		let n = this._config;
 		if (!n) return;
 		let r = k(n), i = this._effectiveOverviewItems(n), a = new Set(i);
 		t ? a.add(e) : a.delete(e);
-		let o = Ge.filter((e) => a.has(e)), s = i.filter((e, t) => !Ge.includes(e) && i.indexOf(e) === t);
+		let o = We.filter((e) => a.has(e)), s = i.filter((e, t) => !We.includes(e) && i.indexOf(e) === t);
 		r.overview = {
 			...r.overview ?? {},
 			items: [...o, ...s]
@@ -1398,8 +1451,8 @@ var Qe = class extends D {
 		let n = this._config;
 		if (!n) return;
 		let r = k(n), i = this._effectiveSectionOrder(n), a = new Set(i);
-		t ? a.add(e) : a.delete(e), a.add("alerts");
-		let o = qe.filter((e) => a.has(e)), s = i.filter((e, t) => !qe.includes(e) && i.indexOf(e) === t);
+		t ? a.add(e) : a.delete(e);
+		let o = Ye.filter((e) => a.has(e)), s = i.filter((e, t) => !Ye.includes(e) && i.indexOf(e) === t);
 		r.sections = {
 			...r.sections ?? {},
 			order: [...o, ...s]
@@ -1409,7 +1462,16 @@ var Qe = class extends D {
 		let n = this._config;
 		if (!n) return;
 		let r = k(n);
-		e === "name" ? t ? r.name = t : delete r.name : e === "entity" ? r.entity = t : e === "view" ? r.view = t : e === "density" ? r.density = t : r.appearance = t, this._commit(r);
+		if (e === "name") t ? r.name = t : delete r.name;
+		else if (e === "entity") r.entity = t;
+		else if (e === "view") {
+			let e = t;
+			r.view = e, r.sections = {
+				...r.sections ?? {},
+				order: [...this._defaultSectionOrder(e, r.density)]
+			};
+		} else e === "density" ? r.density = t : r.appearance = t;
+		this._commit(r);
 	}
 	_updateSemanticEntity(e, t) {
 		let n = this._config;
@@ -1506,7 +1568,7 @@ var Qe = class extends D {
 		}, this._commit(r);
 	}
 	_commit(e) {
-		let t = Ze(e);
+		let t = Qe(e);
 		this._config = t, this.dispatchEvent(new CustomEvent("config-changed", {
 			detail: { config: k(t) },
 			bubbles: !0,
@@ -1514,7 +1576,7 @@ var Qe = class extends D {
 		}));
 	}
 };
-customElements.get("vacuum-control-card-editor") || customElements.define("vacuum-control-card-editor", Qe);
+customElements.get("vacuum-control-card-editor") || customElements.define("vacuum-control-card-editor", $e);
 //#endregion
 //#region node_modules/lit-html/directive.js
 var j = {
@@ -1524,10 +1586,10 @@ var j = {
 	BOOLEAN_ATTRIBUTE: 4,
 	EVENT: 5,
 	ELEMENT: 6
-}, $e = (e) => (...t) => ({
+}, et = (e) => (...t) => ({
 	_$litDirective$: e,
 	values: t
-}), et = class {
+}), tt = class {
 	constructor(e) {}
 	get _$AU() {
 		return this._$AM._$AU;
@@ -1541,89 +1603,80 @@ var j = {
 	update(e, t) {
 		return this.render(...t);
 	}
-}, { I: tt } = Pe, nt = (e) => e.strings === void 0, rt = {}, it = (e, t = rt) => e._$AH = t, at = $e(class extends et {
+}, { I: nt } = Ne, rt = (e) => e.strings === void 0, it = {}, at = (e, t = it) => e._$AH = t, ot = et(class extends tt {
 	constructor(e) {
 		if (super(e), e.type !== j.PROPERTY && e.type !== j.ATTRIBUTE && e.type !== j.BOOLEAN_ATTRIBUTE) throw Error("The `live` directive is not allowed on child or event bindings");
-		if (!nt(e)) throw Error("`live` bindings can only contain a single expression");
+		if (!rt(e)) throw Error("`live` bindings can only contain a single expression");
 	}
 	render(e) {
 		return e;
 	}
 	update(e, [t]) {
-		if (t === S || t === C) return t;
+		if (t === w || t === T) return t;
 		let n = e.element, r = e.name;
 		if (e.type === j.PROPERTY) {
-			if (t === n[r]) return S;
+			if (t === n[r]) return w;
 		} else if (e.type === j.BOOLEAN_ATTRIBUTE) {
-			if (!!t === n.hasAttribute(r)) return S;
-		} else if (e.type === j.ATTRIBUTE && n.getAttribute(r) === t + "") return S;
-		return it(e), t;
+			if (!!t === n.hasAttribute(r)) return w;
+		} else if (e.type === j.ATTRIBUTE && n.getAttribute(r) === t + "") return w;
+		return at(e), t;
 	}
-}), ot = 15e3, st = [
+}), st = 15e3, ct = [
 	"0",
 	"none",
 	"ok",
 	"no_error"
-], ct = [
-	"activity",
-	"controls",
-	"programs",
-	"alerts",
-	"dock",
-	"details",
-	"maintenance",
-	"map",
-	"diagnostics"
 ], lt = [
 	"activity",
 	"controls",
 	"programs",
-	"alerts"
+	"alerts",
+	"dock"
 ], ut = [
+	"activity",
+	"controls",
+	"programs",
+	"alerts"
+], dt = [
 	"alerts",
 	"dock",
 	"maintenance",
 	"diagnostics"
-], dt = [
-	"battery",
-	"progress",
-	"area",
-	"duration"
-], ft = ["battery"], pt = [
+], ft = ["battery", "progress"], pt = ["battery"], mt = [
 	"combined",
 	"robot",
 	"dock"
-], mt = [
+], ht = [
 	"auto",
 	"compact",
 	"comfortable",
 	"detailed"
-], ht = ["adaptive", "accent"], gt = [
+], gt = ["adaptive", "accent"], _t = [
 	"battery",
 	"progress",
 	"area",
 	"duration"
-], _t = [
+], vt = [
 	"expanded",
 	"collapsed",
 	"hidden"
-], vt = ["confirm"], yt = [
+], yt = ["confirm"], bt = [
 	"vacuum",
 	"mop",
 	"combo",
 	"unknown"
-], bt = [
+], xt = [
 	"ok",
 	"warning",
 	"active",
 	"installed",
 	"missing",
 	"unknown"
-], xt = [
+], St = [
 	"none",
 	"subtle",
 	"expressive"
-], St = [
+], Ct = [
 	"more-info",
 	"toggle",
 	"perform-action",
@@ -1631,7 +1684,7 @@ var j = {
 	"url",
 	"assist",
 	"none"
-], Ct = [
+], wt = [
 	"status",
 	"battery",
 	"charging",
@@ -1650,7 +1703,7 @@ var j = {
 	"water_tank_attached",
 	"water_shortage",
 	"vacuum_error"
-], wt = /^[a-z0-9_]+\.[a-z0-9_]+$/, M = class extends Error {
+], Tt = /^[a-z0-9_]+\.[a-z0-9_]+$/, M = class extends Error {
 	constructor(e) {
 		super(`Vacuum Control Card: ${e}`), this.name = "VacuumCardConfigError";
 	}
@@ -1664,11 +1717,11 @@ function P(e, t) {
 function F(e, t) {
 	if (e !== void 0 && !N(e)) throw new M(`"${t}" muss ein Objekt sein.`);
 }
-function Tt(e, t) {
+function Et(e, t) {
 	if (e !== void 0 && !Array.isArray(e)) throw new M(`"${t}" muss eine Liste sein.`);
 }
 function I(e, t) {
-	if (typeof e != "string" || !wt.test(e)) throw new M(`"${t}" muss eine gültige Home-Assistant-Entitäts-ID sein.`);
+	if (typeof e != "string" || !Tt.test(e)) throw new M(`"${t}" muss eine gültige Home-Assistant-Entitäts-ID sein.`);
 }
 function L(e, t) {
 	if (e !== void 0 && typeof e != "string") throw new M(`"${t}" muss Text sein.`);
@@ -1676,30 +1729,30 @@ function L(e, t) {
 function R(e, t) {
 	if (e !== void 0 && typeof e != "boolean") throw new M(`"${t}" muss true oder false sein.`);
 }
-function Et(e, t) {
+function Dt(e, t) {
 	if (e !== void 0 && (typeof e != "number" || !Number.isFinite(e))) throw new M(`"${t}" muss eine endliche Zahl sein.`);
 }
-function Dt(e, t) {
+function Ot(e, t) {
 	if (!Array.isArray(e) || e.some((e) => typeof e != "string")) throw new M(`"${t}" muss eine Liste aus Textwerten sein.`);
 }
 function z(e, t, n) {
 	if (e !== void 0 && !P(t, e)) throw new M(`"${n}" muss einer der Werte ${t.join(", ")} sein.`);
 }
-function Ot(e, t, n = "entity") {
-	if (typeof e != "string" || !wt.test(e)) throw new M(`"${n}" muss eine g\u00fcltige ${t}-Entit\u00e4ts-ID sein (z. B. "${t}.mein_geraet").`);
+function kt(e, t, n = "entity") {
+	if (typeof e != "string" || !Tt.test(e)) throw new M(`"${n}" muss eine g\u00fcltige ${t}-Entit\u00e4ts-ID sein (z. B. "${t}.mein_geraet").`);
 	let r = e.slice(0, e.indexOf("."));
 	if (r !== t) throw new M(`"${n}" muss zur Domain "${t}" geh\u00f6ren; erhalten wurde "${r}".`);
 }
-function kt(e, t = "entity") {
-	Ot(e, "vacuum", t);
+function At(e, t = "entity") {
+	kt(e, "vacuum", t);
 }
-function At(e, t = "programs.items[].entity") {
-	Ot(e, "button", t);
+function jt(e, t = "programs.items[].entity") {
+	kt(e, "button", t);
 }
-function jt(e, t = "programs.guard") {
-	if (!P(vt, e)) throw new M(`"${t}" darf nicht ungesichert sein. Erlaubt ist nur "confirm".`);
+function Mt(e, t = "programs.guard") {
+	if (!P(yt, e)) throw new M(`"${t}" darf nicht ungesichert sein. Erlaubt ist nur "confirm".`);
 }
-function Mt(e, t) {
+function Nt(e, t) {
 	if (e !== void 0 && typeof e != "boolean") {
 		if (!N(e)) throw new M(`"${t}" muss true, false oder ein Best\u00e4tigungsobjekt sein.`);
 		for (let n of [
@@ -1713,10 +1766,10 @@ function Mt(e, t) {
 		}
 	}
 }
-function Nt(e, t) {
+function Pt(e, t) {
 	if (!N(e)) throw new M(`"${t}" muss eine Dashboard-Aktion sein.`);
-	if (!P(St, e.action)) throw new M(`"${t}.action" enth\u00e4lt keinen unterst\u00fctzten Dashboard-Aktionstyp.`);
-	Mt(e.confirmation, `${t}.confirmation`);
+	if (!P(Ct, e.action)) throw new M(`"${t}.action" enth\u00e4lt keinen unterst\u00fctzten Dashboard-Aktionstyp.`);
+	Nt(e.confirmation, `${t}.confirmation`);
 	for (let n of [
 		"perform_action",
 		"navigation_path",
@@ -1726,9 +1779,9 @@ function Nt(e, t) {
 	if (e.action === "navigate" && typeof e.navigation_path != "string") throw new M(`"${t}.navigation_path" ist für eine navigate-Aktion erforderlich.`);
 	if (e.action === "url" && typeof e.url_path != "string") throw new M(`"${t}.url_path" ist für eine url-Aktion erforderlich.`);
 }
-function Pt(e, t) {
+function Ft(e, t) {
 	if (!N(e)) throw new M(`"${t}" muss ein Objekt sein.`);
-	if (!P(Ct, e.condition)) throw new M(`"${t}.condition" referenziert keine unterst\u00fctzte semantische Entit\u00e4t.`);
+	if (!P(wt, e.condition)) throw new M(`"${t}.condition" referenziert keine unterst\u00fctzte semantische Entit\u00e4t.`);
 	if (typeof e.expected != "boolean" && typeof e.expected != "string" && typeof e.expected != "number") throw new M(`"${t}.expected" muss boolean, Text oder eine Zahl sein.`);
 	if (typeof e.expected == "number" && !Number.isFinite(e.expected)) throw new M(`"${t}.expected" muss eine endliche Zahl sein.`);
 	if (e.severity !== void 0 && !P([
@@ -1738,27 +1791,27 @@ function Pt(e, t) {
 	], e.severity)) throw new M(`"${t}.severity" muss "block", "warn" oder "ignore" sein.`);
 	if (e.message !== void 0 && typeof e.message != "string") throw new M(`"${t}.message" muss Text sein.`);
 }
-function Ft(e, t = 0) {
+function It(e, t = 0) {
 	let n = `programs.items[${t}]`;
 	if (!N(e)) throw new M(`"${n}" muss ein Objekt sein.`);
 	let r = e.entity !== void 0;
 	if (r === (e.action !== void 0)) throw new M(`"${n}" muss genau eine Quelle aus "entity" oder "action" besitzen.`);
-	r ? At(e.entity, `${n}.entity`) : Nt(e.action, `${n}.action`);
+	r ? jt(e.entity, `${n}.entity`) : Pt(e.action, `${n}.action`);
 	for (let t of [
 		"name",
 		"icon",
 		"description",
 		"color"
 	]) L(e[t], `${n}.${t}`);
-	if (R(e.hidden, `${n}.hidden`), e.confirmation !== void 0 && Mt(e.confirmation, `${n}.confirmation`), e.guard !== void 0 && jt(e.guard, `${n}.guard`), e.kind !== void 0 && !P(yt, e.kind)) throw new M(`"${n}.kind" muss vacuum, mop, combo oder unknown sein.`);
+	if (R(e.hidden, `${n}.hidden`), e.confirmation !== void 0 && Nt(e.confirmation, `${n}.confirmation`), e.guard !== void 0 && Mt(e.guard, `${n}.guard`), e.kind !== void 0 && !P(bt, e.kind)) throw new M(`"${n}.kind" muss vacuum, mop, combo oder unknown sein.`);
 	if (e.requires !== void 0) {
 		if (!Array.isArray(e.requires)) throw new M(`"${n}.requires" muss eine Liste sein.`);
 		e.requires.forEach((e, t) => {
-			Pt(e, `${n}.requires[${t}]`);
+			Ft(e, `${n}.requires[${t}]`);
 		});
 	}
 }
-function It(e = ot) {
+function Lt(e = st) {
 	let t;
 	if (typeof e == "number") t = e;
 	else if (typeof e == "string") {
@@ -1775,13 +1828,13 @@ function It(e = ot) {
 	if (!Number.isSafeInteger(n) || n <= 0) throw new M("\"programs.acknowledgement_timeout\" muss größer als 0 sein.");
 	return n;
 }
-function Lt(e) {
-	if (e !== void 0 && (F(e, "entities"), N(e))) for (let t of Ct) {
+function Rt(e) {
+	if (e !== void 0 && (F(e, "entities"), N(e))) for (let t of wt) {
 		let n = e[t];
 		n !== void 0 && I(n, `entities.${t}`);
 	}
 }
-function Rt(e) {
+function zt(e) {
 	if (e !== void 0 && (F(e, "controls"), N(e))) {
 		for (let t of [
 			"start_pause",
@@ -1795,25 +1848,25 @@ function Rt(e) {
 		R(e.confirm_stop_while_active, "controls.confirm_stop_while_active"), R(e.confirm_return_while_active, "controls.confirm_return_while_active");
 	}
 }
-function zt(e) {
+function Bt(e) {
 	if (e !== void 0 && (F(e, "overview"), !(!N(e) || e.items === void 0))) {
 		if (!Array.isArray(e.items)) throw new M("\"overview.items\" muss eine Liste sein.");
 		e.items.forEach((e, t) => {
-			if (!P(gt, e)) throw new M(`"overview.items[${t}]" muss einer der Werte ${gt.join(", ")} sein.`);
+			if (!P(_t, e)) throw new M(`"overview.items[${t}]" muss einer der Werte ${_t.join(", ")} sein.`);
 		});
 	}
 }
-function Bt(e, t) {
+function Vt(e, t) {
 	if (typeof e == "string") {
 		I(e, t);
 		return;
 	}
 	if (!N(e)) throw new M(`"${t}" muss eine Entitäts-ID oder ein Objekt sein.`);
-	I(e.entity, `${t}.entity`), z(e.on_is, bt, `${t}.on_is`), L(e.name, `${t}.name`);
+	I(e.entity, `${t}.entity`), z(e.on_is, xt, `${t}.on_is`), L(e.name, `${t}.name`);
 }
-function Vt(e) {
+function Ht(e) {
 	if (e !== void 0 && (F(e, "dock"), N(e))) {
-		z(e.display, _t, "dock.display");
+		z(e.display, vt, "dock.display");
 		for (let t of [
 			"auto_expand_on_activity",
 			"auto_expand_on_warning",
@@ -1837,13 +1890,13 @@ function Vt(e) {
 				"cleaning_solution"
 			]) {
 				let n = e.entities[t];
-				n !== void 0 && Bt(n, `dock.entities.${t}`);
+				n !== void 0 && Vt(n, `dock.entities.${t}`);
 			}
 		}
 	}
 }
-function Ht(e) {
-	if (e !== void 0 && (F(e, "maintenance"), N(e) && (z(e.display, _t, "maintenance.display"), F(e.defaults, "maintenance.defaults"), N(e.defaults) && (Et(e.defaults.warning_below, "maintenance.defaults.warning_below"), Et(e.defaults.critical_below, "maintenance.defaults.critical_below")), e.items !== void 0))) {
+function Ut(e) {
+	if (e !== void 0 && (F(e, "maintenance"), N(e) && (z(e.display, vt, "maintenance.display"), F(e.defaults, "maintenance.defaults"), N(e.defaults) && (Dt(e.defaults.warning_below, "maintenance.defaults.warning_below"), Dt(e.defaults.critical_below, "maintenance.defaults.critical_below")), e.items !== void 0))) {
 		if (!Array.isArray(e.items)) throw new M("\"maintenance.items\" muss eine Liste sein.");
 		e.items.forEach((e, t) => {
 			let n = `maintenance.items[${t}]`;
@@ -1854,12 +1907,12 @@ function Ht(e) {
 				"icon",
 				"kind"
 			]) L(e[t], `${n}.${t}`);
-			Et(e.warning_below, `${n}.warning_below`), Et(e.critical_below, `${n}.critical_below`);
+			Dt(e.warning_below, `${n}.warning_below`), Dt(e.critical_below, `${n}.critical_below`);
 		});
 	}
 }
-function Ut(e) {
-	if (e !== void 0 && (F(e, "diagnostics"), N(e) && (z(e.display, _t, "diagnostics.display"), e.items !== void 0))) {
+function Wt(e) {
+	if (e !== void 0 && (F(e, "diagnostics"), N(e) && (z(e.display, vt, "diagnostics.display"), e.items !== void 0))) {
 		if (!Array.isArray(e.items)) throw new M("\"diagnostics.items\" muss eine Liste sein.");
 		e.items.forEach((e, t) => {
 			let n = `diagnostics.items[${t}]`;
@@ -1868,30 +1921,30 @@ function Ut(e) {
 		});
 	}
 }
-function Wt(e) {
-	e !== void 0 && (F(e, "animations"), N(e) && (R(e.enabled, "animations.enabled"), z(e.intensity, xt, "animations.intensity"), R(e.respect_reduced_motion, "animations.respect_reduced_motion")));
-}
 function Gt(e) {
-	e !== void 0 && (F(e, "error_handling"), N(e) && (e.clear_states !== void 0 && Dt(e.clear_states, "error_handling.clear_states"), R(e.show_raw_unknown_states, "error_handling.show_raw_unknown_states")));
+	e !== void 0 && (F(e, "animations"), N(e) && (R(e.enabled, "animations.enabled"), z(e.intensity, St, "animations.intensity"), R(e.respect_reduced_motion, "animations.respect_reduced_motion")));
 }
 function Kt(e) {
-	e !== void 0 && (F(e, "sections"), N(e) && e.order !== void 0 && Dt(e.order, "sections.order"));
+	e !== void 0 && (F(e, "error_handling"), N(e) && (e.clear_states !== void 0 && Ot(e.clear_states, "error_handling.clear_states"), R(e.show_raw_unknown_states, "error_handling.show_raw_unknown_states")));
 }
 function qt(e) {
+	e !== void 0 && (F(e, "sections"), N(e) && e.order !== void 0 && Ot(e.order, "sections.order"));
+}
+function Jt(e) {
 	if (e !== void 0 && (F(e, "state_map"), N(e))) for (let t of ["activity", "task_kind"]) {
 		let n = e[t];
 		if (n !== void 0) {
 			if (!N(n)) throw new M(`"state_map.${t}" muss ein Objekt sein.`);
-			for (let [e, r] of Object.entries(n)) Dt(r, `state_map.${t}.${e}`);
+			for (let [e, r] of Object.entries(n)) Ot(r, `state_map.${t}.${e}`);
 		}
 	}
 }
-function Jt(e) {
+function Yt(e) {
 	if (!N(e)) throw new M("Die Kartenkonfiguration muss ein Objekt sein.");
 	if (e.type !== "custom:vacuum-control-card") throw new M("\"type\" muss exakt \"custom:vacuum-control-card\" sein.");
-	kt(e.entity), L(e.name, "name"), L(e.icon, "icon"), z(e.view, pt, "view"), z(e.density, mt, "density"), z(e.appearance, ht, "appearance"), zt(e.overview), Lt(e.entities), Rt(e.controls), F(e.programs, "programs"), N(e.programs) && (e.programs.guard !== void 0 && jt(e.programs.guard), It(e.programs.acknowledgement_timeout), Tt(e.programs.items, "programs.items"), Array.isArray(e.programs.items) && e.programs.items.forEach((e, t) => {
-		Ft(e, t);
-	})), Vt(e.dock), Ht(e.maintenance), Ut(e.diagnostics), Wt(e.animations), Gt(e.error_handling), Kt(e.sections), qt(e.state_map);
+	At(e.entity), L(e.name, "name"), L(e.icon, "icon"), z(e.view, mt, "view"), z(e.density, ht, "density"), z(e.appearance, gt, "appearance"), Bt(e.overview), Rt(e.entities), zt(e.controls), F(e.programs, "programs"), N(e.programs) && (e.programs.guard !== void 0 && Mt(e.programs.guard), Lt(e.programs.acknowledgement_timeout), Et(e.programs.items, "programs.items"), Array.isArray(e.programs.items) && e.programs.items.forEach((e, t) => {
+		It(e, t);
+	})), Ht(e.dock), Ut(e.maintenance), Wt(e.diagnostics), Gt(e.animations), Kt(e.error_handling), qt(e.sections), Jt(e.state_map);
 }
 function B(e, t = /* @__PURE__ */ new WeakMap()) {
 	if (Array.isArray(e)) {
@@ -1912,11 +1965,11 @@ function B(e, t = /* @__PURE__ */ new WeakMap()) {
 	}
 	return e;
 }
-function Yt(e) {
+function Xt(e) {
 	let t = B(e);
 	return t.action !== void 0 && (t.action.confirmation === void 0 || t.action.confirmation === !1) && (t.action.confirmation = !0), t;
 }
-function Xt(e, t) {
+function Zt(e, t) {
 	if (e.entity) return `entity:${e.entity}`;
 	try {
 		return `action:${JSON.stringify(e.action)}`;
@@ -1924,10 +1977,10 @@ function Xt(e, t) {
 		return `action:${t}`;
 	}
 }
-function Zt(e, t) {
+function Qt(e, t) {
 	let n = /* @__PURE__ */ new Set(), r = [];
 	return e.forEach((e, i) => {
-		let a = Xt(e, i);
+		let a = Zt(e, i);
 		if (n.has(a)) {
 			t.push({
 				code: "duplicate_program",
@@ -1935,30 +1988,30 @@ function Zt(e, t) {
 			});
 			return;
 		}
-		n.add(a), r.push(Yt(e));
+		n.add(a), r.push(Xt(e));
 	}), r;
 }
-function Qt(e, t) {
+function $t(e, t) {
 	let n = /* @__PURE__ */ new Set();
 	return e.filter((e) => n.has(e) ? (t.push({
 		code: "duplicate_section",
 		value: e
 	}), !1) : (n.add(e), !0));
 }
-function $t(e) {
+function en(e) {
 	let t = /* @__PURE__ */ new Set(), n = [];
 	for (let r of e) t.has(r) || (t.add(r), n.push(r));
 	return n;
 }
-function en(e) {
-	Jt(e);
-	let t = e, n = t.programs, r = t.maintenance, i = [], a = t.density ?? "auto", o = a === "compact" ? ft : dt, s = a === "compact" ? t.view === "dock" ? ut : lt : ct, c = {
+function tn(e) {
+	Yt(e);
+	let t = e, n = t.programs, r = t.maintenance, i = [], a = t.density ?? "auto", o = a === "compact" ? pt : ft, s = t.view ?? "combined", c = s === "dock" ? dt : s === "robot" || a === "compact" ? ut : lt, l = {
 		type: "custom:vacuum-control-card",
 		entity: t.entity,
-		view: t.view ?? "combined",
+		view: s,
 		density: a,
 		appearance: t.appearance ?? "adaptive",
-		overview: { items: $t(B(t.overview?.items ?? [...o])) },
+		overview: { items: en(B(t.overview?.items ?? [...o])) },
 		entities: B(t.entities ?? {}),
 		controls: {
 			start_pause: t.controls?.start_pause ?? "auto",
@@ -1970,8 +2023,8 @@ function en(e) {
 		},
 		programs: {
 			guard: n?.guard ?? "confirm",
-			acknowledgement_timeout: It(n?.acknowledgement_timeout),
-			items: Zt(n?.items ?? [], i)
+			acknowledgement_timeout: Lt(n?.acknowledgement_timeout),
+			items: Qt(n?.items ?? [], i)
 		},
 		dock: {
 			display: t.dock?.display ?? "collapsed",
@@ -1999,14 +2052,14 @@ function en(e) {
 			respect_reduced_motion: t.animations?.respect_reduced_motion ?? !0
 		},
 		error_handling: {
-			clear_states: B(t.error_handling?.clear_states ?? [...st]),
+			clear_states: B(t.error_handling?.clear_states ?? [...ct]),
 			show_raw_unknown_states: t.error_handling?.show_raw_unknown_states ?? !0
 		},
-		sections: { order: Qt(B(t.sections?.order ?? [...s]), i) },
+		sections: { order: $t(B(t.sections?.order ?? [...c]), i) },
 		state_map: B(t.state_map ?? {}),
 		configurationWarnings: i
 	};
-	return t.name !== void 0 && (c.name = t.name), t.icon !== void 0 && (c.icon = t.icon), c;
+	return t.name !== void 0 && (l.name = t.name), t.icon !== void 0 && (l.icon = t.icon), l;
 }
 //#endregion
 //#region src/ha.ts
@@ -2017,12 +2070,12 @@ var V = {
 	LOCATE: 512,
 	START: 8192
 };
-function tn(e, t) {
+function nn(e, t) {
 	if (!e) return !1;
 	let n = Number(e.attributes.supported_features ?? 0);
 	return Number.isFinite(n) && (n & t) !== 0;
 }
-function nn(e, ...t) {
+function rn(e, ...t) {
 	return !!(e && t.includes(e.state.toLowerCase()));
 }
 function H(e, t) {
@@ -2047,7 +2100,7 @@ function W(e, t) {
 		detail: { entityId: t }
 	}));
 }
-function rn(e, t, n) {
+function an(e, t, n) {
 	e.dispatchEvent(new CustomEvent("hass-action", {
 		bubbles: !0,
 		composed: !0,
@@ -2060,19 +2113,19 @@ function rn(e, t, n) {
 		}
 	}));
 }
-function an(e, t) {
+function on(e, t) {
 	let n = t.attributes.entity_picture;
 	if (n) return /^https?:\/\//i.test(n) ? n : e.hassUrl ? e.hassUrl(n) : n;
 }
-function on(e) {
-	if (!(!e || nn(e, "unknown", "unavailable"))) {
-		if (nn(e, "on", "true", "yes", "1", "active", "connected", "home")) return !0;
-		if (nn(e, "off", "false", "no", "0", "inactive", "disconnected", "not_home")) return !1;
+function sn(e) {
+	if (!(!e || rn(e, "unknown", "unavailable"))) {
+		if (rn(e, "on", "true", "yes", "1", "active", "connected", "home")) return !0;
+		if (rn(e, "off", "false", "no", "0", "inactive", "disconnected", "not_home")) return !1;
 	}
 }
 //#endregion
 //#region src/localize.ts
-var sn = {
+var cn = {
 	de: {
 		"card.default_name": "Saugroboter",
 		"card.default_dock_name": "Saugroboter-Station",
@@ -2290,23 +2343,23 @@ var sn = {
 		"common.critical": "Critical"
 	}
 };
-function cn(e) {
+function ln(e) {
 	return (e?.locale?.language ?? e?.language ?? "en").toLowerCase().startsWith("de") ? "de" : "en";
 }
 function G(e, t, n) {
-	let r = sn[cn(e)][t] ?? sn.en[t] ?? t;
+	let r = cn[ln(e)][t] ?? cn.en[t] ?? t;
 	for (let [e, t] of Object.entries(n ?? {})) r = r.replaceAll(`{${e}}`, String(t));
 	return r;
 }
-function ln(e, t) {
+function un(e, t) {
 	return G(e, `state.${t}`);
 }
-function un(e, t) {
+function dn(e, t) {
 	return G(e, `task.${t}`);
 }
 //#endregion
 //#region src/layout.ts
-var dn = /* @__PURE__ */ new Set([
+var fn = /* @__PURE__ */ new Set([
 	"activity",
 	"controls",
 	"programs",
@@ -2315,50 +2368,50 @@ var dn = /* @__PURE__ */ new Set([
 	"maintenance",
 	"map",
 	"diagnostics"
-]), fn = /* @__PURE__ */ new Set([
+]), pn = /* @__PURE__ */ new Set([
 	"alerts",
 	"dock",
 	"maintenance",
 	"diagnostics"
 ]);
 function K(e, t) {
-	return e.sections.order.includes(t) ? e.view === "robot" ? dn.has(t) : e.view !== "dock" || fn.has(t) : !1;
+	return e.sections.order.includes(t) ? e.view === "robot" ? fn.has(t) : e.view !== "dock" || pn.has(t) : !1;
 }
-function pn(e) {
+function mn(e) {
 	if (!K(e, "controls")) return 0;
 	let t = [
 		e.controls.start_pause,
 		e.controls.stop,
 		e.controls.return_home,
 		e.controls.locate
-	].filter((e) => e !== !1).length, n = e.density === "compact" ? 4 : 2;
-	return Math.max(0, Math.ceil(t / n) - 1);
+	].filter((e) => e !== !1).length;
+	return Math.max(0, Math.ceil(t / 4) - 1);
 }
-function mn(e) {
+function hn(e) {
 	if (!K(e, "activity")) return 0;
 	let t = e.overview.items.filter((t) => t !== "battery" && !!e.entities[t]);
 	return Math.ceil(new Set(t).size / 3);
 }
-function hn(e) {
+function gn(e) {
 	if (!K(e, "programs")) return 0;
 	let t = e.programs.items.filter((e) => !e.hidden).length, n = e.density === "compact" ? 3 : 2;
 	return Math.ceil(t / n);
 }
-function gn(e) {
+function _n(e) {
 	return K(e, "programs") ? e.programs.items.filter((e) => !e.hidden).length : 0;
 }
-function _n(e) {
+function vn(e) {
 	return K(e, "activity") ? e.overview.items.filter((t) => t !== "battery" && !!e.entities[t]).length : 0;
 }
-function vn(e) {
+function yn(e) {
 	return Math.ceil(e / 3);
 }
-function yn(e) {
+function bn(e) {
 	if (!K(e, "dock") || e.dock.display === "hidden" && e.view !== "dock") return 0;
 	let t = Object.values(e.dock.entities).filter(Boolean).length;
-	return t === 0 ? 0 : 1 + (e.dock.display === "expanded" || e.view === "dock" ? vn(t) : 0);
+	return t === 0 ? 0 : 1 + (e.dock.display === "expanded" || e.view === "dock" ? yn(t) : 0);
 }
-function bn(e) {
+function xn(e) {
 	if (!K(e, "details")) return 0;
 	let t = [
 		e.entities.last_start,
@@ -2368,24 +2421,24 @@ function bn(e) {
 		e.entities.mop_intensity,
 		e.entities.volume
 	].filter(Boolean).length;
-	return t === 0 ? 0 : 1 + (e.density === "detailed" ? vn(t) : 0);
-}
-function xn(e) {
-	if (!K(e, "maintenance") || e.maintenance.display === "hidden") return 0;
-	let t = e.view === "dock" ? e.maintenance.items.filter((e) => e.kind?.startsWith("dock")) : e.maintenance.items;
-	return t.length === 0 ? 0 : 1 + (e.maintenance.display === "expanded" ? vn(t.length) : 0);
+	return t === 0 ? 0 : 1 + (e.density === "detailed" ? yn(t) : 0);
 }
 function Sn(e) {
-	return K(e, "map") && e.entities.map ? 1 : 0;
+	if (!K(e, "maintenance") || e.maintenance.display === "hidden") return 0;
+	let t = e.view === "dock" ? e.maintenance.items.filter((e) => e.kind?.startsWith("dock")) : e.maintenance.items;
+	return t.length === 0 ? 0 : 1 + (e.maintenance.display === "expanded" ? yn(t.length) : 0);
 }
 function Cn(e) {
-	return !K(e, "diagnostics") || e.diagnostics.display === "hidden" || e.diagnostics.items.length === 0 ? 0 : 1 + (e.diagnostics.display === "expanded" ? vn(e.diagnostics.items.length) : 0);
+	return K(e, "map") && e.entities.map ? 1 : 0;
 }
 function wn(e) {
-	return yn(e) + bn(e) + xn(e) + Sn(e) + Cn(e);
+	return !K(e, "diagnostics") || e.diagnostics.display === "hidden" || e.diagnostics.items.length === 0 ? 0 : 1 + (e.diagnostics.display === "expanded" ? yn(e.diagnostics.items.length) : 0);
 }
 function Tn(e) {
-	let t = pn(e) + mn(e) + hn(e) + wn(e), n = e.density === "compact", r = (n ? 2 : 6) + t, i = n ? 6 : e.density === "detailed" ? 12 : e.density === "comfortable" || gn(e) >= 2 || _n(e) >= 2 || wn(e) >= 2 ? 9 : 6;
+	return bn(e) + xn(e) + Sn(e) + Cn(e) + wn(e);
+}
+function En(e) {
+	let t = mn(e) + hn(e) + gn(e) + Tn(e), n = e.density === "compact", r = (n ? 2 : 6) + t, i = n ? 6 : e.density === "detailed" ? 12 : e.density === "comfortable" || _n(e) >= 2 || vn(e) >= 2 || Tn(e) >= 2 ? 9 : 6;
 	return {
 		rows: r,
 		columns: n ? 6 : 12,
@@ -2400,29 +2453,18 @@ var q = [
 	"none",
 	"ok",
 	"no_error"
-], En = /* @__PURE__ */ new Set(["unavailable"]), Dn = /* @__PURE__ */ new Set(["unknown", "unavailable"]), On = /* @__PURE__ */ new Set([
+], Dn = /* @__PURE__ */ new Set(["unavailable"]), On = /* @__PURE__ */ new Set(["unknown", "unavailable"]), kn = /* @__PURE__ */ new Set([
 	"on",
 	"true",
 	"1"
-]), kn = /* @__PURE__ */ new Set([
+]), An = /* @__PURE__ */ new Set([
 	"off",
 	"false",
 	"0"
-]), An = [
+]), jn = [
 	"unavailable",
 	"offline",
 	"error",
-	"cleaning",
-	"paused",
-	"returning",
-	"charging",
-	"docked",
-	"idle",
-	"unknown"
-], jn = [
-	"error",
-	"offline",
-	"unavailable",
 	"cleaning",
 	"paused",
 	"returning",
@@ -2431,11 +2473,22 @@ var q = [
 	"idle",
 	"unknown"
 ], Mn = [
+	"error",
+	"offline",
+	"unavailable",
+	"cleaning",
+	"paused",
+	"returning",
+	"charging",
+	"docked",
+	"idle",
+	"unknown"
+], Nn = [
 	"combo",
 	"mop",
 	"vacuum",
 	"unknown"
-], Nn = {
+], Pn = {
 	unavailable: "unavailable",
 	offline: "offline",
 	error: "error",
@@ -2467,24 +2520,24 @@ function J(e) {
 function Y(e, t) {
 	if (t) return e.states[t];
 }
-function Pn(e) {
+function Fn(e) {
 	if (!e) return !0;
 	let t = J(e.state);
-	return t === void 0 || En.has(t);
+	return t === void 0 || Dn.has(t);
 }
 function X(e) {
 	let t = J(e?.state);
-	return t !== void 0 && !Dn.has(t);
+	return t !== void 0 && !On.has(t);
 }
 function Z(e) {
-	let t = J(e?.state);
-	return t !== void 0 && On.has(t);
-}
-function Fn(e) {
 	let t = J(e?.state);
 	return t !== void 0 && kn.has(t);
 }
 function In(e) {
+	let t = J(e?.state);
+	return t !== void 0 && An.has(t);
+}
+function Ln(e) {
 	if (typeof e == "number") return Number.isFinite(e) ? e : void 0;
 	if (typeof e != "string") return;
 	let t = e.trim();
@@ -2492,62 +2545,62 @@ function In(e) {
 	let n = Number(t);
 	return Number.isFinite(n) ? n : void 0;
 }
-function Ln(e) {
-	let t = In(e);
+function Rn(e) {
+	let t = Ln(e);
 	if (t !== void 0) return Math.min(100, Math.max(0, t));
 }
-function Rn(e) {
-	if (X(e)) return Ln(e?.state);
+function zn(e) {
+	if (X(e)) return Rn(e?.state);
 }
-function zn(e, t = q) {
+function Bn(e, t = q) {
 	let n = J(e);
 	return n === void 0 || t.some((e) => {
 		let t = J(e);
 		return t !== void 0 && t === n;
 	});
 }
-function Bn(e, t = q) {
-	return X(e) ? !zn(e?.state, t) : !1;
+function Vn(e, t = q) {
+	return X(e) ? !Bn(e?.state, t) : !1;
 }
-function Vn(e, t) {
+function Hn(e, t) {
 	let n = J(e), r = J(t);
 	return n !== void 0 && r !== void 0 && n === r;
 }
-function Hn(e, t) {
+function Un(e, t) {
 	let n = t?.activity;
-	if (!(!n || J(e) === void 0)) for (let t of An) {
+	if (!(!n || J(e) === void 0)) for (let t of jn) {
 		let r = n[t];
-		if (Array.isArray(r) && r.some((t) => Vn(e, t))) return t;
+		if (Array.isArray(r) && r.some((t) => Hn(e, t))) return t;
 	}
 }
-function Un(e) {
+function Wn(e) {
 	let t = J(e);
-	return t === void 0 ? void 0 : Nn[t];
+	return t === void 0 ? void 0 : Pn[t];
 }
-function Wn(e, t) {
-	if (e) return Hn(e.state, t) ?? Un(e.state);
+function Gn(e, t) {
+	if (e) return Un(e.state, t) ?? Wn(e.state);
 }
-function Gn(e) {
-	for (let t of jn) if (e.includes(t)) return t;
+function Kn(e) {
+	for (let t of Mn) if (e.includes(t)) return t;
 }
-function Kn(e, t, n = q) {
+function qn(e, t, n = q) {
 	let { primary: r, status: i, cleaning: a, charging: o, vacuumError: s } = e;
-	if (Pn(r)) return "unavailable";
-	if (Bn(s, n)) return "error";
-	let c = Gn([Wn(r, t), X(i) ? Wn(i, t) : void 0]);
+	if (Fn(r)) return "unavailable";
+	if (Vn(s, n)) return "error";
+	let c = Kn([Gn(r, t), X(i) ? Gn(i, t) : void 0]);
 	return c === "error" || c === "offline" || c === "unavailable" || c === "paused" || c === "returning" ? c : c === "cleaning" || Z(a) ? "cleaning" : c === "charging" || Z(o) ? "charging" : c ?? "unknown";
 }
-function qn(e, t) {
+function Jn(e, t) {
 	let n = t?.task_kind;
-	if (!(!n || J(e) === void 0)) for (let t of Mn) {
+	if (!(!n || J(e) === void 0)) for (let t of Nn) {
 		let r = n[t];
-		if (Array.isArray(r) && r.some((t) => Vn(e, t))) return t;
+		if (Array.isArray(r) && r.some((t) => Hn(e, t))) return t;
 	}
 }
-function Jn(e) {
+function Yn(e) {
 	return e === "vacuum" || e === "mop" || e === "combo" || e === "unknown";
 }
-function Yn(e, t, n, r) {
+function Xn(e, t, n, r) {
 	if (!t) return "unknown";
 	let i = [
 		e.status,
@@ -2558,12 +2611,12 @@ function Yn(e, t, n, r) {
 	];
 	for (let e of i) {
 		if (!X(e)) continue;
-		let t = qn(e?.state, n);
+		let t = Jn(e?.state, n);
 		if (t !== void 0) return t;
 	}
-	return Jn(r) ? r : "unknown";
+	return Yn(r) ? r : "unknown";
 }
-function Xn(e) {
+function Zn(e) {
 	return typeof e == "string" ? {
 		entity: e,
 		on_is: "unknown"
@@ -2581,85 +2634,85 @@ function $(e, t, n, r) {
 	};
 	return r && (i.entityId = r.entity_id, i.rawState = r.state), i;
 }
-function Zn(e, t, n, r, i) {
-	let a = Xn(r);
+function Qn(e, t, n, r, i) {
+	let a = Zn(r);
 	if (!a || a.on_is === "unknown" || !a.on_is) return;
 	let o = Y(t, a.entity);
-	X(o) && ((a.on_is === "warning" || a.on_is === "missing") && Z(o) || (a.on_is === "ok" || a.on_is === "installed") && Fn(o)) && e.push($(n, "warning", a.name ?? Q(o, i), o));
+	X(o) && ((a.on_is === "warning" || a.on_is === "missing") && Z(o) || (a.on_is === "ok" || a.on_is === "installed") && In(o)) && e.push($(n, "warning", a.name ?? Q(o, i), o));
 }
-function Qn(e, t) {
+function $n(e, t) {
 	let n = t.maintenance?.items ?? [], r = t.maintenance?.defaults?.warning_below ?? 20, i = t.maintenance?.defaults?.critical_below ?? 5, a = [];
 	for (let t of n) {
 		let n = Y(e, t.entity);
 		if (!X(n)) continue;
-		let o = In(n?.state);
+		let o = Ln(n?.state);
 		if (o === void 0) continue;
 		let s = t.warning_below ?? r, c = o <= (t.critical_below ?? i) ? "critical" : o <= s ? "warning" : void 0;
 		c && a.push($(`maintenance:${t.entity}`, c, t.name ?? Q(n, "Maintenance required"), n));
 	}
 	return a;
 }
-function $n(e, t, n) {
+function er(e, t, n) {
 	let r = t.error_handling?.clear_states ?? q, i = [], a = Y(e, t.entity), o = Y(e, t.entities?.vacuum_error), s = Y(e, t.dock?.entities?.error);
-	if (n === "unavailable" ? i.push($("robot_unavailable", "critical", "Vacuum unavailable", a)) : n === "offline" && i.push($("robot_offline", "critical", "Vacuum offline", a)), Bn(o, r)) i.push($("vacuum_error", "critical", Q(o, "Vacuum error"), o));
+	if (n === "unavailable" ? i.push($("robot_unavailable", "critical", "Vacuum unavailable", a)) : n === "offline" && i.push($("robot_offline", "critical", "Vacuum offline", a)), Vn(o, r)) i.push($("vacuum_error", "critical", Q(o, "Vacuum error"), o));
 	else if (n === "error") {
-		let n = Y(e, t.entities?.status), r = Un(a?.state) === "error" ? a : n;
+		let n = Y(e, t.entities?.status), r = Wn(a?.state) === "error" ? a : n;
 		i.push($("vacuum_error", "critical", Q(r, "Vacuum error"), r));
 	}
-	Bn(s, r) && i.push($("dock_error", "critical", Q(s, "Dock error"), s));
+	Vn(s, r) && i.push($("dock_error", "critical", Q(s, "Dock error"), s));
 	let c = Y(e, t.entities?.water_shortage);
 	Z(c) && i.push($("water_shortage", "warning", Q(c, "Water shortage"), c));
 	let l = t.dock?.entities;
-	return Zn(i, e, "dock_clean_water_tank", l?.clean_water_tank, "Clean-water tank"), Zn(i, e, "dock_dirty_water_tank", l?.dirty_water_tank, "Dirty-water tank"), Zn(i, e, "dock_cleaning_solution", l?.cleaning_solution, "Cleaning solution"), i.push(...Qn(e, t)), i;
+	return Qn(i, e, "dock_clean_water_tank", l?.clean_water_tank, "Clean-water tank"), Qn(i, e, "dock_dirty_water_tank", l?.dirty_water_tank, "Dirty-water tank"), Qn(i, e, "dock_cleaning_solution", l?.cleaning_solution, "Cleaning solution"), i.push(...$n(e, t)), i;
 }
-function er(e) {
+function tr(e) {
 	return Object.values(e.dock?.entities ?? {}).some(Boolean);
 }
-function tr(e, t, n = []) {
+function nr(e, t, n = []) {
 	let r = t.dock?.entities;
-	if (!r || !er(t)) return [];
+	if (!r || !tr(t)) return [];
 	let i = [], a = Y(e, r.mop_drying), o = Y(e, r.error);
-	return Bn(o, t.error_handling?.clear_states ?? q) && i.push("error"), Z(a) && i.push("mop_drying"), n.some((e) => e.key.startsWith("maintenance:") && t.maintenance?.items?.some((t) => t.entity === e.entityId && t.kind?.startsWith("dock") === !0)) && i.push("maintenance_required"), i.length > 0 ? i : X(a) || X(o) ? ["idle"] : [];
+	return Vn(o, t.error_handling?.clear_states ?? q) && i.push("error"), Z(a) && i.push("mop_drying"), n.some((e) => e.key.startsWith("maintenance:") && t.maintenance?.items?.some((t) => t.entity === e.entityId && t.kind?.startsWith("dock") === !0)) && i.push("maintenance_required"), i.length > 0 ? i : X(a) || X(o) ? ["idle"] : [];
 }
-function nr(e) {
+function rr(e) {
 	return X(e) ? e : void 0;
 }
-function rr(e, t) {
-	let n = Rn(t);
-	return n === void 0 ? Ln(e?.attributes.battery_level) : n;
+function ir(e, t) {
+	let n = zn(t);
+	return n === void 0 ? Rn(e?.attributes.battery_level) : n;
 }
-function ir(e, t, n) {
-	let r = Y(e, t.entity), i = t.entities ?? {}, a = Y(e, i.status), o = Y(e, i.cleaning), s = Y(e, i.charging), c = Y(e, i.vacuum_error), l = t.error_handling?.clear_states ?? q, u = Kn({
+function ar(e, t, n) {
+	let r = Y(e, t.entity), i = t.entities ?? {}, a = Y(e, i.status), o = Y(e, i.cleaning), s = Y(e, i.charging), c = Y(e, i.vacuum_error), l = t.error_handling?.clear_states ?? q, u = qn({
 		primary: r,
 		status: a,
 		cleaning: o,
 		charging: s,
 		vacuumError: c
-	}, t.state_map, l), d = r !== void 0 && u !== "unavailable" && u !== "offline", f = d && Z(o), p = d && u !== "error" && (f || u === "cleaning" || u === "paused"), ee = d && (u === "charging" || Z(s)), m = Yn({
+	}, t.state_map, l), d = r !== void 0 && u !== "unavailable" && u !== "offline", f = d && Z(o), ee = d && u !== "error" && (f || u === "cleaning" || u === "paused"), te = d && (u === "charging" || Z(s)), p = Xn({
 		primary: r,
 		status: a,
 		vacuumMode: Y(e, i.vacuum_mode),
 		mopMode: Y(e, i.mop_mode),
 		mopIntensity: Y(e, i.mop_intensity)
-	}, p, t.state_map, n), te = $n(e, t, u), h = d;
+	}, ee, t.state_map, n), m = er(e, t, u), h = d;
 	return {
 		primary: r,
 		activity: u,
-		taskKind: m,
-		sessionActive: p,
-		battery: h ? rr(r, Y(e, i.battery)) : void 0,
-		charging: ee,
-		progress: h ? Rn(Y(e, i.progress)) : void 0,
-		area: h ? nr(Y(e, i.area)) : void 0,
-		duration: h ? nr(Y(e, i.duration)) : void 0,
-		status: h ? nr(a) ?? nr(r) : void 0,
-		dockActivities: tr(e, t, te),
-		alerts: te
+		taskKind: p,
+		sessionActive: ee,
+		battery: h ? ir(r, Y(e, i.battery)) : void 0,
+		charging: te,
+		progress: h ? zn(Y(e, i.progress)) : void 0,
+		area: h ? rr(Y(e, i.area)) : void 0,
+		duration: h ? rr(Y(e, i.duration)) : void 0,
+		status: h ? rr(a) ?? rr(r) : void 0,
+		dockActivities: nr(e, t, m),
+		alerts: m
 	};
 }
 //#endregion
 //#region src/styles.ts
-var ar = o`
+var or = o`
   :host {
     display: block;
     container-type: inline-size;
@@ -2958,6 +3011,120 @@ var ar = o`
     gap: 10px;
   }
 
+  .activity-card {
+    min-block-size: 68px;
+    display: grid;
+    grid-template-columns: auto minmax(92px, 0.8fr) minmax(0, 1.35fr);
+    align-items: center;
+    gap: 10px;
+    padding: 9px 11px;
+    border-radius: 13px;
+    background: color-mix(in srgb, var(--primary-text-color, #1f2937) 4%, transparent);
+  }
+
+  .activity-card[data-session-active="true"] {
+    background: color-mix(in srgb, var(--vc-accent) 7%, transparent);
+  }
+
+  .activity-visual {
+    position: relative;
+    inline-size: 44px;
+    block-size: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    color: var(--secondary-text-color, #687386);
+    background: var(--vc-surface);
+    border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+  }
+
+  .activity-visual ha-icon {
+    position: relative;
+    z-index: 2;
+    inline-size: 23px;
+    block-size: 23px;
+    --mdc-icon-size: 23px;
+  }
+
+  .activity-card[data-session-active="true"] .activity-visual {
+    color: var(--vc-accent);
+  }
+
+  .activity-visual[data-active="true"][data-activity="cleaning"] ha-icon {
+    animation: vc-clean-drive var(--vc-speed) ease-in-out infinite;
+  }
+
+  .activity-visual[data-active="true"] .activity-trail {
+    position: absolute;
+    inset-inline: 5px;
+    inset-block-end: 4px;
+    block-size: 5px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--vc-accent) 28%, transparent);
+    animation: vc-trail var(--vc-speed) ease-in-out infinite;
+  }
+
+  .activity-visual[data-kind="mop"] .activity-trail,
+  .activity-visual[data-kind="combo"] .activity-trail {
+    background: color-mix(in srgb, var(--vc-water) 45%, transparent);
+  }
+
+  .activity-copy {
+    min-width: 0;
+    display: grid;
+    gap: 6px;
+  }
+
+  .activity-copy h3 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .activity-progress-value {
+    flex: 0 0 auto;
+    color: var(--vc-accent);
+    font-size: 0.78rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .activity-secondary {
+    min-block-size: 4px;
+    color: var(--secondary-text-color, #687386);
+    font-size: 0.76rem;
+  }
+
+  .activity-metrics {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(68px, 1fr));
+    gap: 4px;
+  }
+
+  .activity-card .metric,
+  .activity-card .metric-button {
+    min-block-size: 44px;
+    padding: 4px 6px;
+    background: transparent;
+  }
+
+  .activity-card .metric-label-row {
+    min-block-size: 0;
+  }
+
+  .activity-card .metric-label {
+    font-size: 0.67rem;
+  }
+
+  .activity-card .metric-value {
+    margin-block-start: 2px;
+    font-size: 0.82rem;
+  }
+
   .last-cleaning {
     padding: 11px 12px;
     border-radius: 13px;
@@ -2979,6 +3146,50 @@ var ar = o`
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
     gap: 8px;
+  }
+
+  .shell:not([data-density="compact"]) [data-section="controls"] {
+    gap: 0;
+  }
+
+  .shell:not([data-density="compact"]) [data-section="controls"] .section-heading {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  .shell:not([data-density="compact"]) .controls {
+    grid-template-columns: repeat(auto-fit, minmax(64px, 1fr));
+    gap: 4px;
+    padding: 4px;
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--primary-text-color, #1f2937) 5%, transparent);
+  }
+
+  .shell:not([data-density="compact"]) .controls button {
+    min-block-size: 46px;
+    padding: 7px 9px;
+    border-radius: 10px;
+    background: transparent;
+  }
+
+  .shell:not([data-density="compact"]) .control-text {
+    font-size: 0.76rem;
+    line-height: 1.15;
+  }
+
+  .shell:not([data-density="compact"]) .controls .primary {
+    color: var(--vc-accent);
+    background: color-mix(in srgb, var(--vc-accent) 10%, transparent);
+  }
+
+  .shell:not([data-density="compact"]) .controls .danger:not(:disabled) {
+    background: color-mix(in srgb, var(--vc-error) 8%, transparent);
   }
 
   .controls button {
@@ -3172,6 +3383,40 @@ var ar = o`
     padding: 11px 12px;
     border-radius: 13px;
     background: color-mix(in srgb, var(--primary-text-color, #1f2937) 5%, transparent);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .dock-strip::-webkit-details-marker {
+    display: none;
+  }
+
+  .dock-details[open] .dock-chevron {
+    transform: rotate(90deg);
+  }
+
+  .dock-trailing {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .dock-chevron {
+    inline-size: 18px;
+    block-size: 18px;
+    --mdc-icon-size: 18px;
+    transition: transform 140ms ease;
+  }
+
+  .dock-section:not([data-view="dock"]) .section-heading {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
   }
 
   .dock-symbol[data-active="true"] {
@@ -3367,14 +3612,24 @@ var ar = o`
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .shell:not([data-density="compact"]) .controls {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    .activity-card {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .activity-metrics {
+      grid-column: 1 / -1;
     }
   }
 
   @container (max-width: 320px) {
     .shell:not([data-density="compact"]) .program-grid {
       grid-template-columns: 1fr;
+    }
+  }
+
+  @container (max-width: 280px) {
+    .shell:not([data-density="compact"]) .controls {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
@@ -3557,6 +3812,17 @@ var ar = o`
 
   .shell[data-density="compact"] progress {
     block-size: 5px;
+  }
+
+  .compact-progress {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 7px;
+    color: var(--vc-accent);
+    font-size: 0.75rem;
+    font-weight: 650;
+    font-variant-numeric: tabular-nums;
   }
 
   .shell[data-density="compact"] .controls {
@@ -3762,6 +4028,10 @@ var ar = o`
     );
   }
 
+  .shell[data-appearance="adaptive"] .activity-card .metric {
+    background: transparent;
+  }
+
   .shell[data-appearance="adaptive"] .battery[data-charging="true"] {
     color: var(--state-vacuum-active-color, var(--vc-success));
   }
@@ -3809,6 +4079,16 @@ var ar = o`
     50% { transform: translateX(7px); }
   }
 
+  @keyframes vc-clean-drive {
+    0%, 100% { transform: translateX(-3px) rotate(-4deg); }
+    50% { transform: translateX(5px) rotate(4deg); }
+  }
+
+  @keyframes vc-trail {
+    0%, 100% { transform: scaleX(0.55); opacity: 0.35; }
+    50% { transform: scaleX(1); opacity: 0.9; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -3819,12 +4099,12 @@ var ar = o`
       transition-duration: 0.001ms !important;
     }
   }
-`, or = [
+`, sr = [
 	"cleaning",
 	"paused",
 	"returning"
-], sr = 400;
-function cr(e) {
+], cr = 400;
+function lr(e) {
 	switch (e) {
 		case "vacuum": return "◌";
 		case "mop": return "≈";
@@ -3832,18 +4112,18 @@ function cr(e) {
 		default: return "▶";
 	}
 }
-function lr(e) {
+function ur(e) {
 	if (!e) return;
 	let t = e.trim();
 	return /^(#[0-9a-f]{3,8}|[a-z]{3,20})$/iu.test(t) ? t : void 0;
 }
-function ur(e) {
+function dr(e) {
 	return typeof e == "string" ? {
 		entity: e,
 		on_is: "unknown"
 	} : e;
 }
-var dr = class extends D {
+var fr = class extends O {
 	constructor(...e) {
 		super(...e), this._confirmationArmed = !1, this._commandBusy = !1, this._mapOpen = !1, this._confirmationSequence = 0, this._nextProgramToken = 0, this._configRevision = 0, this._serviceRequestToken = 0, this._focusPrograms = () => {
 			let e = this.renderRoot.querySelector("#vc-programs button:not(:disabled)");
@@ -3893,7 +4173,7 @@ var dr = class extends D {
 		};
 	}
 	static {
-		this.styles = ar;
+		this.styles = or;
 	}
 	static {
 		this.properties = {
@@ -3918,16 +4198,16 @@ var dr = class extends D {
 		};
 	}
 	setConfig(e) {
-		let t = en(e);
+		let t = tn(e);
 		this._configRevision += 1, this._clearPendingTimer(), this._pendingProgram = void 0, this._confirmedProgramKind = void 0, this._acknowledgedProgramToken = void 0, this._notice = void 0, this._mapOpen = !1, this._confirmation && this._closeConfirmation(), this._config = t, this.requestUpdate();
 	}
 	getCardSize() {
 		if (!this._config) return 3;
-		let { rows: e } = Tn(this._config);
+		let { rows: e } = En(this._config);
 		return Math.max(1, Math.ceil(e * 1.15));
 	}
 	getGridOptions() {
-		return this._config ? Tn(this._config) : {
+		return this._config ? En(this._config) : {
 			rows: 2,
 			columns: 6,
 			min_rows: 2,
@@ -3941,7 +4221,7 @@ var dr = class extends D {
 		if (super.updated(e), this._setBackgroundInert(!!this._confirmation), e.has("_confirmation") && this._confirmation && queueMicrotask(() => {
 			this.renderRoot.querySelector("[data-dialog-cancel]")?.focus();
 		}), !this.hass || !this._config) return;
-		let t = ir(this.hass, this._config, this._confirmedProgramKind), n = this._pendingProgram ?? this._programTransport;
+		let t = ar(this.hass, this._config, this._confirmedProgramKind), n = this._pendingProgram ?? this._programTransport;
 		if (n && n.configRevision === this._configRevision && this._acknowledgedProgramToken !== n.token && t.activity === "cleaning") {
 			let e = n;
 			this._clearPendingTimer(), this._pendingProgram?.token === e.token && (this._pendingProgram = void 0), this._acknowledgedProgramToken = e.token, this._confirmedProgramKind = e.kind, this._notice = {
@@ -3949,7 +4229,7 @@ var dr = class extends D {
 				text: G(this.hass, "program.started", { name: e.name })
 			};
 		}
-		if (this._confirmedProgramKind && !t.sessionActive && !or.includes(t.activity) && (this._confirmedProgramKind = void 0), e.has("hass") && this._confirmation?.kind === "program") {
+		if (this._confirmedProgramKind && !t.sessionActive && !sr.includes(t.activity) && (this._confirmedProgramKind = void 0), e.has("hass") && this._confirmation?.kind === "program") {
 			let e = this._confirmation, n = this._programPreflight(e.program, t);
 			(e.openedActivity !== t.activity || !this._samePreflightIssues(e.issues, n)) && this._openConfirmation({
 				...e,
@@ -3959,9 +4239,9 @@ var dr = class extends D {
 		}
 	}
 	render() {
-		if (!this.hass || !this._config) return C;
-		let e = ir(this.hass, this._config, this._confirmedProgramKind), t = this._config.view, n = this._visibleSections(t), r = this._config.sections.order.filter((e) => n.has(e));
-		return r.includes("alerts") || r.unshift("alerts"), x`
+		if (!this.hass || !this._config) return T;
+		let e = ar(this.hass, this._config, this._confirmedProgramKind), t = this._config.view, n = this._visibleSections(t), r = this._config.sections.order.filter((e) => n.has(e));
+		return r.includes("alerts") || r.unshift("alerts"), C`
       <ha-card data-appearance=${this._config.appearance}>
         <div
           class="shell"
@@ -3972,10 +4252,10 @@ var dr = class extends D {
           data-animation-intensity=${this._config.animations.intensity}
         >
           ${this._renderHeader(e)}
-          ${this._config.configurationWarnings.map((e) => x`<div class="notice" data-kind="warning" role="status">
+          ${this._config.configurationWarnings.map((e) => C`<div class="notice" data-kind="warning" role="status">
               ${G(this.hass, `config.warning.${e.code}`, { value: e.value })}
             </div>`)}
-          ${this._notice ? x`<div
+          ${this._notice ? C`<div
                 class="notice"
                 data-kind=${this._notice.kind}
                 role="status"
@@ -3983,7 +4263,7 @@ var dr = class extends D {
                 tabindex="-1"
               >
                 ${this._notice.text}
-              </div>` : C}
+              </div>` : T}
           ${r.map((t) => this._renderSection(t, e))}
           ${this._renderConfirmation()}
         </div>
@@ -4008,13 +4288,13 @@ var dr = class extends D {
 		]) : new Set(this._config?.sections.order ?? []);
 	}
 	_renderHeader(e) {
-		if (!this.hass || !this._config) return C;
-		let t = this._config.view === "dock", n = e.primary ? H(this.hass, e.primary) : void 0, r = this._config.name ?? (t ? n ? G(this.hass, "card.dock_name", { name: n }) : G(this.hass, "card.default_dock_name") : n ?? G(this.hass, "card.default_name")), i = t ? this._dockHeaderStatus(e) : e.activity === "charging" && e.battery !== void 0 && e.battery >= 99.5 ? G(this.hass, "state.charged") : e.activity === "cleaning" ? un(this.hass, e.taskKind) : ln(this.hass, e.activity), a = !t && this._config.overview.items.includes("battery"), o = this._renderCompactStatusBadge(e), s = this._config.animations.enabled && this._config.animations.intensity !== "none" && [
+		if (!this.hass || !this._config) return T;
+		let t = this._config.view === "dock", n = e.primary ? H(this.hass, e.primary) : void 0, r = this._config.name ?? (t ? n ? G(this.hass, "card.dock_name", { name: n }) : G(this.hass, "card.default_dock_name") : n ?? G(this.hass, "card.default_name")), i = t ? this._dockHeaderStatus(e) : e.activity === "charging" && e.battery !== void 0 && e.battery >= 99.5 ? G(this.hass, "state.charged") : e.activity === "cleaning" ? dn(this.hass, e.taskKind) : un(this.hass, e.activity), a = !t && this._config.overview.items.includes("battery"), o = this._renderCompactStatusBadge(e), s = this._config.animations.enabled && this._config.animations.intensity !== "none" && [
 			"cleaning",
 			"returning",
 			"charging"
 		].includes(e.activity);
-		return x`
+		return C`
       <header class="header">
         <div class="title-row">
           <div
@@ -4023,7 +4303,7 @@ var dr = class extends D {
             data-active=${String(s)}
             aria-hidden="true"
           >
-            ${this._config.icon ? x`<ha-icon icon=${this._config.icon}></ha-icon>` : t ? "⌂" : "◎"}
+            ${this._config.icon ? C`<ha-icon icon=${this._config.icon}></ha-icon>` : t ? "⌂" : "◎"}
           </div>
           <div class="title-copy">
             <h2 tabindex="-1">${r}</h2>
@@ -4031,7 +4311,7 @@ var dr = class extends D {
           </div>
         </div>
         <div class="header-trailing">
-          ${a && e.battery !== void 0 ? x`<div
+          ${a && e.battery !== void 0 ? C`<div
                 class="battery"
                 data-charging=${String(e.charging)}
                 title=${G(this.hass, "metric.battery")}
@@ -4039,43 +4319,43 @@ var dr = class extends D {
               >
                 <span aria-hidden="true">${e.charging ? "⚡" : "▰"}</span>
                 ${Math.round(e.battery)} %
-              </div>` : C}
+              </div>` : T}
           ${o}
         </div>
       </header>
     `;
 	}
 	_renderCompactStatusBadge(e) {
-		if (!this.hass || !this._config || this._config.density !== "compact") return C;
-		let t = this._visibleAlerts(e), n = t[0];
+		if (!this.hass || !this._config || this._config.density !== "compact") return T;
+		let t = this._config.sections.order.includes("alerts") ? this._visibleAlerts(e) : [], n = t[0];
 		if (n) {
 			let e = this._alertLabel(n.key, n.label), r = t.length > 1 ? G(this.hass, "compact.alert_count", { count: t.length }) : e;
-			return n.entityId ? x`<button
+			return n.entityId ? C`<button
             class="compact-status-badge"
             data-severity=${n.severity}
             title=${r}
             aria-label=${r}
             @click=${() => W(this, n.entityId)}
-          ><span aria-hidden="true">!</span>${t.length > 1 ? t.length : C}</button>` : x`<span
+          ><span aria-hidden="true">!</span>${t.length > 1 ? t.length : T}</button>` : C`<span
             class="compact-status-badge"
             data-severity=${n.severity}
             role=${n.severity === "critical" ? "alert" : "status"}
             title=${r}
             aria-label=${r}
-          ><span aria-hidden="true">!</span>${t.length > 1 ? t.length : C}</span>`;
+          ><span aria-hidden="true">!</span>${t.length > 1 ? t.length : T}</span>`;
 		}
 		return e.dockActivities.some((e) => ![
 			"idle",
 			"error",
 			"maintenance_required",
 			"unknown"
-		].includes(e)) ? x`<span
+		].includes(e)) ? C`<span
           class="compact-status-badge"
           data-severity="info"
           role="status"
           title=${G(this.hass, "compact.dock_active")}
           aria-label=${G(this.hass, "compact.dock_active")}
-        ><span aria-hidden="true">⌂</span></span>` : C;
+        ><span aria-hidden="true">⌂</span></span>` : T;
 	}
 	_dockHeaderStatus(e) {
 		if (!this.hass || !this._config) return "";
@@ -4093,136 +4373,130 @@ var dr = class extends D {
 			case "maintenance": return this._renderMaintenance();
 			case "map": return this._renderMap();
 			case "diagnostics": return this._renderDiagnostics();
-			default: return C;
+			default: return T;
 		}
 	}
 	_renderActivity(e) {
-		if (!this.hass || !this._config) return C;
-		let t = new Set(this._config.overview.items), n = e.sessionActive && t.has("progress") && e.progress !== void 0, r = this._config.overview.items.some((t) => t === "progress" && e.sessionActive && e.progress !== void 0 || t === "area" && !!e.area || t === "duration" && !!e.duration), i = this._config.overview.items.map((t) => this._renderOverviewMetric(t, e, e.sessionActive)), a = e.activity === "cleaning" ? un(this.hass, e.taskKind) : ln(this.hass, e.activity), o = e.sessionActive ? a : G(this.hass, "section.last_cleaning");
-		if (this._config.density === "compact") return r ? x`
+		if (!this.hass || !this._config) return T;
+		let t = new Set(this._config.overview.items), n = e.sessionActive && t.has("progress") && e.progress !== void 0, r = this._config.overview.items.some((t) => t === "progress" && e.sessionActive && e.progress !== void 0 || t === "area" && !!e.area || t === "duration" && !!e.duration), i = this._config.overview.items.map((t) => this._renderOverviewMetric(t, e, !1)), a = e.activity === "cleaning" ? dn(this.hass, e.taskKind) : un(this.hass, e.activity), o = e.sessionActive ? a : G(this.hass, "section.last_cleaning");
+		if (this._config.density === "compact") return r ? C`
         <section
           class="section compact-overview"
           data-section="activity"
           data-session-active=${String(e.sessionActive)}
           aria-label=${o}
         >
-          ${n ? x`<progress
-                max="100"
-                .value=${e.progress}
-                aria-label=${G(this.hass, "metric.progress")}
-              ></progress>` : C}
+          ${n ? C`<div class="compact-progress">
+                <progress
+                  max="100"
+                  .value=${e.progress}
+                  aria-label=${G(this.hass, "metric.progress")}
+                ></progress>
+                <span>${Math.round(e.progress)} %</span>
+              </div>` : T}
           <div class="metrics">
             ${i}
           </div>
         </section>
-      ` : C;
-		if (!e.sessionActive) return r ? x`
-        <section
-          class="section last-cleaning"
-          data-section="activity"
-          data-session-active="false"
-          aria-labelledby="vc-last-cleaning-title"
+      ` : T;
+		if (!e.sessionActive && !r) return T;
+		let s = this._config.animations.enabled && this._config.animations.intensity !== "none" && e.activity === "cleaning", c = e.sessionActive ? "mdi:robot-vacuum" : "mdi:history";
+		return C`
+      <section
+        class="activity-card"
+        data-section="activity"
+        data-session-active=${String(e.sessionActive)}
+        aria-labelledby="vc-activity-title"
+      >
+        <div
+          class="activity-visual"
+          data-active=${String(s)}
+          data-kind=${e.taskKind}
+          data-activity=${e.activity}
+          aria-hidden="true"
         >
-          <div class="section-heading">
-            <h3 id="vc-last-cleaning-title">${o}</h3>
-          </div>
-          <div class="metrics">${i}</div>
-        </section>
-      ` : C;
-		let s = this._config.animations.enabled && this._config.animations.intensity !== "none" && [
-			"cleaning",
-			"returning",
-			"charging"
-		].includes(e.activity);
-		return x`
-      <section class="section" data-section="activity" aria-labelledby="vc-activity-title">
-        <div class="hero">
-          <div
-            class="robot-visual"
-            data-active=${String(s)}
-            data-kind=${e.taskKind}
-            data-activity=${e.activity}
-            aria-hidden="true"
-          >
-            <div class="robot-body">◎</div>
-          </div>
-          <div class="hero-copy">
-            <h3 class="hero-state" id="vc-activity-title">${a}</h3>
-            ${n ? x`<progress
-                  max="100"
-                  .value=${e.progress}
-                  aria-label=${G(this.hass, "metric.progress")}
-                ></progress>` : C}
-            <div class="metrics">
-              ${i}
-            </div>
-          </div>
+          <ha-icon icon=${c}></ha-icon>
+          <span class="activity-trail"></span>
+        </div>
+        <div class="activity-copy">
+          <h3 id="vc-activity-title">
+            <span>${o}</span>
+            ${n ? C`<span class="activity-progress-value">${Math.round(e.progress)} %</span>` : T}
+          </h3>
+          ${n ? C`<progress
+                max="100"
+                .value=${e.progress}
+                aria-label=${G(this.hass, "metric.progress")}
+              ></progress>` : C`<span class="activity-secondary"></span>`}
+        </div>
+        <div class="activity-metrics">
+          ${i}
         </div>
       </section>
     `;
 	}
 	_renderOverviewMetric(e, t, n = !0) {
-		return !this.hass || !this._config || e === "battery" ? C : e === "progress" && n && t.progress !== void 0 ? this._metric(G(this.hass, "metric.progress"), `${Math.round(t.progress)} %`, this._config.entities.progress) : e === "area" && t.area ? this._metric(G(this.hass, "metric.area"), U(this.hass, t.area), t.area.entity_id) : e === "duration" && t.duration ? this._metric(G(this.hass, "metric.duration"), U(this.hass, t.duration), t.duration.entity_id) : C;
+		return !this.hass || !this._config || e === "battery" ? T : e === "progress" && n && t.progress !== void 0 ? this._metric(G(this.hass, "metric.progress"), `${Math.round(t.progress)} %`, this._config.entities.progress) : e === "area" && t.area ? this._metric(G(this.hass, "metric.area"), U(this.hass, t.area), t.area.entity_id) : e === "duration" && t.duration ? this._metric(G(this.hass, "metric.duration"), U(this.hass, t.duration), t.duration.entity_id) : T;
 	}
 	_metric(e, t, n) {
-		let r = x`
+		let r = C`
       <div class="metric-label-row">
         <div class="metric-label">${e}</div>
       </div>
       <div class="metric-value">${t}</div>
     `;
-		return n ? x`<button
+		return n ? C`<button
           class="metric metric-button"
           aria-label=${`${e}: ${t}. ${G(this.hass, "action.more_info")}`}
           @click=${() => W(this, n)}
-        >${r}</button>` : x`<div class="metric">${r}</div>`;
+        >${r}</button>` : C`<div class="metric">${r}</div>`;
 	}
 	_renderControls(e) {
-		if (!this.hass || !this._config || !e.primary) return C;
-		let t = this._config.controls, n = (t, n) => t === !0 || t === "auto" && tn(e.primary, n), r = or.includes(e.activity), i = this._commandBusy || this._programBusy() || e.activity === "unavailable", a = this._config.programs.items.some((e) => !e.hidden), o = this._config.sections.order.includes("programs") && this._visibleSections(this._config.view).has("programs"), s = a && !o;
-		return x`
+		if (!this.hass || !this._config || !e.primary) return T;
+		let t = this._config.controls, n = (t, n) => t === !0 || t === "auto" && nn(e.primary, n), r = sr.includes(e.activity), i = this._commandBusy || this._programBusy() || e.activity === "unavailable", a = this._config.programs.items.some((e) => !e.hidden), o = this._config.sections.order.includes("programs") && this._visibleSections(this._config.view).has("programs"), s = a && !o;
+		return C`
       <section class="section" data-section="controls" aria-labelledby="vc-controls-title">
         <div class="section-heading"><h3 id="vc-controls-title">${G(this.hass, "section.controls")}</h3></div>
         <div class="controls">
-          ${e.activity === "cleaning" && n(t.start_pause, V.PAUSE) ? x`<button class="primary" ?disabled=${i} @click=${() => this._executeVacuum("pause")}>
+          ${e.activity === "cleaning" && n(t.start_pause, V.PAUSE) ? C`<button class="primary" ?disabled=${i} @click=${() => this._executeVacuum("pause")}>
                 ${this._controlContent("mdi:pause", G(this.hass, "action.pause"))}
-              </button>` : e.activity === "paused" && n(t.start_pause, V.START) ? x`<button class="primary" ?disabled=${i} @click=${() => this._executeVacuum("start")}>
+              </button>` : e.activity === "paused" && n(t.start_pause, V.START) ? C`<button class="primary" ?disabled=${i} @click=${() => this._executeVacuum("start")}>
                   ${this._controlContent("mdi:play", G(this.hass, "action.resume"))}
                 </button>` : s && this._config.density !== "compact" && [
 			"idle",
 			"docked",
 			"charging"
-		].includes(e.activity) ? x`<button class="primary" ?disabled=${i} @click=${this._focusPrograms}>
+		].includes(e.activity) ? C`<button class="primary" ?disabled=${i} @click=${this._focusPrograms}>
                     ${this._controlContent("mdi:playlist-play", G(this.hass, "action.programs"))}
-                  </button>` : n(t.start_pause, V.START) ? x`<button class="primary" ?disabled=${i} @click=${() => this._executeVacuum("start")}>
+                  </button>` : n(t.start_pause, V.START) ? C`<button class="primary" ?disabled=${i} @click=${() => this._executeVacuum("start")}>
                       ${this._controlContent("mdi:play", G(this.hass, "action.start"))}
-                    </button>` : C}
-          ${n(t.stop, V.STOP) ? x`<button
+                    </button>` : T}
+          ${n(t.stop, V.STOP) ? C`<button
                 class="danger"
                 ?disabled=${i || !r}
                 @click=${(t) => this._requestStop(e, t.currentTarget)}
               >
                 ${this._controlContent("mdi:stop", G(this.hass, "action.stop"))}
-              </button>` : C}
-          ${n(t.return_home, V.RETURN_HOME) ? x`<button
+              </button>` : T}
+          ${n(t.return_home, V.RETURN_HOME) ? C`<button
                 ?disabled=${i || e.activity === "docked"}
                 @click=${(t) => this._requestReturn(e, t.currentTarget)}
               >
                 ${this._controlContent("mdi:home-map-marker", G(this.hass, "action.return"))}
-              </button>` : C}
-          ${n(t.locate, V.LOCATE) ? x`<button ?disabled=${i} @click=${() => this._executeVacuum("locate")}>
+              </button>` : T}
+          ${n(t.locate, V.LOCATE) ? C`<button ?disabled=${i} @click=${() => this._executeVacuum("locate")}>
                 ${this._controlContent("mdi:crosshairs-gps", G(this.hass, "action.locate"))}
-              </button>` : C}
+              </button>` : T}
         </div>
       </section>
     `;
 	}
 	_controlContent(e, t) {
-		return x`<ha-icon class="control-icon" icon=${e} aria-hidden="true"></ha-icon><span class="control-text">${t}</span>`;
+		return C`<ha-icon class="control-icon" icon=${e} aria-hidden="true"></ha-icon><span class="control-text">${t}</span>`;
 	}
 	_requestStop(e, t) {
 		if (!(!this.hass || !this._config)) {
-			if (or.includes(e.activity) && this._config.controls.confirm_stop_while_active) {
+			if (sr.includes(e.activity) && this._config.controls.confirm_stop_while_active) {
 				this._openConfirmation({
 					kind: "service",
 					title: G(this.hass, "confirm.stop_title"),
@@ -4238,7 +4512,7 @@ var dr = class extends D {
 	}
 	_requestReturn(e, t) {
 		if (!(!this.hass || !this._config)) {
-			if (or.includes(e.activity) && this._config.controls.confirm_return_while_active) {
+			if (sr.includes(e.activity) && this._config.controls.confirm_return_while_active) {
 				this._openConfirmation({
 					kind: "service",
 					title: G(this.hass, "confirm.return_title"),
@@ -4276,33 +4550,33 @@ var dr = class extends D {
 		}
 	}
 	_renderPrograms(e) {
-		if (!this.hass || !this._config) return C;
+		if (!this.hass || !this._config) return T;
 		let t = this._config.programs.items.filter((e) => !e.hidden);
-		return t.length === 0 ? C : x`
+		return t.length === 0 ? T : C`
       <section class="section" data-section="programs" id="vc-programs" aria-labelledby="vc-programs-title">
         <div class="section-heading"><h3 id="vc-programs-title">${G(this.hass, "section.programs")}</h3></div>
         <div class="program-grid">
           ${t.map((e, t) => {
-			let n = this._programName(e, t), r = e.entity ? this.hass?.states[e.entity] : void 0, i = !!(e.entity && (!r || r.state === "unavailable")), a = lr(e.color), o = `vc-program-status-${t}`;
-			return x`<button
+			let n = this._programName(e, t), r = e.entity ? this.hass?.states[e.entity] : void 0, i = !!(e.entity && (!r || r.state === "unavailable")), a = ur(e.color), o = `vc-program-status-${t}`;
+			return C`<button
               class="program"
               style=${a ? `--program-color:${a}` : ""}
               ?disabled=${this._writeBusy()}
               aria-disabled=${i ? "true" : "false"}
-              aria-describedby=${i ? o : C}
+              aria-describedby=${i ? o : T}
               aria-label=${n}
               title=${i ? G(this.hass, "program.unavailable") : n}
               @click=${(n) => this._openProgram(e, t, n.currentTarget)}
             >
               <span class="program-icon" aria-hidden="true">
-                ${e.icon ? x`<ha-icon icon=${e.icon}></ha-icon>` : cr(e.kind)}
+                ${e.icon ? C`<ha-icon icon=${e.icon}></ha-icon>` : lr(e.kind)}
               </span>
               <span>
                 <span class="program-name">${n}</span>
-                ${e.description ? x`<span class="program-description">${e.description}</span>` : C}
-                ${i ? x`<span class="program-description" id=${o}>
+                ${e.description ? C`<span class="program-description">${e.description}</span>` : T}
+                ${i ? C`<span class="program-description" id=${o}>
                       ${G(this.hass, "program.unavailable")}
-                    </span>` : C}
+                    </span>` : T}
               </span>
             </button>`;
 		})}
@@ -4317,7 +4591,7 @@ var dr = class extends D {
 	}
 	_openProgram(e, t, n) {
 		if (!this.hass || !this._config || this._writeBusy()) return;
-		let r = ir(this.hass, this._config, this._confirmedProgramKind);
+		let r = ar(this.hass, this._config, this._confirmedProgramKind);
 		this._openConfirmation({
 			kind: "program",
 			program: e,
@@ -4362,14 +4636,14 @@ var dr = class extends D {
 		return n;
 	}
 	_requirementMatches(e, t) {
-		return !e || ["unknown", "unavailable"].includes(e.state.toLowerCase()) ? !1 : typeof t == "boolean" ? on(e) === t : typeof t == "number" ? Number(e.state) === t : e.state.toLowerCase() === t.toLowerCase();
+		return !e || ["unknown", "unavailable"].includes(e.state.toLowerCase()) ? !1 : typeof t == "boolean" ? sn(e) === t : typeof t == "number" ? Number(e.state) === t : e.state.toLowerCase() === t.toLowerCase();
 	}
 	_samePreflightIssues(e, t) {
 		return e.length === t.length && e.every((e, n) => e.severity === t[n]?.severity && e.label === t[n]?.label);
 	}
 	async _performProgram(e) {
 		if (!this.hass || !this._config || this._writeBusy()) return;
-		let t = this.hass, n = this._config, r = ir(t, n, this._confirmedProgramKind), i = this._programPreflight(e.program, r);
+		let t = this.hass, n = this._config, r = ar(t, n, this._confirmedProgramKind), i = this._programPreflight(e.program, r);
 		if (!this._samePreflightIssues(e.issues, i)) {
 			this._openConfirmation({
 				...e,
@@ -4400,7 +4674,7 @@ var dr = class extends D {
 			if (a.entity) await t.callService("button", "press", {}, { entity_id: a.entity });
 			else if (a.action) {
 				let e = { ...a.action };
-				delete e.confirmation, rn(this, e, n.entity);
+				delete e.confirmation, an(this, e, n.entity);
 			}
 		} catch {
 			if (this._programTransport?.token !== c.token || (this._programTransport = void 0, c.configRevision !== this._configRevision) || this._acknowledgedProgramToken === c.token) return;
@@ -4415,7 +4689,7 @@ var dr = class extends D {
 	_startPendingTimer(e) {
 		if (!this._config || !this._pendingProgram) return;
 		this._clearPendingTimer();
-		let t = It(this._config.programs.acknowledgement_timeout);
+		let t = Lt(this._config.programs.acknowledgement_timeout);
 		this._pendingTimer = window.setTimeout(() => {
 			if (this._pendingProgram?.token !== e) return;
 			let t = this._pendingProgram;
@@ -4435,38 +4709,38 @@ var dr = class extends D {
 		return this._commandBusy || this._programBusy();
 	}
 	_renderAlerts(e) {
-		if (!this.hass || !this._config || this._config.density === "compact") return C;
+		if (!this.hass || !this._config || this._config.density === "compact") return T;
 		let t = this._visibleAlerts(e);
-		if (t.length === 0) return C;
+		if (t.length === 0) return T;
 		let n = t.filter((e) => e.key.startsWith("maintenance:")), r = t.filter((e) => !e.key.startsWith("maintenance:"));
-		return x`
+		return C`
       <section class="section" data-section="alerts" aria-labelledby="vc-alerts-title">
         <div class="section-heading"><h3 id="vc-alerts-title">${G(this.hass, "section.alerts")}</h3></div>
         <div class="alert-list">
           ${r.map((e) => this._renderAlert(e))}
-          ${n.length > 0 ? this._renderMaintenanceAlertSummary(n) : C}
+          ${n.length > 0 ? this._renderMaintenanceAlertSummary(n) : T}
         </div>
       </section>
     `;
 	}
 	_renderAlert(e) {
 		let t = this._alertLabel(e.key, e.label), n = e.severity === "critical" ? "mdi:alert-circle" : e.severity === "warning" ? "mdi:alert" : "mdi:information-outline";
-		return x`<div
+		return C`<div
       class="alert"
       data-severity=${e.severity}
       role=${e.severity === "critical" ? "alert" : "status"}
     >
       <ha-icon class="alert-icon" icon=${n} aria-hidden="true"></ha-icon>
       <span class="alert-copy">${t}</span>
-      ${e.entityId ? x`<button
+      ${e.entityId ? C`<button
             class="alert-action"
             aria-label=${`${t}: ${G(this.hass, "action.more_info")}`}
             @click=${() => W(this, e.entityId)}
-          ><ha-icon icon="mdi:information-outline" aria-hidden="true"></ha-icon></button>` : C}
+          ><ha-icon icon="mdi:information-outline" aria-hidden="true"></ha-icon></button>` : T}
     </div>`;
 	}
 	_renderMaintenanceAlertSummary(e) {
-		if (!this.hass) return C;
+		if (!this.hass) return T;
 		let t = {
 			critical: 0,
 			warning: 1,
@@ -4480,7 +4754,7 @@ var dr = class extends D {
 			name: n.label,
 			value: i
 		}) : void 0;
-		return x`<div
+		return C`<div
       class="alert maintenance-alert"
       data-severity=${n.severity}
       role=${n.severity === "critical" ? "alert" : "status"}
@@ -4488,13 +4762,13 @@ var dr = class extends D {
       <ha-icon class="alert-icon" icon="mdi:wrench-clock" aria-hidden="true"></ha-icon>
       <span class="alert-copy">
         <span>${a}</span>
-        ${o ? x`<span class="alert-detail">${o}</span>` : C}
+        ${o ? C`<span class="alert-detail">${o}</span>` : T}
       </span>
-      ${n.entityId ? x`<button
+      ${n.entityId ? C`<button
             class="alert-action"
             aria-label=${`${n.label}: ${G(this.hass, "action.more_info")}`}
             @click=${() => W(this, n.entityId)}
-          ><ha-icon icon="mdi:information-outline" aria-hidden="true"></ha-icon></button>` : C}
+          ><ha-icon icon="mdi:information-outline" aria-hidden="true"></ha-icon></button>` : T}
     </div>`;
 	}
 	_visibleAlerts(e) {
@@ -4517,45 +4791,52 @@ var dr = class extends D {
 		return e.alerts.filter((e) => e.key.startsWith("dock_") || !!(e.entityId && (t.has(e.entityId) || n.has(e.entityId)))).sort((e, t) => r[e.severity] - r[t.severity]);
 	}
 	_renderDock(e) {
-		if (!this.hass || !this._config) return C;
+		if (!this.hass || !this._config) return T;
 		let t = this._config.dock, n = t.entities;
-		if (!Object.values(n).some(Boolean) || t.display === "hidden" && this._config.view !== "dock") return C;
+		if (!Object.values(n).some(Boolean) || t.display === "hidden" && this._config.view !== "dock") return T;
 		let r = e.dockActivities.includes("mop_drying"), i = e.dockActivities.some((e) => ![
 			"idle",
 			"error",
 			"maintenance_required"
-		].includes(e)), a = this._dockEntityIds().map((e) => this.hass.states[e]), o = a.some((e) => e && !["unknown", "unavailable"].includes(e.state.toLowerCase())), s = a.some((e) => e?.state.toLowerCase() === "unknown"), c = this._dockAlerts(e), l = c[0], u = c.length > 0, d = t.show_warnings_in_header && !!l, f = t.show_activity_in_header && i, p = n.drying_remaining ? this.hass.states[n.drying_remaining] : void 0, ee = d && l ? this._alertLabel(l.key, l.label) : f && r ? G(this.hass, "dock.drying") : o ? u || i ? G(this.hass, "section.dock") : G(this.hass, "dock.ready") : G(this.hass, s ? "dock.unknown" : "dock.unavailable"), m = t.display === "expanded" || this._config.view === "dock" || t.auto_expand_on_activity && i || t.auto_expand_on_warning && u, te = f && this._config.animations.enabled && this._config.animations.intensity !== "none", h = d ? "!" : f ? "≈" : o ? u || i ? "·" : "✓" : "?";
-		return x`
-      <section class="section" data-section="dock" aria-labelledby="vc-dock-title">
+		].includes(e)), a = this._dockEntityIds().map((e) => this.hass.states[e]), o = a.some((e) => e && !["unknown", "unavailable"].includes(e.state.toLowerCase())), s = a.some((e) => e?.state.toLowerCase() === "unknown"), c = this._dockAlerts(e), l = c[0], u = c.length > 0, d = t.show_warnings_in_header && !!l, f = t.show_activity_in_header && i, ee = n.drying_remaining ? this.hass.states[n.drying_remaining] : void 0, te = d && l ? this._alertLabel(l.key, l.label) : f && r ? G(this.hass, "dock.drying") : o ? u || i ? G(this.hass, "section.dock") : G(this.hass, "dock.ready") : G(this.hass, s ? "dock.unknown" : "dock.unavailable"), p = t.display === "expanded" || this._config.view === "dock" || t.auto_expand_on_activity && i || t.auto_expand_on_warning && u, m = f && this._config.animations.enabled && this._config.animations.intensity !== "none", h = d ? "!" : f ? "≈" : o ? u || i ? "·" : "✓" : "?";
+		return C`
+      <section
+        class="section dock-section"
+        data-section="dock"
+        data-view=${this._config.view}
+        aria-labelledby="vc-dock-title"
+      >
         <div class="section-heading"><h3 id="vc-dock-title">${G(this.hass, "section.dock")}</h3></div>
-        <div class="dock-strip">
-          <span class="dock-symbol" data-active=${String(te)} aria-hidden="true">⌂</span>
-          <span>
-            <strong>${ee}</strong>
-            ${f && r && p ? x`<span class="program-description">${U(this.hass, p)}</span>` : C}
-          </span>
-          <span aria-hidden="true">${h}</span>
-        </div>
-        <details ?open=${m}>
-          <summary>${G(this.hass, "dock.details")}</summary>
+        <details class="dock-details" ?open=${p}>
+          <summary class="dock-strip">
+            <span class="dock-symbol" data-active=${String(m)} aria-hidden="true">⌂</span>
+            <span>
+              <strong>${te}</strong>
+              ${f && r && ee ? C`<span class="program-description">${U(this.hass, ee)}</span>` : T}
+            </span>
+            <span class="dock-trailing" aria-hidden="true">
+              <span>${h}</span>
+              <ha-icon class="dock-chevron" icon="mdi:chevron-right"></ha-icon>
+            </span>
+          </summary>
           <div class="details-content">
             ${this._renderBinaryDockEntity(n.clean_water_tank)}
             ${this._renderBinaryDockEntity(n.dirty_water_tank)}
             ${this._renderBinaryDockEntity(n.cleaning_solution)}
-            ${n.emptying_mode ? this._renderSelectSetting(n.emptying_mode, G(this.hass, "setting.emptying_mode"), !1) : C}
-            ${n.child_lock ? this._renderChildLock(n.child_lock) : C}
+            ${n.emptying_mode ? this._renderSelectSetting(n.emptying_mode, G(this.hass, "setting.emptying_mode"), !1) : T}
+            ${n.child_lock ? this._renderChildLock(n.child_lock) : T}
           </div>
         </details>
       </section>
     `;
 	}
 	_renderBinaryDockEntity(e) {
-		if (!this.hass) return C;
-		let t = ur(e);
-		if (!t) return C;
+		if (!this.hass) return T;
+		let t = dr(e);
+		if (!t) return T;
 		let n = this.hass.states[t.entity];
-		if (!n) return C;
-		let r = on(n), i = U(this.hass, n);
+		if (!n) return T;
+		let r = sn(n), i = U(this.hass, n);
 		if (t.on_is && t.on_is !== "unknown" && r !== void 0) switch (t.on_is) {
 			case "ok":
 				i = G(this.hass, r ? "binary.ok" : "binary.check");
@@ -4574,11 +4855,11 @@ var dr = class extends D {
 		return this._entityRow(t.name ?? H(this.hass, n), i, n.entity_id);
 	}
 	_renderChildLock(e) {
-		if (!this.hass) return C;
+		if (!this.hass) return T;
 		let t = this.hass.states[e];
-		if (!t) return C;
-		let n = on(t) === !0;
-		return x`<div class="setting-row">
+		if (!t) return T;
+		let n = sn(t) === !0;
+		return C`<div class="setting-row">
       <span>${G(this.hass, "setting.child_lock")}</span>
       <button
         ?disabled=${this._writeBusy() || ["unknown", "unavailable"].includes(t.state.toLowerCase())}
@@ -4603,7 +4884,7 @@ var dr = class extends D {
 		this._executeService("switch", r, e);
 	}
 	_renderDetails(e) {
-		if (!this.hass || !this._config) return C;
+		if (!this.hass || !this._config) return T;
 		let t = this._config.entities;
 		if (![
 			t.last_start,
@@ -4612,31 +4893,31 @@ var dr = class extends D {
 			t.mop_mode,
 			t.mop_intensity,
 			t.volume
-		].some(Boolean)) return C;
-		let n = or.includes(e.activity);
-		return x`
+		].some(Boolean)) return T;
+		let n = sr.includes(e.activity);
+		return C`
       <section class="section" data-section="details">
         <details ?open=${this._config.density === "detailed"}>
           <summary>${G(this.hass, "section.details")}</summary>
           <div class="details-content">
-            ${t.last_start ? this._configuredEntityRow(t.last_start, G(this.hass, "metric.last_start")) : C}
-            ${t.last_end ? this._configuredEntityRow(t.last_end, G(this.hass, "metric.last_end")) : C}
-            ${t.vacuum_mode ? this._renderSelectSetting(t.vacuum_mode, G(this.hass, "setting.vacuum_mode"), n) : C}
-            ${t.mop_mode ? this._renderSelectSetting(t.mop_mode, G(this.hass, "setting.mop_mode"), n) : C}
-            ${t.mop_intensity ? this._renderSelectSetting(t.mop_intensity, G(this.hass, "setting.mop_intensity"), n) : C}
-            ${t.volume ? this._renderVolume(t.volume, n) : C}
+            ${t.last_start ? this._configuredEntityRow(t.last_start, G(this.hass, "metric.last_start")) : T}
+            ${t.last_end ? this._configuredEntityRow(t.last_end, G(this.hass, "metric.last_end")) : T}
+            ${t.vacuum_mode ? this._renderSelectSetting(t.vacuum_mode, G(this.hass, "setting.vacuum_mode"), n) : T}
+            ${t.mop_mode ? this._renderSelectSetting(t.mop_mode, G(this.hass, "setting.mop_mode"), n) : T}
+            ${t.mop_intensity ? this._renderSelectSetting(t.mop_intensity, G(this.hass, "setting.mop_intensity"), n) : T}
+            ${t.volume ? this._renderVolume(t.volume, n) : T}
           </div>
         </details>
       </section>
     `;
 	}
 	_configuredEntityRow(e, t) {
-		if (!this.hass) return C;
+		if (!this.hass) return T;
 		let n = this.hass.states[e];
-		return n ? this._entityRow(t, U(this.hass, n), e) : C;
+		return n ? this._entityRow(t, U(this.hass, n), e) : T;
 	}
 	_entityRow(e, t, n) {
-		return x`<div class="entity-row">
+		return C`<div class="entity-row">
       <span>${e}</span>
       <span class="entity-value">
         ${t}
@@ -4647,21 +4928,21 @@ var dr = class extends D {
     </div>`;
 	}
 	_renderSelectSetting(e, t, n) {
-		if (!this.hass) return C;
+		if (!this.hass) return T;
 		let r = this.hass.states[e];
-		if (!r) return C;
+		if (!r) return T;
 		let i = Array.isArray(r.attributes.options) ? r.attributes.options : [];
-		return x`<label class="setting-row">
+		return C`<label class="setting-row">
       <span>${t}</span>
       <select
-        .value=${at(r.state)}
+        .value=${ot(r.state)}
         ?disabled=${n || this._writeBusy() || ["unknown", "unavailable"].includes(r.state)}
         @change=${(t) => {
 			let n = t.currentTarget;
 			this._setSelectOption(e, n.value, n);
 		}}
       >
-        ${i.map((e) => x`<option .value=${e}>${e}</option>`)}
+        ${i.map((e) => C`<option .value=${e}>${e}</option>`)}
       </select>
     </label>`;
 	}
@@ -4687,20 +4968,20 @@ var dr = class extends D {
 		}
 	}
 	_renderVolume(e, t) {
-		if (!this.hass) return C;
+		if (!this.hass) return T;
 		let n = this.hass.states[e];
-		if (!n) return C;
+		if (!n) return T;
 		let r = Number(n.state), i = Number(n.attributes.min ?? 0), a = Number(n.attributes.max ?? 100), o = Number(n.attributes.step ?? 1);
 		return [
 			r,
 			i,
 			a,
 			o
-		].every(Number.isFinite) ? x`<label class="setting-row">
+		].every(Number.isFinite) ? C`<label class="setting-row">
       <span>${G(this.hass, "setting.volume")} · ${r}</span>
       <input
         type="range"
-        .value=${at(String(r))}
+        .value=${ot(String(r))}
         min=${String(i)}
         max=${String(a)}
         step=${String(o)}
@@ -4710,7 +4991,7 @@ var dr = class extends D {
 			this._setNumberValue(e, Number(n.value), n);
 		}}
       />
-    </label>` : C;
+    </label>` : T;
 	}
 	async _setNumberValue(e, t, n) {
 		let r = Number(this.hass?.states[e]?.state);
@@ -4734,9 +5015,9 @@ var dr = class extends D {
 		}
 	}
 	_renderMaintenance() {
-		if (!this.hass || !this._config) return C;
+		if (!this.hass || !this._config) return T;
 		let e = this._config.maintenance, t = this._config.view === "dock" ? e.items.filter((e) => e.kind?.startsWith("dock")) : e.items;
-		return e.display === "hidden" || t.length === 0 ? C : x`
+		return e.display === "hidden" || t.length === 0 ? T : C`
       <section class="section" data-section="maintenance">
         <details ?open=${e.display === "expanded"}>
           <summary>${G(this.hass, "section.maintenance")}</summary>
@@ -4748,15 +5029,15 @@ var dr = class extends D {
     `;
 	}
 	_renderMaintenanceItem(e) {
-		if (!this.hass || !this._config) return C;
+		if (!this.hass || !this._config) return T;
 		let t = this.hass.states[e.entity];
-		if (!t) return C;
+		if (!t) return T;
 		let n = Number(t.state), r = e.warning_below ?? this._config.maintenance.defaults.warning_below ?? 20, i = e.critical_below ?? this._config.maintenance.defaults.critical_below ?? 5, a = Number.isFinite(n) ? n <= i ? "var(--vc-error)" : n <= r ? "var(--vc-warning)" : "var(--vc-success)" : "var(--secondary-text-color)", o = Number.isFinite(n) && t.attributes.unit_of_measurement === "%" ? Math.min(100, Math.max(0, n)) : void 0, s = e.name ?? H(this.hass, t);
-		return x`<div class="entity-row">
+		return C`<div class="entity-row">
       <span>${s}</span>
       <span class="entity-value maintenance-value">
         ${U(this.hass, t)}
-        ${o === void 0 ? C : x`<span class="maintenance-bar" aria-hidden="true"><span style=${`--remaining:${o}%;--bar-color:${a}`}></span></span>`}
+        ${o === void 0 ? T : C`<span class="maintenance-bar" aria-hidden="true"><span style=${`--remaining:${o}%;--bar-color:${a}`}></span></span>`}
         <button
           aria-label=${`${s}: ${G(this.hass, "action.more_info")}`}
           @click=${() => W(this, e.entity)}
@@ -4765,37 +5046,37 @@ var dr = class extends D {
     </div>`;
 	}
 	_renderMap() {
-		if (!this.hass || !this._config?.entities.map) return C;
+		if (!this.hass || !this._config?.entities.map) return T;
 		let e = this.hass.states[this._config.entities.map];
-		if (!e) return C;
-		let t = an(this.hass, e);
-		return t ? x`
+		if (!e) return T;
+		let t = on(this.hass, e);
+		return t ? C`
       <section class="section" data-section="map">
         <details ?open=${this._mapOpen} @toggle=${this._handleMapToggle}>
           <summary>${G(this.hass, "section.map")}</summary>
-          ${this._mapOpen ? x`<div class="details-content">
+          ${this._mapOpen ? C`<div class="details-content">
                 <img class="map-image" src=${t} loading="lazy" decoding="async" alt=${H(this.hass, e)} />
-              </div>` : C}
+              </div>` : T}
         </details>
       </section>
-    ` : C;
+    ` : T;
 	}
 	_handleMapToggle(e) {
 		this._mapOpen = e.currentTarget.open;
 	}
 	_renderDiagnostics() {
-		if (!this.hass || !this._config) return C;
+		if (!this.hass || !this._config) return T;
 		let e = this._config.diagnostics;
-		return e.display === "hidden" || e.items.length === 0 ? C : x`
+		return e.display === "hidden" || e.items.length === 0 ? T : C`
       <section class="section" data-section="diagnostics">
         <details ?open=${e.display === "expanded"}>
           <summary>${G(this.hass, "section.diagnostics")}</summary>
           <div class="details-content">
             ${e.items.map((e) => {
 			let t = this.hass?.states[e.entity];
-			if (!t || !this.hass) return C;
-			let n = e.entity.startsWith("switch."), r = e.name ?? H(this.hass, t), i = on(t) !== !0;
-			return x`<div class="entity-row">
+			if (!t || !this.hass) return T;
+			let n = e.entity.startsWith("switch."), r = e.name ?? H(this.hass, t), i = sn(t) !== !0;
+			return C`<div class="entity-row">
                 <span class="diagnostic-copy">
                   <span>${r}</span>
                   <span class="program-description">${e.entity}</span>
@@ -4807,14 +5088,14 @@ var dr = class extends D {
                 </span>
                 <span class="entity-value">
                   ${U(this.hass, t)}
-                  ${n ? x`<button
+                  ${n ? C`<button
                         ?disabled=${this._writeBusy() || ["unknown", "unavailable"].includes(t.state.toLowerCase())}
                         aria-label=${G(this.hass, "diagnostic.switch_aria", {
 				name: r,
 				action: G(this.hass, i ? "action.turn_on" : "action.turn_off")
 			})}
                         @click=${() => this._requestDiagnosticSwitch(e.entity, i, e.confirmation === "always")}
-                      >↕</button>` : x`<button class="icon-action" aria-label=${G(this.hass, "action.more_info")} @click=${() => W(this, e.entity)}>
+                      >↕</button>` : C`<button class="icon-action" aria-label=${G(this.hass, "action.more_info")} @click=${() => W(this, e.entity)}>
                         <ha-icon icon="mdi:information-outline" aria-hidden="true"></ha-icon>
                       </button>`}
                 </span>
@@ -4843,7 +5124,7 @@ var dr = class extends D {
 		let r = ++this._confirmationSequence;
 		this._confirmationArmed = !1, this._confirmation = e, this._confirmationArmTimer = window.setTimeout(() => {
 			r !== this._confirmationSequence || !this._confirmation || (this._confirmationArmTimer = void 0, this._confirmationArmed = !0);
-		}, sr);
+		}, cr);
 	}
 	_clearConfirmationArmTimer() {
 		this._confirmationArmTimer !== void 0 && (window.clearTimeout(this._confirmationArmTimer), this._confirmationArmTimer = void 0);
@@ -4852,12 +5133,12 @@ var dr = class extends D {
 		for (let t of this.renderRoot.querySelectorAll(".shell > :not(.dialog-backdrop)")) t.toggleAttribute("inert", e);
 	}
 	_renderConfirmation() {
-		if (!this.hass || !this._confirmation) return C;
+		if (!this.hass || !this._confirmation) return T;
 		let e = this._confirmation, t = e.kind === "program", n = t ? this._programName(e.program, e.index) : "", r = this._config ? H(this.hass, this.hass.states[this._config.entity]) || this._config.name || this._config.entity : "", i = t ? e.program.confirmation?.title ?? G(this.hass, "program.confirm_title") : e.title, a = t ? e.program.confirmation?.text ?? G(this.hass, "program.confirm_text", {
 			name: n,
 			robot: r
 		}) : e.text, o = t && e.issues.some((e) => e.severity === "block"), s = t ? e.program.confirmation?.confirm_text ?? G(this.hass, "action.confirm") : G(this.hass, "action.confirm"), c = t ? e.program.confirmation?.dismiss_text ?? G(this.hass, "action.cancel") : G(this.hass, "action.cancel");
-		return x`<div
+		return C`<div
       class="dialog-backdrop"
       @click=${this._onBackdropClick}
       @keydown=${this._onDialogKeydown}
@@ -4872,9 +5153,9 @@ var dr = class extends D {
       >
         <h3 id="vc-dialog-title">${i}</h3>
         <p id="vc-dialog-text">${a}</p>
-        ${t && e.issues.length > 0 ? x`<ul class="dialog-issues">
-              ${e.issues.map((e) => x`<li><strong>${e.severity === "block" ? "!" : "⚠"}</strong> ${e.label}</li>`)}
-            </ul>` : C}
+        ${t && e.issues.length > 0 ? C`<ul class="dialog-issues">
+              ${e.issues.map((e) => C`<li><strong>${e.severity === "block" ? "!" : "⚠"}</strong> ${e.label}</li>`)}
+            </ul>` : T}
         <div class="dialog-actions">
           <button data-dialog-cancel @click=${this._closeConfirmation}>${c}</button>
           <button
@@ -4890,9 +5171,9 @@ var dr = class extends D {
 };
 //#endregion
 //#region src/index.ts
-customElements.get("vacuum-control-card") || customElements.define("vacuum-control-card", dr);
-var fr = window;
-fr.customCards = fr.customCards ?? [], fr.customCards.some((e) => e.type === "vacuum-control-card") || fr.customCards.push({
+customElements.get("vacuum-control-card") || customElements.define("vacuum-control-card", fr);
+var pr = window;
+pr.customCards = pr.customCards ?? [], pr.customCards.some((e) => e.type === "vacuum-control-card") || pr.customCards.push({
 	type: "vacuum-control-card",
 	name: "Vacuum Control Card",
 	description: "Safe and elegant controls for vacuum and mop robots with optional dock status.",
@@ -4903,4 +5184,4 @@ fr.customCards = fr.customCards ?? [], fr.customCards.some((e) => e.type === "va
 	} } : null
 });
 //#endregion
-export { dr as VacuumCard, Qe as VacuumCardEditor, ir as buildViewModel, Tn as computeLayoutProfile, en as normalizeConfig };
+export { fr as VacuumCard, $e as VacuumCardEditor, ar as buildViewModel, En as computeLayoutProfile, tn as normalizeConfig };

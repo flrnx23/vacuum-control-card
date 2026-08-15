@@ -42,13 +42,23 @@ const SELECTABLE_SECTIONS = [
   "activity",
   "controls",
   "programs",
+  "alerts",
   "dock",
   "details",
   "maintenance",
   "map",
   "diagnostics",
 ] as const;
-const SECTION_ORDER = [
+const COMBINED_SECTION_ORDER = [
+  "activity",
+  "controls",
+  "programs",
+  "alerts",
+  "dock",
+] as const;
+const ROBOT_SECTION_ORDER = ["activity", "controls", "programs", "alerts"] as const;
+const DOCK_SECTION_ORDER = ["alerts", "dock", "maintenance", "diagnostics"] as const;
+const ALL_SECTION_ORDER = [
   "activity",
   "controls",
   "programs",
@@ -59,8 +69,6 @@ const SECTION_ORDER = [
   "map",
   "diagnostics",
 ] as const;
-const COMPACT_SECTION_ORDER = ["activity", "controls", "programs", "alerts"] as const;
-const COMPACT_DOCK_SECTION_ORDER = ["alerts", "dock", "maintenance", "diagnostics"] as const;
 
 type SelectableSection = (typeof SELECTABLE_SECTIONS)[number];
 
@@ -136,11 +144,12 @@ const TRANSLATIONS = {
       "Wähle die kompakten Werte unter dem Status. Name und Status bleiben immer sichtbar.",
     visibleSections: "Sichtbare Bereiche",
     visibleSectionsHint: "Wähle, welche Bereiche die Karte anzeigen soll.",
-    alertsSafety:
-      "Warnungen bleiben aus Sicherheitsgründen immer sichtbar und können hier nicht ausgeblendet werden.",
+    alertsOptional:
+      "Hinweise sind optional. Kritische Roboterfehler bleiben weiterhin im Hauptstatus erkennbar.",
     sectionActivity: "Aktivität",
     sectionControls: "Steuerung",
     sectionPrograms: "Programme",
+    sectionAlerts: "Hinweise",
     sectionDock: "Station",
     sectionDetails: "Robotereinstellungen",
     sectionMaintenance: "Wartung",
@@ -230,11 +239,12 @@ const TRANSLATIONS = {
       "Choose the compact values shown below the status. Name and status always remain visible.",
     visibleSections: "Visible sections",
     visibleSectionsHint: "Choose which sections the card should display.",
-    alertsSafety:
-      "Warnings always remain visible for safety and cannot be hidden here.",
+    alertsOptional:
+      "Notices are optional. Critical robot errors remain visible in the main status.",
     sectionActivity: "Activity",
     sectionControls: "Controls",
     sectionPrograms: "Programs",
+    sectionAlerts: "Notices",
     sectionDock: "Dock",
     sectionDetails: "Robot settings",
     sectionMaintenance: "Maintenance",
@@ -539,10 +549,17 @@ export class VacuumCardEditor extends LitElement {
     const programs = config.programs?.items ?? [];
     const overviewItems = new Set(this._effectiveOverviewItems(config));
     const visibleSections = new Set(this._effectiveSectionOrder(config));
+    const view = config.view ?? "combined";
+    const selectableSections = this._sectionsForView(view);
+    const entityFields = this._entityFieldsForContext(view, visibleSections);
+    const showRobotConfiguration = view !== "dock";
+    const showDockConfiguration = view !== "robot" && visibleSections.has("dock");
+    const showProgramConfiguration = view !== "dock" && visibleSections.has("programs");
     const sectionLabels: Record<SelectableSection, string> = {
       activity: t.sectionActivity,
       controls: t.sectionControls,
       programs: t.sectionPrograms,
+      alerts: t.sectionAlerts,
       dock: t.sectionDock,
       details: t.sectionDetails,
       maintenance: t.sectionMaintenance,
@@ -607,7 +624,7 @@ export class VacuumCardEditor extends LitElement {
           </div>
         </section>
 
-        <section class="section" aria-labelledby="quick-info-heading">
+        ${showRobotConfiguration ? html`<section class="section" aria-labelledby="quick-info-heading">
           <div class="section-heading">
             <h3 id="quick-info-heading">${t.quickInfo}</h3>
             <p class="hint" id="quick-info-hint">${t.quickInfoHint}</p>
@@ -631,7 +648,7 @@ export class VacuumCardEditor extends LitElement {
               `)}
             </div>
           </fieldset>
-        </section>
+        </section>` : nothing}
 
         <section class="section" aria-labelledby="visible-sections-heading">
           <div class="section-heading">
@@ -640,10 +657,10 @@ export class VacuumCardEditor extends LitElement {
           </div>
           <fieldset
             aria-labelledby="visible-sections-heading"
-            aria-describedby="visible-sections-hint alerts-safety-note"
+            aria-describedby="visible-sections-hint alerts-optional-note"
           >
             <div class="choice-grid">
-              ${SELECTABLE_SECTIONS.map((section) => html`
+              ${selectableSections.map((section) => html`
                 <label class="checkbox-option" for="section-${section}">
                   <input
                     id="section-${section}"
@@ -660,16 +677,16 @@ export class VacuumCardEditor extends LitElement {
               `)}
             </div>
           </fieldset>
-          <p class="safety-note" id="alerts-safety-note">${t.alertsSafety}</p>
+          <p class="safety-note" id="alerts-optional-note">${t.alertsOptional}</p>
         </section>
 
-        <section class="section" aria-labelledby="entities-heading">
+        ${entityFields.length > 0 ? html`<section class="section" aria-labelledby="entities-heading">
           <div class="section-heading">
             <h3 id="entities-heading">${t.entities}</h3>
             <p class="hint">${t.entitiesHint}</p>
           </div>
           <div class="grid">
-            ${ENTITY_FIELDS.map((field) => html`
+            ${entityFields.map((field) => html`
               <div class="field">
                 ${this._entityPicker(
                   config.entities?.[field.key] ?? "",
@@ -680,9 +697,9 @@ export class VacuumCardEditor extends LitElement {
               </div>
             `)}
           </div>
-        </section>
+        </section>` : nothing}
 
-        <section class="section" aria-labelledby="dock-heading">
+        ${showDockConfiguration ? html`<section class="section" aria-labelledby="dock-heading">
           <div class="section-heading">
             <h3 id="dock-heading">${t.dock}</h3>
             <p class="hint">${t.dockHint}</p>
@@ -754,9 +771,9 @@ export class VacuumCardEditor extends LitElement {
               t.cleaningSolution,
             )}
           </div>
-        </section>
+        </section>` : nothing}
 
-        <section class="section" aria-labelledby="programs-heading">
+        ${showProgramConfiguration ? html`<section class="section" aria-labelledby="programs-heading">
           <div class="section-heading">
             <h3 id="programs-heading">${t.programs}</h3>
             <p class="hint">${t.programsHint}</p>
@@ -781,7 +798,7 @@ export class VacuumCardEditor extends LitElement {
           ${this._programMessage
             ? html`<p class="warning" role="status">${this._programMessage}</p>`
             : nothing}
-        </section>
+        </section>` : nothing}
       </div>
     `;
   }
@@ -893,13 +910,52 @@ export class VacuumCardEditor extends LitElement {
 
   private _effectiveOverviewItems(config: VacuumCardConfig): readonly OverviewItem[] {
     if (config.overview?.items !== undefined) return config.overview.items;
-    return config.density === "compact" ? ["battery"] : OVERVIEW_ITEMS;
+    return config.density === "compact" ? ["battery"] : ["battery", "progress"];
+  }
+
+  private _defaultSectionOrder(view: VacuumView, density?: Density): readonly string[] {
+    if (view === "dock") return DOCK_SECTION_ORDER;
+    if (view === "robot" || density === "compact") return ROBOT_SECTION_ORDER;
+    return COMBINED_SECTION_ORDER;
   }
 
   private _effectiveSectionOrder(config: VacuumCardConfig): readonly string[] {
     if (config.sections?.order !== undefined) return config.sections.order;
-    if (config.density !== "compact") return SECTION_ORDER;
-    return config.view === "dock" ? COMPACT_DOCK_SECTION_ORDER : COMPACT_SECTION_ORDER;
+    return this._defaultSectionOrder(config.view ?? "combined", config.density);
+  }
+
+  private _sectionsForView(view: VacuumView): readonly SelectableSection[] {
+    if (view === "dock") return ["alerts", "dock", "maintenance", "diagnostics"];
+    if (view === "robot") {
+      return ["activity", "controls", "programs", "alerts", "details", "maintenance", "map", "diagnostics"];
+    }
+    return SELECTABLE_SECTIONS;
+  }
+
+  private _entityFieldsForContext(
+    view: VacuumView,
+    visibleSections: ReadonlySet<string>,
+  ): EntityFieldDefinition[] {
+    if (view === "dock") return [];
+    const keys = new Set<SemanticEntityKey>(["status", "battery", "charging", "cleaning"]);
+    if (visibleSections.has("activity")) {
+      for (const key of ["progress", "area", "duration"] as const) keys.add(key);
+    }
+    if (visibleSections.has("details")) {
+      for (const key of ["last_start", "last_end", "vacuum_mode", "mop_mode", "mop_intensity", "volume"] as const) {
+        keys.add(key);
+      }
+    }
+    if (visibleSections.has("map")) keys.add("map");
+    if (visibleSections.has("alerts")) {
+      keys.add("water_shortage");
+      keys.add("vacuum_error");
+    }
+    if (visibleSections.has("programs")) {
+      keys.add("mop_attached");
+      keys.add("water_tank_attached");
+    }
+    return ENTITY_FIELDS.filter((field) => keys.has(field.key));
   }
 
   private _updateOverviewItem(item: OverviewItem, enabled: boolean): void {
@@ -931,12 +987,11 @@ export class VacuumCardEditor extends LitElement {
     const selected = new Set(current);
     if (enabled) selected.add(section);
     else selected.delete(section);
-    selected.add("alerts");
 
-    const knownSections = SECTION_ORDER.filter((candidate) => selected.has(candidate));
+    const knownSections = ALL_SECTION_ORDER.filter((candidate) => selected.has(candidate));
     const unknownSections = current.filter(
       (candidate, index) =>
-        !SECTION_ORDER.includes(candidate as (typeof SECTION_ORDER)[number]) &&
+        !ALL_SECTION_ORDER.includes(candidate as (typeof ALL_SECTION_ORDER)[number]) &&
         current.indexOf(candidate) === index,
     );
     next.sections = {
@@ -959,7 +1014,12 @@ export class VacuumCardEditor extends LitElement {
     } else if (key === "entity") {
       next.entity = value;
     } else if (key === "view") {
-      next.view = value as VacuumView;
+      const view = value as VacuumView;
+      next.view = view;
+      next.sections = {
+        ...(next.sections ?? {}),
+        order: [...this._defaultSectionOrder(view, next.density)],
+      };
     } else if (key === "density") {
       next.density = value as Density;
     } else {
