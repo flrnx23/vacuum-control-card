@@ -242,6 +242,19 @@ export const cardStyles = css`
     min-width: 0;
   }
 
+  .metric-button {
+    inline-size: 100%;
+    min-block-size: 44px;
+    padding: 7px 8px;
+    border-radius: 10px;
+    text-align: start;
+    background: transparent;
+  }
+
+  .metric-button:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--vc-accent) 9%, transparent);
+  }
+
   .metric-label-row {
     min-block-size: 44px;
     display: flex;
@@ -249,16 +262,9 @@ export const cardStyles = css`
     gap: 3px;
   }
 
-  .metric-more-info {
-    min-inline-size: 44px;
-    margin-inline-start: auto;
-    padding: 7px;
-    background: transparent;
-  }
-
   .metric-label {
     color: var(--secondary-text-color, #687386);
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.035em;
   }
@@ -291,6 +297,16 @@ export const cardStyles = css`
   .section {
     display: grid;
     gap: 10px;
+  }
+
+  .last-cleaning {
+    padding: 11px 12px;
+    border-radius: 13px;
+    background: color-mix(in srgb, var(--primary-text-color, #1f2937) 4%, transparent);
+  }
+
+  .last-cleaning .metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .section-heading {
@@ -451,11 +467,42 @@ export const cardStyles = css`
     --alert-color: var(--vc-accent);
   }
 
-  .alert button {
+  .alert-icon {
+    flex: 0 0 auto;
+    inline-size: 20px;
+    block-size: 20px;
+    color: var(--alert-color, var(--vc-warning));
+    --mdc-icon-size: 20px;
+  }
+
+  .alert-copy {
+    min-width: 0;
+    flex: 1;
+    display: grid;
+    gap: 2px;
+    font-weight: 650;
+  }
+
+  .alert-detail {
+    color: var(--secondary-text-color, #687386);
+    font-size: 0.78rem;
+    font-weight: 450;
+    overflow-wrap: anywhere;
+  }
+
+  .alert-action {
     margin-inline-start: auto;
     min-block-size: 44px;
     min-inline-size: 44px;
-    padding: 7px 10px;
+    padding: 7px;
+    display: grid;
+    place-items: center;
+  }
+
+  .alert-action ha-icon {
+    inline-size: 20px;
+    block-size: 20px;
+    --mdc-icon-size: 20px;
   }
 
   .dock-strip {
@@ -512,6 +559,20 @@ export const cardStyles = css`
     text-align: end;
     color: var(--secondary-text-color, #687386);
     overflow-wrap: anywhere;
+  }
+
+  .icon-action {
+    min-inline-size: 44px;
+    min-block-size: 44px;
+    padding: 7px;
+    display: inline-grid;
+    place-items: center;
+  }
+
+  .icon-action ha-icon {
+    inline-size: 20px;
+    block-size: 20px;
+    --mdc-icon-size: 20px;
   }
 
   select,
@@ -647,8 +708,24 @@ export const cardStyles = css`
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .program-grid {
+    .shell:not([data-density="compact"]) .controls {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @container (max-width: 320px) {
+    .shell:not([data-density="compact"]) .program-grid {
       grid-template-columns: 1fr;
+    }
+  }
+
+  @container (min-width: 321px) and (max-width: 620px) {
+    .shell:not([data-density="compact"]) .program-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .shell:not([data-density="compact"]) .program-description {
+      display: none;
     }
   }
 
@@ -804,7 +881,7 @@ export const cardStyles = css`
   }
 
   .shell[data-density="compact"] .metric-label {
-    font-size: 0.62rem;
+    font-size: 0.7rem;
     letter-spacing: 0.02em;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -813,20 +890,10 @@ export const cardStyles = css`
 
   .shell[data-density="compact"] .metric-value {
     margin-block-start: 1px;
-    font-size: 0.82rem;
+    font-size: 0.84rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-
-  .shell[data-density="compact"] .metric-more-info {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    inline-size: 100%;
-    block-size: 100%;
-    min-inline-size: 44px;
-    opacity: 0;
   }
 
   .shell[data-density="compact"] progress {
@@ -892,7 +959,7 @@ export const cardStyles = css`
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow: hidden;
-    font-size: 0.68rem;
+    font-size: 0.72rem;
     line-height: 1.08;
   }
 
@@ -928,14 +995,6 @@ export const cardStyles = css`
 
     .shell[data-density="auto"] .robot-visual {
       display: none;
-    }
-
-    .shell[data-density="auto"] .controls {
-      grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
-    }
-
-    .shell[data-density="auto"] .program-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     .shell[data-density="auto"] .program-description {

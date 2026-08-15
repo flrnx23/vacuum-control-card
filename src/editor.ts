@@ -142,10 +142,10 @@ const TRANSLATIONS = {
     sectionControls: "Steuerung",
     sectionPrograms: "Programme",
     sectionDock: "Station",
-    sectionDetails: "Details",
+    sectionDetails: "Robotereinstellungen",
     sectionMaintenance: "Wartung",
     sectionMap: "Karte",
-    sectionDiagnostics: "Diagnose",
+    sectionDiagnostics: "Technische Diagnose",
     kindVacuum: "Saugen",
     kindMop: "Wischen",
     kindCombo: "Saugen und Wischen",
@@ -236,10 +236,10 @@ const TRANSLATIONS = {
     sectionControls: "Controls",
     sectionPrograms: "Programs",
     sectionDock: "Dock",
-    sectionDetails: "Details",
+    sectionDetails: "Robot settings",
     sectionMaintenance: "Maintenance",
     sectionMap: "Map",
-    sectionDiagnostics: "Diagnostics",
+    sectionDiagnostics: "Technical diagnostics",
     kindVacuum: "Vacuum",
     kindMop: "Mop",
     kindCombo: "Vacuum and mop",
@@ -362,7 +362,7 @@ export class VacuumCardEditor extends LitElement {
     }
     .grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: minmax(0, 1fr);
       gap: 12px;
     }
     .field { display: grid; gap: 6px; min-width: 0; }
@@ -516,7 +516,7 @@ export class VacuumCardEditor extends LitElement {
     button:disabled { cursor: default; opacity: 0.45; }
     .warning { color: var(--warning-color, #ad6700); font-size: 0.84rem; }
     @media (max-width: 600px) {
-      .grid, .add-row, .choice-grid { grid-template-columns: 1fr; }
+      .add-row, .choice-grid { grid-template-columns: 1fr; }
     }
   `;
 

@@ -43,8 +43,9 @@ function additionalControlRows(config: NormalizedVacuumCardConfig): number {
     config.controls.locate,
   ].filter((setting) => setting !== false).length;
 
-  // The baseline already includes one row of up to four controls.
-  return Math.max(0, Math.ceil(visibleControls / 4) - 1);
+  const controlsPerRow = config.density === "compact" ? 4 : 2;
+  // The baseline already includes the first responsive row.
+  return Math.max(0, Math.ceil(visibleControls / controlsPerRow) - 1);
 }
 
 function additionalOverviewRows(config: NormalizedVacuumCardConfig): number {
@@ -61,7 +62,20 @@ function additionalProgramRows(config: NormalizedVacuumCardConfig): number {
   const visiblePrograms = config.programs.items.filter(
     (program) => !program.hidden,
   ).length;
-  return Math.ceil(visiblePrograms / 3);
+  const programsPerRow = config.density === "compact" ? 3 : 2;
+  return Math.ceil(visiblePrograms / programsPerRow);
+}
+
+function visibleProgramCount(config: NormalizedVacuumCardConfig): number {
+  if (!hasVisibleSection(config, "programs")) return 0;
+  return config.programs.items.filter((program) => !program.hidden).length;
+}
+
+function configuredOverviewCount(config: NormalizedVacuumCardConfig): number {
+  if (!hasVisibleSection(config, "activity")) return 0;
+  return config.overview.items.filter(
+    (item) => item !== "battery" && Boolean(config.entities[item]),
+  ).length;
 }
 
 function expandedContentRows(itemCount: number): number {
@@ -146,11 +160,21 @@ export function computeLayoutProfile(
     configuredOptionalSectionRows(config);
   const compact = config.density === "compact";
   const rows = (compact ? 2 : 6) + contentRows;
+  const minColumns = compact
+    ? 6
+    : config.density === "detailed"
+      ? 12
+      : config.density === "comfortable" ||
+          visibleProgramCount(config) >= 2 ||
+          configuredOverviewCount(config) >= 2 ||
+          configuredOptionalSectionRows(config) >= 2
+        ? 9
+        : 6;
 
   return {
     rows,
     columns: compact ? 6 : 12,
     min_rows: rows,
-    min_columns: 6,
+    min_columns: minColumns,
   };
 }

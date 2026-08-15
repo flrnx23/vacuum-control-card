@@ -26,6 +26,7 @@ import type {
   ProgramConfig,
   RobotActivity,
   Severity,
+  StatusAlert,
   TaskKind,
   VacuumCardConfig,
   VacuumViewModel,
@@ -332,6 +333,8 @@ export class VacuumCard extends LitElement {
       : robotName ?? localize(this.hass, "card.default_name"));
     const status = dockView
       ? this._dockHeaderStatus(model)
+      : model.activity === "charging" && model.battery !== undefined && model.battery >= 99.5
+        ? localize(this.hass, "state.charged")
       : model.activity === "cleaning"
         ? taskLabel(this.hass, model.taskKind)
         : activityLabel(this.hass, model.activity);
@@ -470,23 +473,31 @@ export class VacuumCard extends LitElement {
   private _renderActivity(model: VacuumViewModel) {
     if (!this.hass || !this._config) return nothing;
     const selected = new Set(this._config.overview.items);
-    const showProgress = selected.has("progress") && model.progress !== undefined;
+    const showProgress = model.sessionActive && selected.has("progress") && model.progress !== undefined;
     const hasOverviewMetrics = this._config.overview.items.some((item) =>
-      (item === "progress" && model.progress !== undefined) ||
+      (item === "progress" && model.sessionActive && model.progress !== undefined) ||
       (item === "area" && Boolean(model.area)) ||
       (item === "duration" && Boolean(model.duration)),
     );
     const overviewMetrics = this._config.overview.items.map((item) =>
-      this._renderOverviewMetric(item, model));
+      this._renderOverviewMetric(item, model, model.sessionActive));
     const activityText =
       model.activity === "cleaning"
         ? taskLabel(this.hass, model.taskKind)
         : activityLabel(this.hass, model.activity);
+    const sectionLabel = model.sessionActive
+      ? activityText
+      : localize(this.hass, "section.last_cleaning");
 
     if (this._config.density === "compact") {
       if (!hasOverviewMetrics) return nothing;
       return html`
-        <section class="section compact-overview" data-section="activity" aria-label=${activityText}>
+        <section
+          class="section compact-overview"
+          data-section="activity"
+          data-session-active=${String(model.sessionActive)}
+          aria-label=${sectionLabel}
+        >
           ${showProgress
             ? html`<progress
                 max="100"
@@ -497,6 +508,23 @@ export class VacuumCard extends LitElement {
           <div class="metrics">
             ${overviewMetrics}
           </div>
+        </section>
+      `;
+    }
+
+    if (!model.sessionActive) {
+      if (!hasOverviewMetrics) return nothing;
+      return html`
+        <section
+          class="section last-cleaning"
+          data-section="activity"
+          data-session-active="false"
+          aria-labelledby="vc-last-cleaning-title"
+        >
+          <div class="section-heading">
+            <h3 id="vc-last-cleaning-title">${sectionLabel}</h3>
+          </div>
+          <div class="metrics">${overviewMetrics}</div>
         </section>
       `;
     }
@@ -536,9 +564,13 @@ export class VacuumCard extends LitElement {
     `;
   }
 
-  private _renderOverviewMetric(item: OverviewItem, model: VacuumViewModel) {
+  private _renderOverviewMetric(
+    item: OverviewItem,
+    model: VacuumViewModel,
+    includeProgress = true,
+  ) {
     if (!this.hass || !this._config || item === "battery") return nothing;
-    if (item === "progress" && model.progress !== undefined) {
+    if (item === "progress" && includeProgress && model.progress !== undefined) {
       return this._metric(
         localize(this.hass, "metric.progress"),
         `${Math.round(model.progress)} %`,
@@ -563,19 +595,19 @@ export class VacuumCard extends LitElement {
   }
 
   private _metric(label: string, value: string, entityId?: string) {
-    return html`<div class="metric">
+    const content = html`
       <div class="metric-label-row">
         <div class="metric-label">${label}</div>
-        ${entityId
-          ? html`<button
-              class="metric-more-info"
-              aria-label=${`${label}: ${localize(this.hass, "action.more_info")}`}
-              @click=${() => fireMoreInfo(this, entityId)}
-            >${"\u2026"}</button>`
-          : nothing}
       </div>
       <div class="metric-value">${value}</div>
-    </div>`;
+    `;
+    return entityId
+      ? html`<button
+          class="metric metric-button"
+          aria-label=${`${label}: ${value}. ${localize(this.hass, "action.more_info")}`}
+          @click=${() => fireMoreInfo(this, entityId)}
+        >${content}</button>`
+      : html`<div class="metric">${content}</div>`;
   }
 
   private _renderControls(model: VacuumViewModel) {
@@ -586,6 +618,10 @@ export class VacuumCard extends LitElement {
     const active = ACTIVE_ROBOT_STATES.includes(model.activity);
     const disabled = this._commandBusy || this._programBusy() || model.activity === "unavailable";
     const hasPrograms = this._config.programs.items.some((program) => !program.hidden);
+    const programsVisible =
+      this._config.sections.order.includes("programs") &&
+      this._visibleSections(this._config.view).has("programs");
+    const offerProgramChooser = hasPrograms && !programsVisible;
 
     return html`
       <section class="section" data-section="controls" aria-labelledby="vc-controls-title">
@@ -599,7 +635,7 @@ export class VacuumCard extends LitElement {
               ? html`<button class="primary" ?disabled=${disabled} @click=${() => this._executeVacuum("start")}>
                   ${this._controlContent("mdi:play", localize(this.hass, "action.resume"))}
                 </button>`
-              : hasPrograms && this._config.density !== "compact" && ["idle", "docked", "charging"].includes(model.activity)
+              : offerProgramChooser && this._config.density !== "compact" && ["idle", "docked", "charging"].includes(model.activity)
                 ? html`<button class="primary" ?disabled=${disabled} @click=${this._focusPrograms}>
                     ${this._controlContent("mdi:playlist-play", localize(this.hass, "action.programs"))}
                   </button>`
@@ -923,25 +959,90 @@ export class VacuumCard extends LitElement {
     if (this._config.density === "compact") return nothing;
     const alerts = this._visibleAlerts(model);
     if (alerts.length === 0) return nothing;
+    const maintenanceAlerts = alerts.filter((alert) => alert.key.startsWith("maintenance:"));
+    const directAlerts = alerts.filter((alert) => !alert.key.startsWith("maintenance:"));
     return html`
       <section class="section" data-section="alerts" aria-labelledby="vc-alerts-title">
         <div class="section-heading"><h3 id="vc-alerts-title">${localize(this.hass, "section.alerts")}</h3></div>
         <div class="alert-list">
-          ${alerts.map(
-            (alert) => html`<div class="alert" data-severity=${alert.severity} role=${alert.severity === "critical" ? "alert" : "status"}>
-              <span aria-hidden="true">${alert.severity === "critical" ? "!" : "●"}</span>
-              <span>${this._alertLabel(alert.key, alert.label)}</span>
-              ${alert.entityId
-                ? html`<button
-                    aria-label=${localize(this.hass, "action.more_info")}
-                    @click=${() => fireMoreInfo(this, alert.entityId!)}
-                  >···</button>`
-                : nothing}
-            </div>`,
-          )}
+          ${directAlerts.map((alert) => this._renderAlert(alert))}
+          ${maintenanceAlerts.length > 0
+            ? this._renderMaintenanceAlertSummary(maintenanceAlerts)
+            : nothing}
         </div>
       </section>
     `;
+  }
+
+  private _renderAlert(alert: StatusAlert) {
+    const label = this._alertLabel(alert.key, alert.label);
+    const icon = alert.severity === "critical"
+      ? "mdi:alert-circle"
+      : alert.severity === "warning"
+        ? "mdi:alert"
+        : "mdi:information-outline";
+    return html`<div
+      class="alert"
+      data-severity=${alert.severity}
+      role=${alert.severity === "critical" ? "alert" : "status"}
+    >
+      <ha-icon class="alert-icon" icon=${icon} aria-hidden="true"></ha-icon>
+      <span class="alert-copy">${label}</span>
+      ${alert.entityId
+        ? html`<button
+            class="alert-action"
+            aria-label=${`${label}: ${localize(this.hass, "action.more_info")}`}
+            @click=${() => fireMoreInfo(this, alert.entityId!)}
+          ><ha-icon icon="mdi:information-outline" aria-hidden="true"></ha-icon></button>`
+        : nothing}
+    </div>`;
+  }
+
+  private _renderMaintenanceAlertSummary(alerts: StatusAlert[]) {
+    if (!this.hass) return nothing;
+    const rank = { critical: 0, warning: 1, info: 2 } as const;
+    const sorted = [...alerts].sort((left, right) => {
+      const severity = rank[left.severity] - rank[right.severity];
+      if (severity !== 0) return severity;
+      const leftValue = Number(left.rawState);
+      const rightValue = Number(right.rawState);
+      return Number.isFinite(leftValue) && Number.isFinite(rightValue)
+        ? leftValue - rightValue
+        : 0;
+    });
+    const mostUrgent = sorted[0]!;
+    const entity = mostUrgent.entityId ? this.hass.states[mostUrgent.entityId] : undefined;
+    const value = entity ? entityState(this.hass, entity) : mostUrgent.rawState;
+    const label = alerts.length === 1
+      ? mostUrgent.label
+      : localize(this.hass, "maintenance.alert_summary", { count: alerts.length });
+    const detail = value
+      ? alerts.length === 1
+        ? value
+        : localize(this.hass, "maintenance.most_urgent", {
+            name: mostUrgent.label,
+            value,
+          })
+      : undefined;
+
+    return html`<div
+      class="alert maintenance-alert"
+      data-severity=${mostUrgent.severity}
+      role=${mostUrgent.severity === "critical" ? "alert" : "status"}
+    >
+      <ha-icon class="alert-icon" icon="mdi:wrench-clock" aria-hidden="true"></ha-icon>
+      <span class="alert-copy">
+        <span>${label}</span>
+        ${detail ? html`<span class="alert-detail">${detail}</span>` : nothing}
+      </span>
+      ${mostUrgent.entityId
+        ? html`<button
+            class="alert-action"
+            aria-label=${`${mostUrgent.label}: ${localize(this.hass, "action.more_info")}`}
+            @click=${() => fireMoreInfo(this, mostUrgent.entityId!)}
+          ><ha-icon icon="mdi:information-outline" aria-hidden="true"></ha-icon></button>`
+        : nothing}
+    </div>`;
   }
 
   private _visibleAlerts(model: VacuumViewModel): VacuumViewModel["alerts"] {
@@ -1051,7 +1152,7 @@ export class VacuumCard extends LitElement {
           <span aria-hidden="true">${dockStatusSymbol}</span>
         </div>
         <details ?open=${open}>
-          <summary>${localize(this.hass, "action.details")}</summary>
+          <summary>${localize(this.hass, "dock.details")}</summary>
           <div class="details-content">
             ${this._renderBinaryDockEntity(entities.clean_water_tank)}
             ${this._renderBinaryDockEntity(entities.dirty_water_tank)}
@@ -1176,7 +1277,9 @@ export class VacuumCard extends LitElement {
       <span>${label}</span>
       <span class="entity-value">
         ${value}
-        <button aria-label=${localize(this.hass, "action.more_info")} @click=${() => fireMoreInfo(this, entityId)}>···</button>
+        <button class="icon-action" aria-label=${localize(this.hass, "action.more_info")} @click=${() => fireMoreInfo(this, entityId)}>
+          <ha-icon icon="mdi:information-outline" aria-hidden="true"></ha-icon>
+        </button>
       </span>
     </div>`;
   }
@@ -1389,7 +1492,9 @@ export class VacuumCard extends LitElement {
                         })}
                         @click=${() => this._requestDiagnosticSwitch(item.entity, turnOn, item.confirmation === "always")}
                       >↕</button>`
-                    : html`<button aria-label=${localize(this.hass, "action.more_info")} @click=${() => fireMoreInfo(this, item.entity)}>···</button>`}
+                    : html`<button class="icon-action" aria-label=${localize(this.hass, "action.more_info")} @click=${() => fireMoreInfo(this, item.entity)}>
+                        <ha-icon icon="mdi:information-outline" aria-hidden="true"></ha-icon>
+                      </button>`}
                 </span>
               </div>`;
             })}

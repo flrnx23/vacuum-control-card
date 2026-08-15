@@ -102,7 +102,7 @@ appearance: adaptive  # alternatively: accent
 
 The **Compact** density is intended for dashboards with many small cards. The name and current status always remain visible, with the battery shown as the space-saving default. The visual editor lets you individually select battery, progress, cleaned area and cleaning duration, as well as the other visible card sections.
 
-In a Sections dashboard, the compact card starts with a minimum size of 6 × 2 cells. When more information or sections are enabled, the card automatically increases its minimum height so text and controls remain readable. It can always be resized to a larger size in Home Assistant.
+In a Sections dashboard, the compact card starts with a minimum size of 6 × 2 cells. For the other presentations, the card adjusts its minimum width and height to the selected information, programs and sections so text and controls remain readable. It can always be resized to a larger size in Home Assistant.
 
 ## Language
 

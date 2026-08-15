@@ -182,7 +182,7 @@ describe("computeLayoutProfile", () => {
     expect(expanded.min_rows).toBeGreaterThanOrEqual(collapsed.min_rows);
   });
 
-  it("keeps non-compact layouts at twelve columns with a six-column minimum", () => {
+  it("gives comfortable and detailed layouts a readable minimum width", () => {
     const base = normalizeConfig({
       type: "custom:vacuum-control-card",
       entity: "vacuum.test_robot",
@@ -194,19 +194,48 @@ describe("computeLayoutProfile", () => {
       density: "comfortable",
       programs: { items: programs(3) },
     });
+    const detailed = normalizeConfig({
+      type: "custom:vacuum-control-card",
+      entity: "vacuum.test_robot",
+      density: "detailed",
+    });
 
     expect(computeLayoutProfile(base)).toEqual({
-      rows: 6,
-      columns: 12,
-      min_rows: 6,
-      min_columns: 6,
-    });
-    expect(computeLayoutProfile(withPrograms)).toEqual({
       rows: 7,
       columns: 12,
       min_rows: 7,
-      min_columns: 6,
+      min_columns: 9,
     });
+    expect(computeLayoutProfile(withPrograms)).toEqual({
+      rows: 9,
+      columns: 12,
+      min_rows: 9,
+      min_columns: 9,
+    });
+    expect(computeLayoutProfile(detailed).min_columns).toBe(12);
+  });
+
+  it("keeps a minimal automatic card narrow and widens it with rich content", () => {
+    const minimal = normalizeConfig({
+      type: "custom:vacuum-control-card",
+      entity: "vacuum.test_robot",
+      density: "auto",
+      programs: { items: [] },
+      sections: { order: ["controls", "alerts"] },
+    });
+    const rich = normalizeConfig({
+      type: "custom:vacuum-control-card",
+      entity: "vacuum.test_robot",
+      density: "auto",
+      entities: {
+        area: "sensor.robot_area",
+        duration: "sensor.robot_duration",
+      },
+      programs: { items: programs(2) },
+    });
+
+    expect(computeLayoutProfile(minimal).min_columns).toBe(6);
+    expect(computeLayoutProfile(rich).min_columns).toBe(9);
   });
 
   it("increases both recommended and minimum rows monotonically as content grows", () => {

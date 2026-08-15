@@ -195,6 +195,120 @@ afterEach(() => {
 });
 
 describe("presentation polish", () => {
+  it("separates the last cleaning from live progress and recognizes a full charge", async () => {
+    const { card } = await renderCard(config({
+      entities: { progress: PROGRESS, area: AREA, duration: DURATION },
+      overview: { items: ["battery", "progress", "area", "duration"] },
+      programs: { guard: "confirm", items: [] },
+    }), {
+      [VACUUM]: entity(VACUUM, "charging", {
+        friendly_name: "Mein Saugroboter",
+        supported_features: 4 | 8 | 16 | 8192,
+        battery_level: 100,
+      }),
+      [PROGRESS]: entity(PROGRESS, "0", { unit_of_measurement: "%" }),
+      [AREA]: entity(AREA, "27.7", { unit_of_measurement: "m²" }),
+      [DURATION]: entity(DURATION, "29", { unit_of_measurement: "min" }),
+    });
+
+    expect(card.shadowRoot?.querySelector(".status-line")?.textContent).toContain("Voll geladen");
+    const activity = card.shadowRoot?.querySelector('[data-section="activity"]');
+    expect(activity?.classList.contains("last-cleaning")).toBe(true);
+    expect(activity?.textContent).toContain("Letzte Reinigung");
+    expect(activity?.textContent).toContain("27.7");
+    expect(activity?.textContent).toContain("29");
+    expect(activity?.textContent).not.toContain("Fortschritt");
+    expect(activity?.querySelector(".hero")).toBeNull();
+  });
+
+  it("keeps current progress in the activity hero while cleaning", async () => {
+    const { card } = await renderCard(config({
+      entities: { progress: PROGRESS, area: AREA },
+      overview: { items: ["progress", "area"] },
+      programs: { guard: "confirm", items: [] },
+    }), {
+      [VACUUM]: entity(VACUUM, "cleaning", {
+        friendly_name: "Mein Saugroboter",
+        supported_features: 4 | 8 | 16 | 8192,
+      }),
+      [PROGRESS]: entity(PROGRESS, "42"),
+      [AREA]: entity(AREA, "12.5"),
+    });
+
+    const activity = card.shadowRoot?.querySelector('[data-section="activity"]');
+    expect(activity?.querySelector(".hero")).not.toBeNull();
+    expect(activity?.textContent).toContain("Fortschritt");
+    expect(activity?.textContent).toContain("42 %");
+  });
+
+  it("opens more-info from the complete metric instead of a tiny ellipsis", async () => {
+    const { card } = await renderCard(config({
+      entities: { area: AREA },
+      overview: { items: ["area"] },
+      programs: { guard: "confirm", items: [] },
+    }), {
+      [AREA]: entity(AREA, "27.7"),
+    });
+    const moreInfo = vi.fn();
+    card.addEventListener("hass-more-info", moreInfo);
+
+    const metric = card.shadowRoot?.querySelector<HTMLButtonElement>(".metric-button");
+    expect(metric?.textContent).toContain("Fläche");
+    expect(card.shadowRoot?.querySelector(".metric-more-info")).toBeNull();
+    metric?.click();
+    expect(moreInfo).toHaveBeenCalledOnce();
+    expect((moreInfo.mock.calls[0]?.[0] as CustomEvent).detail).toEqual({ entityId: AREA });
+  });
+
+  it("uses the normal start action when the program section is already visible", async () => {
+    const { card } = await renderCard();
+    const label = card.shadowRoot?.querySelector(".controls .primary .control-text")?.textContent;
+    expect(label).toBe("Starten");
+  });
+
+  it("groups maintenance alerts and shows the most urgent remaining value", async () => {
+    const { card } = await renderCard(config({
+      maintenance: {
+        items: [
+          { entity: ROBOT_MAINTENANCE, name: "Hauptbürste", warning_below: 20 },
+          { entity: DOCK_MAINTENANCE, name: "Sensoren", warning_below: 20 },
+        ],
+      },
+    }), {
+      [ROBOT_MAINTENANCE]: entity(ROBOT_MAINTENANCE, "9"),
+      [DOCK_MAINTENANCE]: entity(DOCK_MAINTENANCE, "4"),
+    });
+
+    const alerts = card.shadowRoot?.querySelectorAll('[data-section="alerts"] .maintenance-alert');
+    expect(alerts).toHaveLength(1);
+    expect(alerts?.[0]?.textContent).toContain("2 Wartungshinweise");
+    expect(alerts?.[0]?.textContent).toContain("Am dringendsten: Sensoren · 4");
+    expect(alerts?.[0]?.querySelector(".alert-action ha-icon")).not.toBeNull();
+    expect(alerts?.[0]?.textContent).not.toContain("···");
+  });
+
+  it("uses unambiguous names for dock, settings, and diagnostics", async () => {
+    const { card } = await renderCard(config({
+      entities: { vacuum_mode: VACUUM_MODE },
+      dock: { display: "collapsed", entities: { mop_drying: DOCK_DRYING } },
+      diagnostics: {
+        display: "collapsed",
+        items: [{ entity: DIAGNOSTIC_SWITCH }],
+      },
+    }), {
+      [VACUUM_MODE]: entity(VACUUM_MODE, "balanced", { options: ["balanced"] }),
+      [DOCK_DRYING]: entity(DOCK_DRYING, "off"),
+      [DIAGNOSTIC_SWITCH]: entity(DIAGNOSTIC_SWITCH, "off"),
+    });
+
+    expect(card.shadowRoot?.querySelector('[data-section="dock"] summary')?.textContent)
+      .toContain("Stationsdetails");
+    expect(card.shadowRoot?.querySelector('[data-section="details"] summary')?.textContent)
+      .toContain("Robotereinstellungen");
+    expect(card.shadowRoot?.querySelector('[data-section="diagnostics"] summary')?.textContent)
+      .toContain("Technische Diagnose");
+  });
+
   it("renders configured card and program icons through ha-icon", async () => {
     const { card } = await renderCard(config({
       icon: "mdi:robot-vacuum",

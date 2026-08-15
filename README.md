@@ -102,7 +102,7 @@ appearance: adaptive  # alternativ: accent
 
 Für Übersichten mit vielen kleinen Karten steht die Dichte **Kompakt** zur Verfügung. Name und aktueller Status bleiben dabei immer sichtbar. Als platzsparender Standard wird zusätzlich die Batterie gezeigt. Im visuellen Editor lässt sich einzeln auswählen, ob Batterie, Fortschritt, gereinigte Fläche und Reinigungsdauer erscheinen sollen. Dort können auch die übrigen Kartenbereiche ein- oder ausgeblendet werden.
 
-In einem Sections-Dashboard startet die kompakte Karte bei einer Mindestgröße von 6 × 2 Feldern. Werden mehr Informationen oder Bereiche eingeblendet, erhöht die Karte ihre Mindesthöhe automatisch, damit Texte und Bedienelemente lesbar bleiben. Größer ziehen lässt sie sich in Home Assistant weiterhin jederzeit.
+In einem Sections-Dashboard startet die kompakte Karte bei einer Mindestgröße von 6 × 2 Feldern. Bei den anderen Darstellungen passt die Karte ihre Mindestbreite und -höhe an die ausgewählten Informationen, Programme und Bereiche an, damit Texte und Bedienelemente lesbar bleiben. Größer ziehen lässt sie sich in Home Assistant weiterhin jederzeit.
 
 ## Sprache
 
